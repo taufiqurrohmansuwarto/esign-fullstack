@@ -1,9 +1,10 @@
+import CheckDocumentVerify from "../components/CheckDocumentVerify";
 import Main from "../components/Main";
 
 function index() {
   return (
     <div>
-      <Main />
+      <CheckDocumentVerify />
     </div>
   );
 }

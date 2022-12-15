@@ -25,14 +25,18 @@ model User {
   last_login      DateTime?
   organization_id String?
 
-  createdat DateTime?  @default(now())
-  updatedat DateTime?  @updatedAt
-  documents Document[]
-  histories History[]
+  createdat    DateTime?      @default(now())
+  updatedat    DateTime?      @updatedAt
+  documents    Document[]
+  histories    History[]
+  Discussions  Disuccsion[]
+  Notification Notification[]
+  Otp          Otp[]
+  Recipient    Recipient[]
 }
 
 model Document {
-  id               String    @id @default(cuid())
+  id               String         @id @default(cuid())
   title            String?
   status           String?
   workflow         String?
@@ -40,17 +44,20 @@ model Document {
   initial_document String?
   document_pages   Int?
   user_id          String?
-  user             User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user             User?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   type             String?
   sign_document    String?
   ongoing_document String?
-  upload_date      DateTime? @default(now())
-  can_discuss      Boolean?  @default(false)
+  upload_date      DateTime?      @default(now())
+  can_discuss      Boolean?       @default(false)
   expired_at       DateTime?
   url_file         String?
   histories        History[]
-  created_at       DateTime? @default(now())
-  updated_at       DateTime? @updatedAt
+  created_at       DateTime?      @default(now())
+  updated_at       DateTime?      @updatedAt
+  Discussions      Disuccsion[]
+  Notification     Notification[]
+  Recipient        Recipient[]
 }
 
 model History {
@@ -71,4 +78,60 @@ model History {
   information String?
   created_at  DateTime? @default(now())
   updated_at  DateTime? @updatedAt
+}
+
+// kurang parent id
+model Disuccsion {
+  id          String    @id @default(cuid())
+  document_id String?
+  document    Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user_id     String?
+  user        User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  message     String?
+  parent_id   String?
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  user_id     String?
+  document_id String?
+  message     String?
+  is_read     Boolean?  @default(false)
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
+  user        User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  document    Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Otp {
+  id         String    @id @default(cuid())
+  user_id    String?
+  secret     String?
+  expired_at DateTime?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  user       User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Recipient {
+  id               String    @id @default(cuid())
+  document_id      String?
+  user_id          String?
+  document_title   String?
+  reason           String?
+  sign_pages       String?
+  total_sign       Int?
+  sign_coordinate  Json?
+  sequence         Int?
+  role             String?
+  signatory_status String?
+  is_approve       Boolean?  @default(false)
+  is_owner         Boolean?  @default(false)
+  status           String?
+  created_at       DateTime? @default(now())
+  updated_at       DateTime? @updatedAt
+  user             User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  document         Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
