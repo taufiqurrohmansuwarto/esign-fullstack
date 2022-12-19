@@ -1,4 +1,4 @@
-const { default: bsreFetcher } = require("../../lib/fetcher");
+const { bsreFetcher } = require("../../lib/fetcher");
 
 const BASE_PATH = "/api/user";
 
