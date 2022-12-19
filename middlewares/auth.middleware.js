@@ -1,5 +1,4 @@
 const Minio = require("minio");
-const { default: bsreFetcher } = require("../lib/fetcher");
 
 const port = process.env.MINIO_PORT;
 const endPoint = process.env.MINIO_ENDPOINT;
@@ -17,7 +16,6 @@ const mc = Minio.Client({
 const auth = async (req, res, next) => {
   try {
     req.mc = mc;
-    req.bsreFetcher = bsreFetcher;
     next();
   } catch (error) {
     console.log(error);

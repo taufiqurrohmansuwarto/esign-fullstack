@@ -1,9 +1,10 @@
 const FormData = require("form-data");
+const { checkNik } = require("../services/bsre/bsre.user.service");
 
 module.exports.cekStatusNik = async (req, res) => {
   try {
     const { nik } = req.query;
-    const result = await req.bsreFetcher.get(`/api/user/status/${nik}`);
+    const result = await checkNik(nik);
     res.json(result?.data);
   } catch (error) {
     console.log(error);
