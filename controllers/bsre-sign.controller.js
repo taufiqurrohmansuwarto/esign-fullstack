@@ -1,18 +1,7 @@
 const FormData = require("form-data");
-const { checkNik } = require("../services/bsre/bsre.user.service");
+const { verify } = require("services/bsre/bsre.sign.service");
 
-module.exports.cekStatusNik = async (req, res) => {
-  try {
-    const { nik } = req.query;
-    const result = await checkNik(nik);
-    res.json(result?.data);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
-  }
-};
-
-module.exports.checkDocument = async (req, res) => {
+const verifyDocumentController = async (req, res) => {
   try {
     const file = req?.file;
     const typePdf = file?.mimetype === "application/pdf";
@@ -25,13 +14,15 @@ module.exports.checkDocument = async (req, res) => {
       const buffer = Buffer.from(new Uint8Array(file?.buffer));
       const form = new FormData();
       form.append("signed_file", buffer, file?.originalname);
-      const result = await req?.bsreFetcher.post(`/api/sign/verify`, form, {
-        headers: form.getHeaders(),
-      });
+      const result = await verify(form);
       res.json(result?.data);
     }
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error.message });
   }
+};
+
+module.exports = {
+  verifyDocumentController,
 };

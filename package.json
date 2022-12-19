@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build -p 3999",
     "start": "next start",
     "lint": "next lint"
   },
@@ -13,7 +13,7 @@
     "@ant-design/pro-components": "^2.3.47",
     "@next-auth/prisma-adapter": "1.0.5",
     "@prisma/client": "^4.7.1",
-    "@tanstack/react-query": "^4.19.1",
+    "@tanstack/react-query": "^4.20.4",
     "antd": "^5.0.7",
     "axios": "^1.2.1",
     "eslint": "8.29.0",

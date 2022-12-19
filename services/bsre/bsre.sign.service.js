@@ -1,4 +1,4 @@
-const { default: bsreFetcher } = require("../../lib/fetcher");
+const { bsreFetcher } = require("../../lib/fetcher");
 
 const BASE_PATH = "/api/sign";
 
@@ -8,16 +8,20 @@ module.exports.signCms = (data) => {
 };
 
 // download sign dokumen
-module.exports.signDokumen = (id) => {
+module.exports.downloadSignedDokumen = (id) => {
   return bsreFetcher.get(`${BASE_PATH}/download/${id}`);
 };
 
 // service untuk signing dokumen pdf
 module.exports.signPdf = (data) => {
-  return bsreFetcher.get(`${BASE_PATH}/pdf`, data);
+  return bsreFetcher.post(`${BASE_PATH}/pdf`, data);
 };
 
 // verifikasi dokumen yang telah ditandatangani
 module.exports.verify = (data) => {
-  return bsreFetcher.post(`${BASE_PATH}/verify`, data);
+  return bsreFetcher.post(`${BASE_PATH}/verify`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };

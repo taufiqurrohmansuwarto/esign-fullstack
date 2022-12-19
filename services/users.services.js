@@ -1,10 +1,17 @@
 import axios from "axios";
 
-const userFetcher = axios.create({
-  baseURL: "/api/user",
+const BASE_PATH = "/esign/api";
+
+const fetcher = axios.create({
+  baseURL: BASE_PATH,
 });
 
-export const getUsers = async () => {
-  const { data } = await userFetcher.get("/");
-  return data;
+export const verifyDocumentUser = (data) => {
+  return fetcher
+    .post("/bsre/sign/verify", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => res?.data);
 };
