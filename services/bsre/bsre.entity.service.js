@@ -1,3 +1,4 @@
+const { bsreFetcher } = require("../../lib/fetcher");
 const BASE_PATH = `/api/entity`;
 
 module.exports.getExpiredCert = () => {
