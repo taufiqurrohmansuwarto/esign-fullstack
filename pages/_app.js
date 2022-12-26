@@ -1,4 +1,6 @@
 import "antd/dist/reset.css";
+import "../styles/global.css";
+
 import { useState } from "react";
 import {
   Hydrate,

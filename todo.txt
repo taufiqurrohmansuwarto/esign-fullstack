@@ -6,3 +6,13 @@
 
 1. dashboard -> /api/dashboard
 2. uploads -> /api/uploads
+
+
+view and information
+1. dashboard 
+    - informasi user (nama, nip, jabatan)
+    - informasi jumlah dokumen yang diajukan
+    - informasi jumlah dokumen yang disetujui
+    - informasi jumlah dokumen yang ditolak
+    - informasi jumlah dokumen yang belum di proses
+    - informasi recent dokumen

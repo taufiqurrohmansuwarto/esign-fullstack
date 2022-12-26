@@ -3,7 +3,8 @@ import {
   FileOutlined,
   SettingOutlined,
 } from "@ant-design/icons/lib/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Avatar, Layout, Menu, Space, theme, Typography } from "antd";
+import { useRouter } from "next/router";
 import { useState } from "react";
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
@@ -16,16 +17,21 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-  getItem("Dashboard", "1", <DashboardOutlined />),
-  getItem("Dokumen", "sub1", <FileOutlined />, [
+  getItem("Dashboard", "/user/dashboard", <DashboardOutlined />),
+  getItem("Dokumen", "/user/dokumen", <FileOutlined />, [
     getItem("Tom", "3"),
     getItem("Bill", "4"),
     getItem("Alex", "5"),
   ]),
-  getItem("Konfigurasi", "2", <SettingOutlined />),
+  getItem("Konfigurasi", "settings", <SettingOutlined />),
 ];
 
 const UserLayout = ({ children }) => {
+  const router = useRouter();
+  const handleRouter = (item) => {
+    router.push(item.key);
+  };
+
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
@@ -53,6 +59,7 @@ const UserLayout = ({ children }) => {
           defaultSelectedKeys={["1"]}
           mode="inline"
           items={items}
+          onClick={handleRouter}
         />
       </Sider>
       <Layout>
@@ -61,20 +68,17 @@ const UserLayout = ({ children }) => {
             padding: 0,
             background: colorBgContainer,
           }}
-        />
+        >
+          <Space align="center">
+            <Typography.Text>Iput Taufiqurrohman Suwarto</Typography.Text>
+            <Avatar size="large" />
+          </Space>
+        </Header>
         <Content
           style={{
-            margin: "0 16px",
+            margin: "18px",
           }}
         >
-          <Breadcrumb
-            style={{
-              margin: "16px 0",
-            }}
-          >
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
           <div
             style={{
               padding: 24,
