@@ -1,10 +1,13 @@
-import CheckDocumentVerify from "../components/CheckDocumentVerify";
+import UserLayout from "@/components/UserLayout";
+import { Typography } from "antd";
 
 function index() {
   return (
-    <div>
-      <CheckDocumentVerify />
-    </div>
+    <UserLayout>
+      <Typography.Paragraph>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
+      </Typography.Paragraph>
+    </UserLayout>
   );
 }
 

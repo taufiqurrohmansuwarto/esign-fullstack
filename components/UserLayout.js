@@ -1,40 +1,99 @@
-// create layout for user using antd
+import {
+  DashboardOutlined,
+  FileOutlined,
+  SettingOutlined,
+} from "@ant-design/icons/lib/icons";
+import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { useState } from "react";
+const { Header, Content, Footer, Sider } = Layout;
+function getItem(label, key, icon, children) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  };
+}
 
-import React from "react";
+const items = [
+  getItem("Dashboard", "1", <DashboardOutlined />),
+  getItem("Dokumen", "sub1", <FileOutlined />, [
+    getItem("Tom", "3"),
+    getItem("Bill", "4"),
+    getItem("Alex", "5"),
+  ]),
+  getItem("Konfigurasi", "2", <SettingOutlined />),
+];
 
-import { Layout, theme } from "antd";
-
-const { Header, Sider, Content } = Layout;
-
-function UserLayout(props) {
+const UserLayout = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider collapsible>Sider</Sider>
+    <Layout
+      style={{
+        minHeight: "100vh",
+      }}
+    >
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={(value) => setCollapsed(value)}
+      >
+        <div
+          style={{
+            height: 32,
+            margin: 16,
+            background: "rgba(255, 255, 255, 0.2)",
+          }}
+        />
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={["1"]}
+          mode="inline"
+          items={items}
+        />
+      </Sider>
       <Layout>
         <Header
           style={{
             padding: 0,
             background: colorBgContainer,
           }}
-        >
-          Header
-        </Header>
+        />
         <Content
           style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
+            margin: "0 16px",
           }}
         >
-          {props.children}
+          <Breadcrumb
+            style={{
+              margin: "16px 0",
+            }}
+          >
+            <Breadcrumb.Item>User</Breadcrumb.Item>
+            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+          </Breadcrumb>
+          <div
+            style={{
+              padding: 24,
+              minHeight: 360,
+              background: colorBgContainer,
+            }}
+          >
+            {children}
+          </div>
         </Content>
+        <Footer
+          style={{
+            textAlign: "center",
+          }}
+        >
+          Ant Design ©2018 Created by Ant UED
+        </Footer>
       </Layout>
     </Layout>
   );
-}
-
+};
 export default UserLayout;
