@@ -1,1 +1,8 @@
 1. create login page and logout
+
+
+
+1. user api
+
+1. dashboard -> /api/dashboard
+2. uploads -> /api/uploads
