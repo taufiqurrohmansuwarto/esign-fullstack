@@ -24,6 +24,7 @@ model User {
   is_online       Boolean?  @default(false)
   last_login      DateTime?
   organization_id String?
+  nik             String?
 
   createdat    DateTime?      @default(now())
   updatedat    DateTime?      @updatedAt

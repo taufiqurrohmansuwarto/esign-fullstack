@@ -1,11 +1,12 @@
 import { Button } from "antd";
-import { SignIn, getProviders } from "next-auth/react";
-export default SignIn = ({ providers }) => {
+import { signIn, getProviders } from "next-auth/react";
+
+const SignInPages = ({ providers }) => {
   return (
     <>
       {Object.values(providers).map((provider) => (
         <div key={provider?.name}>
-          <Button onClick={() => SignIn(provider?.id)}>
+          <Button onClick={() => signIn(provider?.id)}>
             Masuk menggunakan {provider?.name}
           </Button>
         </div>
@@ -23,3 +24,5 @@ export async function getServerSideProps() {
     },
   };
 }
+
+export default SignInPages;

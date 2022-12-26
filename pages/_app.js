@@ -21,7 +21,12 @@ const Auth = ({ children }) => {
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [queryClient] = useState(() => new QueryClient());
   return (
-    <SessionProvider session={session} baseUrl="/esign" basePath="/esign/auth">
+    <SessionProvider
+      session={session}
+      baseUrl="/esign"
+      basePath="/esign/api/auth"
+      refetchOnWindowFocus
+    >
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydrateState}>
           <SessionProvider>
