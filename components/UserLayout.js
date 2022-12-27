@@ -215,4 +215,5 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
     </Layout>
   );
 };
+
 export default UserLayout;
