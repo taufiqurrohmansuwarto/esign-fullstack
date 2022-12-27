@@ -165,9 +165,12 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
           <Button
             style={{
               // middleware
-              margin: "18px",
+              marginLeft: 20,
+              marginTop: 10,
+              marginBottom: 10,
             }}
             onClick={showModal}
+            size="large"
             type="primary"
             danger
             icon={<PlusOutlined />}
@@ -188,7 +191,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             background: colorBgContainer,
           }}
         >
-          <Dropdown menu={{ items: drawItems }} placement="bottomCenter" arrow>
+          <Dropdown menu={{ items: drawItems }} placement="bottom" arrow>
             <Space align="center">
               <Typography.Text>IPUT TAUFIQURROHMAN SUWARTO</Typography.Text>
               <Avatar />
