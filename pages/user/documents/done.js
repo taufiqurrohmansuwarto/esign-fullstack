@@ -1,11 +1,11 @@
 import UserLayout from "@/components/UserLayout";
 
-const Signatures = () => {
-  return <div>Signatures</div>;
+const Done = () => {
+  return <div>Activity Log</div>;
 };
 
-Signatures.getLayout = (page) => {
+Done.getLayout = (page) => {
   return <UserLayout active="/user/settings">{page}</UserLayout>;
 };
 
-export default Signatures;
+export default Done;

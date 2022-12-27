@@ -22,6 +22,9 @@ const Auth = ({ children }) => {
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [queryClient] = useState(() => new QueryClient());
+
+  const getLayout = Component.getLayout || ((page) => page);
+
   return (
     <SessionProvider
       session={session}
@@ -32,7 +35,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydrateState}>
           <SessionProvider>
-            <Component {...pageProps} />
+            {getLayout(<Component {...pageProps} />)}
           </SessionProvider>
         </Hydrate>
       </QueryClientProvider>

@@ -18,21 +18,31 @@ function getItem(label, key, icon, children) {
 
 const items = [
   getItem("Dashboard", "/user/dashboard", <DashboardOutlined />),
-  getItem("Dokumen", "/user/dokumen", <FileOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
+  getItem("Documents", "/user/documents/all", <FileOutlined />, [
+    getItem("All Documents", "/user/documents/all"),
+    getItem("Draft", "/user/documents/draft"),
+    getItem("Pending", "/user/documents/pending"),
+    getItem("Done", "/user/documents/done"),
+    getItem("Expired", "/user/documents/expired"),
+    getItem("Archived", "/user/documents/archived"),
+    getItem("Rejected", "/user/documents/rejected"),
   ]),
-  getItem("Konfigurasi", "settings", <SettingOutlined />),
+  getItem("Settings", "/user/settings", <SettingOutlined />, [
+    getItem("Activity Log", "/user/settings/activity-log"),
+    getItem("Change Password", "/user/settings/change-password"),
+    getItem("Digital Certificate", "/user/settings/digital-certificate"),
+    getItem("Personal Information", "/user/settings/personal-information"),
+    getItem("Signature", "/user/settings/signatures"),
+  ]),
 ];
 
-const UserLayout = ({ children }) => {
+const UserLayout = ({ children, active = "/user/dashboard" }) => {
   const router = useRouter();
   const handleRouter = (item) => {
     router.push(item.key);
   };
 
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -45,6 +55,7 @@ const UserLayout = ({ children }) => {
       <Sider
         collapsible
         collapsed={collapsed}
+        defaultCollapsed={true}
         onCollapse={(value) => setCollapsed(value)}
       >
         <div
@@ -56,8 +67,7 @@ const UserLayout = ({ children }) => {
         />
         <Menu
           theme="dark"
-          defaultSelectedKeys={["1"]}
-          mode="inline"
+          defaultSelectedKeys={[active]}
           items={items}
           onClick={handleRouter}
         />
@@ -70,7 +80,7 @@ const UserLayout = ({ children }) => {
           }}
         >
           <Space align="center">
-            <Typography.Text>Iput Taufiqurrohman Suwarto</Typography.Text>
+            <Typography.Text>IPUT TAUFIQURROHMAN SUWARTO</Typography.Text>
             <Avatar size="large" />
           </Space>
         </Header>
@@ -83,19 +93,13 @@ const UserLayout = ({ children }) => {
             style={{
               padding: 24,
               minHeight: 360,
+              minHeight: "calc(100vh - 144px)",
               background: colorBgContainer,
             }}
           >
             {children}
           </div>
         </Content>
-        <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          Ant Design ©2018 Created by Ant UED
-        </Footer>
       </Layout>
     </Layout>
   );

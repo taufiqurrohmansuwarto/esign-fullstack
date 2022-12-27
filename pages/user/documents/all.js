@@ -1,11 +1,11 @@
 import UserLayout from "@/components/UserLayout";
 
-const ActivityLog = () => {
+const AllDocuments = () => {
   return <div>Activity Log</div>;
 };
 
-ActivityLog.getLayout = (page) => {
+AllDocuments.getLayout = (page) => {
   return <UserLayout active="/user/settings">{page}</UserLayout>;
 };
 
-export default ActivityLog;
+export default AllDocuments;
