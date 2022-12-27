@@ -1,7 +1,7 @@
 import React from "react";
 
-function ShareOnly() {
+function SelfSign() {
   return <div>upload</div>;
 }
 
-export default ShareOnly;
+export default SelfSign;

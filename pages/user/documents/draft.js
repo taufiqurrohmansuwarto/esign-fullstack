@@ -1,7 +1,7 @@
 import UserLayout from "@/components/UserLayout";
 
 const Draft = () => {
-  return <div>Activity Log</div>;
+  return <div>Draft</div>;
 };
 
 Draft.getLayout = (page) => {

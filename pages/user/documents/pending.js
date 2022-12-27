@@ -1,7 +1,7 @@
 import UserLayout from "@/components/UserLayout";
 
 const Pending = () => {
-  return <div>Activity Log</div>;
+  return <div>pndng</div>;
 };
 
 Pending.getLayout = (page) => {

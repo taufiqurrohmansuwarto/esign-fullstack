@@ -1,7 +1,7 @@
 import UserLayout from "@/components/UserLayout";
 
 const Archived = () => {
-  return <div>Activity Log</div>;
+  return <div>Archived</div>;
 };
 
 Archived.getLayout = (page) => {

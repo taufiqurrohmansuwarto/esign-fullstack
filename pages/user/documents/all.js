@@ -1,7 +1,7 @@
 import UserLayout from "@/components/UserLayout";
 
 const AllDocuments = () => {
-  return <div>Activity Log</div>;
+  return <div>All Documenst</div>;
 };
 
 AllDocuments.getLayout = (page) => {

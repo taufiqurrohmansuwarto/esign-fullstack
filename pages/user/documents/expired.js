@@ -1,7 +1,7 @@
 import UserLayout from "@/components/UserLayout";
 
 const Expired = () => {
-  return <div>Activity Log</div>;
+  return <div>Expired</div>;
 };
 
 Expired.getLayout = (page) => {

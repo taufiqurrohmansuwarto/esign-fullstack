@@ -1,7 +1,7 @@
 import UserLayout from "@/components/UserLayout";
 
 const Rejected = () => {
-  return <div>Activity Log</div>;
+  return <div>Rejected</div>;
 };
 
 Rejected.getLayout = (page) => {
