@@ -7,9 +7,11 @@ import {
   UploadOutlined,
 } from "@ant-design/icons/lib/icons";
 import {
+  AutoComplete,
   Avatar,
   Button,
   Dropdown,
+  Input,
   Layout,
   Menu,
   Modal,
@@ -191,6 +193,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             background: colorBgContainer,
           }}
         >
+          <AutoComplete style={{ width: 300 }} placeholder="Search Document" />
           <Dropdown menu={{ items: drawItems }} placement="bottom" arrow>
             <Space align="center">
               <Typography.Text>IPUT TAUFIQURROHMAN SUWARTO</Typography.Text>
