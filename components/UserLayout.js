@@ -34,6 +34,10 @@ function getItem(label, key, icon, children) {
 const UploadModal = ({ open, onCancel }) => {
   const router = useRouter();
 
+  const handleClick = (id) => {
+    router.push(`/user/documents/${id}`);
+  };
+
   const listButton = [
     {
       id: "selfSign",
@@ -69,7 +73,7 @@ const UploadModal = ({ open, onCancel }) => {
             <Button
               type="primary"
               onClick={() => {
-                router.push(`/user/documents/${item.id}`);
+                handleClick(item.id);
               }}
             >
               {item.title}
