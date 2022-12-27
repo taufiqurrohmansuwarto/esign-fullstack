@@ -21,7 +21,22 @@ const index = async (req, res) => {
 
 const create = async (req, res) => {
   try {
-  } catch (error) {}
+    const { documentId } = req?.query;
+    const { body } = req;
+
+    await prisma.Discussions.create({
+      data: {
+        body,
+        document_id: documentId,
+      },
+    });
+    res.status(200).json({
+      message: "Discussion created",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 const update = async (req, res) => {
