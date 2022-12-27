@@ -15,7 +15,6 @@ const HasilPengecekan = ({ data }) => {
           title="Dokumen tidak valid!"
           subTitle={data?.nama_dokumen}
         />
-        ;
       </>
     );
   }
