@@ -2,7 +2,7 @@ import UserLayout from "@/components/UserLayout";
 import React from "react";
 
 function Dashboard() {
-  return <div>Dashborad</div>;
+  return <div>Berisi Informasi User (nama, email, nip, jabatan)</div>;
 }
 
 Dashboard.getLayout = (page) => {

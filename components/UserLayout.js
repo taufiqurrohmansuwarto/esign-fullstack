@@ -1,12 +1,14 @@
 import {
   DashboardOutlined,
   FileOutlined,
+  LogoutOutlined,
   SettingOutlined,
 } from "@ant-design/icons/lib/icons";
-import { Avatar, Layout, Menu, Space, theme, Typography } from "antd";
+import { Avatar, Dropdown, Layout, Menu, Space, theme, Typography } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
+
 function getItem(label, key, icon, children) {
   return {
     key,
@@ -15,6 +17,23 @@ function getItem(label, key, icon, children) {
     label,
   };
 }
+
+const drawItems = [
+  {
+    key: "1",
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.antgroup.com"
+      >
+        Keluar
+      </a>
+    ),
+    danger: true,
+    icon: <LogoutOutlined />,
+  },
+];
 
 const items = [
   getItem("Dashboard", "/user/dashboard", <DashboardOutlined />),
@@ -79,10 +98,12 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             background: colorBgContainer,
           }}
         >
-          <Space align="center">
-            <Typography.Text>IPUT TAUFIQURROHMAN SUWARTO</Typography.Text>
-            <Avatar size="large" />
-          </Space>
+          <Dropdown menu={{ items: drawItems }} placement="bottomCenter" arrow>
+            <Space align="center">
+              <Typography.Text>IPUT TAUFIQURROHMAN SUWARTO</Typography.Text>
+              <Avatar />
+            </Space>
+          </Dropdown>
         </Header>
         <Content
           style={{
