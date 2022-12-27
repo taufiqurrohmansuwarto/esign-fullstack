@@ -16,3 +16,6 @@ view and information
     - informasi jumlah dokumen yang ditolak
     - informasi jumlah dokumen yang belum di proses
     - informasi recent dokumen
+
+
+2. tambahkan library react-pdf untuk preview pdf

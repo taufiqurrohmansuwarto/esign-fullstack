@@ -49,10 +49,12 @@ const footer = async ({ file, documentId }) => {
 
   times(totalPage, (n) => {
     const serverPages = pages[n];
-    // draw this fucking image each timeso
   });
 
   //   get height and width of the page
+  return {
+    buffer: await pdfDoc.save(),
+  };
 };
 
 module.exports = footer;
