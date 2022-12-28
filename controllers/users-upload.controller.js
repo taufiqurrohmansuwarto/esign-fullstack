@@ -1,5 +1,7 @@
 const footer = require("lib/document-footer");
 const { default: prisma } = require("lib/prisma");
+const { uploadFile } = require("lib/utils");
+const { nanoid } = require("nanoid");
 
 const documentUpload = async (req, res) => {
   try {
@@ -17,20 +19,33 @@ const documentUpload = async (req, res) => {
         message: "File type must be .pdf and file size must be at least 10 mb",
       });
     } else {
+      const uploadFilename = `${nanoid()}_${file.originalname}`;
+      const minio = req.mc;
+
       const document = await prisma.document.create({
         data: {
-          title: file.originalname,
+          filename: uploadFilename,
+          original_filename: file.originalname,
           size: file.size,
           type: file.mimetype,
         },
       });
 
+      // beri footer disetiap halaman
       const documentFooter = await footer({
         file,
         documentId: document.id,
       });
 
-      console.log(documentFooter);
+      // hasil footer berupa buffer yang nantinya akan diupload di minio/s3
+      const { pdfBuffer, totalPage } = documentFooter;
+
+      // upload file ke minio/s3
+      await uploadFile({
+        fileBuffer: pdfBuffer,
+        filename: uploadFilename,
+        minio,
+      });
 
       res.json({
         message: "File uploaded successfully",
