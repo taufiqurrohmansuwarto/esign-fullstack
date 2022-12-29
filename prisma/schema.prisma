@@ -17,9 +17,10 @@ model User {
   image           String?
   custom_id       String?
   group           String?
+  role            String?
   employee_number String?
-  birthdate       DateTime  @db.Date
-  email           String    @unique
+  birthdate       DateTime?  @db.Date
+  email           String?    @unique
   is_online       Boolean?  @default(false)
   last_login      DateTime?
   organization_id String?

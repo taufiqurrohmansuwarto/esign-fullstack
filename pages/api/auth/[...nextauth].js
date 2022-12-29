@@ -69,20 +69,24 @@ export default NextAuth({
       idToken: true,
       checks: ["pkce", "state"],
       profile: async (profile) => {
-        const currentUser = {
-          id: profile?.sub,
-          email: profile?.email,
-          nik: profile?.nik,
-          username: profile?.name,
-          group: profile?.group,
-          role: profile?.role,
-          organization_id: profile?.organization_id,
-          image: profile?.picture,
-          employee_number: profile?.employee_number,
-        };
+        try {
+          const currentUser = {
+            id: profile?.sub,
+            email: profile?.email,
+            nik: profile?.nik,
+            username: profile?.name,
+            group: profile?.group,
+            role: profile?.role,
+            organization_id: profile?.organization_id,
+            image: profile?.picture,
+            employee_number: profile?.employee_number,
+          };
 
-        await upsertUserAttr(currentUser.id, currentUser);
-        return currentUser;
+          await upsertUserAttr(currentUser.id, currentUser);
+          return currentUser;
+        } catch (error) {
+          console.log(error);
+        }
       },
     },
   ],

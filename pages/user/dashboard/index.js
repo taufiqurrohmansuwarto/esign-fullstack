@@ -1,8 +1,14 @@
 import UserLayout from "@/components/UserLayout";
+import { Button } from "antd";
+import { signOut } from "next-auth/react";
 import React from "react";
 
 function Dashboard() {
-  return <div>Berisi Informasi User (nama, email, nip, jabatan)</div>;
+  return (
+    <div>
+      <Button onClick={() => signOut()}>Logout</Button>
+    </div>
+  );
 }
 
 Dashboard.getLayout = (page) => {
