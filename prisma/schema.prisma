@@ -16,7 +16,6 @@ model User {
   username        String?
   image           String?
   custom_id       String?
-  from            String?
   group           String?
   employee_number String?
   birthdate       DateTime  @db.Date
