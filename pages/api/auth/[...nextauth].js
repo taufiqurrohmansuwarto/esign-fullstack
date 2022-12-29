@@ -19,7 +19,7 @@ export default NextAuth({
   providers: [
     {
       name: "SIMASTER",
-      id: "master",
+      id: "esign",
       type: "oauth",
       wellKnown: masterWellKnown,
       clientId: masterClientId,
