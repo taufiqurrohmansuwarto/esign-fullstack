@@ -24,7 +24,7 @@ const documentUpload = async (req, res) => {
 
       const document = await prisma.document.create({
         data: {
-          filename: uploadFilename,
+          filename: title || uploadFilename,
           original_filename: file.originalname,
           size: file.size,
           type: file.mimetype,
