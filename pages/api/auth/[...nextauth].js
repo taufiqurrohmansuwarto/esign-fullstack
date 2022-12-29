@@ -6,6 +6,16 @@ const masterWellKnown = process.env.MASTER_WELLKNOWN;
 const masterScope = process.env.MASTER_SCOPE;
 
 export default NextAuth({
+  callbacks: {
+    redirect: async (url, baseUrl) => {
+      const urlCallback = `${url?.baseUrl}${process.env.BASE_PATH}`;
+      return urlCallback;
+    },
+  },
+  secret: process.env.NEXAUTH_SECRET,
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+  },
   providers: [
     {
       name: "SIMASTER",
@@ -20,14 +30,8 @@ export default NextAuth({
           prompt: "login",
         },
       },
-      httpOptions: {
-        timeout: 40000,
-      },
       idToken: true,
       checks: ["pkce", "state"],
-      profile: async (profile) => {
-        return profile;
-      },
     },
   ],
 });
