@@ -1,5 +1,3 @@
-import UserLayout from "@/components/UserLayout";
-import { Typography } from "antd";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
