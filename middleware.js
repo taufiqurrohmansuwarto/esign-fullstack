@@ -1,18 +1,18 @@
 import { withAuth } from "next-auth/middleware";
 
-export default withAuth({
-  callbacks: {
-    authorized({ req, token }) {
-      if (req?.nextUrl?.pathname === "/admin") {
-        return token?.userRole === "admin";
-      }
-
-      //   cek kalau selalu ada token
-      return !!token;
-    },
+export default withAuth(
+  function middleware(req) {
+    console.log("test");
   },
-});
+  {
+    callbacks: {
+      authorized({ req, token }) {
+        return !!token;
+      },
+    },
+  }
+);
 
 export const config = {
-  matcher: ["/admin", "/testing"],
+  matcher: ["/testing"],
 };

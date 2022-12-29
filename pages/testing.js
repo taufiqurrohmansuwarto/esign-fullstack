@@ -1,7 +1,9 @@
-import React from "react";
+const Testing = () => {
+  return (
+    <div>
+      <h1>Testing</h1>
+    </div>
+  );
+};
 
-function testing() {
-  return <div>testing</div>;
-}
-
-export default testing;
+export default Testing;

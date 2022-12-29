@@ -9,15 +9,23 @@ import {
 } from "@tanstack/react-query";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 
-const Auth = ({ children }) => {
+const Auth = ({ children, group }) => {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated: () => signIn(),
   });
 
-  if (status === "loading") return null;
+  if (status === "loading") {
+    return <div>loading...</div>;
+  } else {
+    const { user } = session;
 
-  return children;
+    if (user.group === group) {
+      return children;
+    } else {
+      return <div>Not authorized to access this resource</div>;
+    }
+  }
 };
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
@@ -30,13 +38,10 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       session={session}
       baseUrl="/esign"
       basePath="/esign/api/auth"
-      refetchOnWindowFocus
     >
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydrateState}>
-          <SessionProvider>
-            {getLayout(<Component {...pageProps} />)}
-          </SessionProvider>
+          {getLayout(<Component {...pageProps} />)}
         </Hydrate>
       </QueryClientProvider>
     </SessionProvider>

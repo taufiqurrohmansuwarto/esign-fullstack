@@ -4,7 +4,7 @@ import { signIn, getProviders } from "next-auth/react";
 const SignInPages = ({ providers }) => {
   return (
     <>
-      {Object.values(providers).map((provider) => (
+      {Object?.values(providers).map((provider) => (
         <div key={provider?.name}>
           <Button onClick={() => signIn(provider?.id)}>
             Masuk menggunakan {provider?.name}
@@ -17,6 +17,7 @@ const SignInPages = ({ providers }) => {
 
 export async function getServerSideProps() {
   const providers = await getProviders();
+  console.log({ providers });
 
   return {
     props: {
