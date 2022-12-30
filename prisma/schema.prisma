@@ -29,14 +29,15 @@ model User {
   status_tte         String?
   status_message_tte String?
 
-  createdat    DateTime?      @default(now())
-  updatedat    DateTime?      @updatedAt
-  documents    Document[]
-  histories    History[]
-  Discussions  Disuccsion[]
-  Notification Notification[]
-  Otp          Otp[]
-  Recipient    Recipient[]
+  createdat     DateTime?      @default(now())
+  updatedat     DateTime?      @updatedAt
+  documents     Document[]
+  histories     History[]
+  Discussions   Disuccsion[]
+  Notification  Notification[]
+  Otp           Otp[]
+  RecipientUser Recipient[]    @relation("RecipientUser")
+  RejectedUser  Recipient[]    @relation("RejectedUser")
 }
 
 model Document {
@@ -63,6 +64,33 @@ model Document {
   Discussions       Disuccsion[]
   Notification      Notification[]
   Recipient         Recipient[]
+}
+
+model Recipient {
+  id             String    @id @default(cuid())
+  document_id    String?
+  document       Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  recipient_id   String?
+  recipient_json Json?
+  recipient_user User?     @relation(name: "RecipientUser", fields: [recipient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  sign_properties  Json?
+  sequence         Int?      @default(0)
+  role             String?
+  signatory_status String?
+  is_owner         Boolean?  @default(false)
+  approval_date    DateTime?
+  rejected_json    Json?
+  rejected_id      String?
+  rejected_user    User?     @relation(name: "RejectedUser", fields: [rejected_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  reason          String?
+  rejected_reason String?
+  uploader_id     String?
+
+  rejected_at DateTime?
+  created_at  DateTime? @default(now())
+  updated_at  DateTime? @updatedAt
 }
 
 model History {
@@ -118,25 +146,4 @@ model Otp {
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
   user       User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-}
-
-model Recipient {
-  id               String    @id @default(cuid())
-  document_id      String?
-  user_id          String?
-  document_title   String?
-  reason           String?
-  sign_pages       String?
-  total_sign       Int?
-  sign_coordinate  Json?
-  sequence         Int?
-  role             String?
-  signatory_status String?
-  is_approve       Boolean?  @default(false)
-  is_owner         Boolean?  @default(false)
-  status           String?
-  created_at       DateTime? @default(now())
-  updated_at       DateTime? @updatedAt
-  user             User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  document         Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
