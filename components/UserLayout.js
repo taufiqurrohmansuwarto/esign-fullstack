@@ -37,26 +37,29 @@ function getItem(label, key, icon, children) {
 const UploadModal = ({ open, onCancel }) => {
   const router = useRouter();
 
-  const handleClick = (id) => {
-    router.push(`/user/documents/${id}`);
+  const handleClick = (route) => {
+    router.push(route);
   };
 
   const listButton = [
     {
       id: "selfSign",
       title: "Self Sign",
+      route: "/user/upload/self-sign/upload",
       helpText:
         "Sign document. You can store, download and send it through email, cloud storage, or other means.",
     },
     {
       id: "signAndRequest",
       title: "Sign and Request",
+      route: "/user/upload/sign-and-request/upload",
       helpText:
         "Sign document and request others to sign it. You can store, download and send it through email, cloud storage, or other means.",
     },
     {
       id: "requestFromOthers",
       title: "Request from others",
+      route: "/user/upload/request-from-others/upload",
       helpText:
         "Request others to sign document. You can store, download and send it through email, cloud storage, or other means.",
     },
@@ -76,7 +79,7 @@ const UploadModal = ({ open, onCancel }) => {
             <Button
               type="primary"
               onClick={() => {
-                handleClick(item.id);
+                handleClick(item.route);
               }}
             >
               {item.title}

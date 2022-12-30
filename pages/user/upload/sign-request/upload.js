@@ -1,7 +1,7 @@
 import React from "react";
 
-function Upload() {
+function SignAndRequest() {
   return <div>upload</div>;
 }
 
-export default upload;
+export default SignAndRequest;

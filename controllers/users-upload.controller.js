@@ -3,10 +3,46 @@ const { default: prisma } = require("lib/prisma");
 const { uploadFile } = require("lib/utils");
 const { nanoid } = require("nanoid");
 
+const selfSignUploadController = async (req, res) => {
+  try {
+    const { user, file } = req;
+    const { title, worflow } = req?.body;
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+const requestFromOthersController = async (req, res) => {
+  try {
+    const { user, file } = req;
+    const { title, worflow } = req?.body;
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+const signAndRequestController = async (req, res) => {
+  try {
+    const { user, file } = req;
+    const { title, worflow } = req?.body;
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
 const documentUpload = async (req, res) => {
   try {
     const { file } = req;
-    const { title } = req?.body;
+    const { title, workflow } = req?.body;
 
     const fileType = file.mimetype;
     const fileSize = file.size;
@@ -19,6 +55,8 @@ const documentUpload = async (req, res) => {
         message: "File type must be .pdf and file size must be at least 10 mb",
       });
     } else {
+      // workflow must be selfSign, requestFromOthers, and signAndRequest
+
       const uploadFilename = `${nanoid()}_${file.originalname}`;
       const minio = req.mc;
 
