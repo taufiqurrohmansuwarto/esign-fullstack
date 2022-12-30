@@ -24,7 +24,7 @@ export default NextAuth({
       session.user.organization_id = token?.organization_id;
       session.user.name = token?.username;
       session.user.nik = token?.nik;
-      session.user.current_role = token?.current_role;
+      session.user.current_role = token?.role;
 
       const check = Date.now() < new Date(token?.expires * 1000);
 

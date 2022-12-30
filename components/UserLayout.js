@@ -10,11 +10,12 @@ import {
   AutoComplete,
   Avatar,
   Button,
+  Col,
   Dropdown,
-  Input,
   Layout,
   Menu,
   Modal,
+  Row,
   Space,
   theme,
   Tooltip,
@@ -90,15 +91,7 @@ const UploadModal = ({ open, onCancel }) => {
 const drawItems = [
   {
     key: "1",
-    label: (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.antgroup.com"
-      >
-        Keluar
-      </a>
-    ),
+    label: "Keluar",
     danger: true,
     icon: <LogoutOutlined />,
   },
@@ -106,7 +99,7 @@ const drawItems = [
 
 const items = [
   getItem("Dashboard", "/user/dashboard", <DashboardOutlined />),
-  getItem("Documents", "/user/documents/all", <FileOutlined />, [
+  getItem("Documents", "/user/documents", <FileOutlined />, [
     getItem("All Documents", "/user/documents/all"),
     getItem("Draft", "/user/documents/draft"),
     getItem("Pending", "/user/documents/pending"),
@@ -193,13 +186,20 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             background: colorBgContainer,
           }}
         >
-          <AutoComplete style={{ width: 300 }} placeholder="Search Document" />
-          <Dropdown menu={{ items: drawItems }} placement="bottom" arrow>
-            <Space align="center">
-              <Typography.Text>IPUT TAUFIQURROHMAN SUWARTO</Typography.Text>
-              <Avatar />
-            </Space>
-          </Dropdown>
+          <Row>
+            <Col offset={16}>
+              <AutoComplete
+                style={{ width: 300 }}
+                placeholder="Search Document"
+              />
+              <Dropdown menu={{ items: drawItems }} placement="bottom" arrow>
+                <Space align="center">
+                  <Typography.Text>IPUT TAUFIQURROHMAN SUWARTO</Typography.Text>
+                  <Avatar />
+                </Space>
+              </Dropdown>
+            </Col>
+          </Row>
         </Header>
         <Content
           style={{

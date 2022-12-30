@@ -1,8 +1,9 @@
 import { createRouter } from "next-connect";
-import { index } from "../../../controllers/users.controller";
+import { index } from "@/controllers/users.controller";
+import auth from "@/middlewares/auth.middleware";
 
 const router = createRouter();
 
-router.get(index);
+router.use(auth()).get(index);
 
 export default router.handler();

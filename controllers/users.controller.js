@@ -1,10 +1,21 @@
-const { default: prisma } = require("../lib/prisma");
+const { checkNik } = require("services/bsre/bsre.user.service");
 
 const index = async (req, res) => {
   try {
-    const user = await prisma.user.findMany();
-    res.status(200).json(user);
+    const { user } = req;
+    const { nik } = user;
+
+    const currentCheckNik = await checkNik(nik);
+    const resultCheckNik = currentCheckNik?.data;
+
+    const currentUserResult = {
+      ...user,
+      ...resultCheckNik,
+    };
+
+    res.status(200).json(currentUserResult);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };

@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-query";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 
-const Auth = ({ children, group }) => {
+const Auth = ({ children, role }) => {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated: () => signIn(),
@@ -20,7 +20,7 @@ const Auth = ({ children, group }) => {
   } else {
     const { user } = session;
 
-    if (user.group === group) {
+    if (user?.current_role === role) {
       return children;
     } else {
       return <div>Not authorized to access this resource</div>;
@@ -41,7 +41,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     >
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydrateState}>
-          {getLayout(<Component {...pageProps} />)}
+          {Component.Auth ? (
+            <Auth role={Component?.Auth?.role}>
+              {getLayout(<Component {...pageProps} />)}
+            </Auth>
+          ) : (
+            <Component {...pageProps} />
+          )}
         </Hydrate>
       </QueryClientProvider>
     </SessionProvider>

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "/api/users";
+const baseURL = "/esign/api/user";
 
 const fetcher = axios.create({
   baseURL,
@@ -8,4 +8,8 @@ const fetcher = axios.create({
 
 export const check = () => {
   return fetcher.get("/check");
+};
+
+export const detailUser = () => {
+  return fetcher.get("/").then((res) => res?.data);
 };
