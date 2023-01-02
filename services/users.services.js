@@ -1,3 +1,5 @@
+// ini digunakan pada client menggunakan react-query
+
 import axios from "axios";
 
 const baseURL = "/esign/api/user";
@@ -12,4 +14,12 @@ export const check = () => {
 
 export const detailUser = () => {
   return fetcher.get("/").then((res) => res?.data);
+};
+
+export const stamps = () => {
+  return fetcher.get("/stamps").then((res) => res?.data);
+};
+
+export const stampByEmployeeNumber = (employeeNumber) => {
+  return fetcher.get(`/stamps/${employeeNumber}`).then((res) => res?.data);
 };

@@ -4,7 +4,8 @@
     "paths": {
       "@/components/*": ["components/*"],
       "@/controllers/*": ["controllers/*"],
-      "@/middlewares/*": ["middlewares/*"]
+      "@/middlewares/*": ["middlewares/*"],
+      "@/services/*": ["services/*"]
     }
   }
 }
