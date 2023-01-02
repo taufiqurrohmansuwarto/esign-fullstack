@@ -1,26 +1,33 @@
 const { default: prisma } = require("lib/prisma");
+const { createStamp } = require("lib/utils");
 
 const index = async (req, res) => {
   try {
     // nip golongan pangkat
-    const { user } = req;
+    const { user, fetcher } = req;
     const { id } = user;
 
     const result = await prisma.User.findUnique({
-      id,
+      where: {
+        id,
+      },
     });
 
-    const { employeeNumber, golongan, pangkat } = result;
+    const { employee_number, golongan, pangkat } = result;
 
-    const empty = !employeeNumber || !golongan || !pangkat;
+    const hasil = await fetcher.get(`/master/pegawai/${employee_number}`);
+    const employeeData = hasil?.data;
 
-    if (empty) {
-      res
-        .status(400)
-        .json({ code: 400, message: "NIP/Golongan/Pangkat tidak diisi" });
-    } else {
-      // create barcode
-    }
+    const currentData = {
+      nama: employeeData?.nama,
+      nip: employeeData?.nip,
+      golonganPangkat: `${employeeData?.golongan}-${employeeData?.pangkat}`,
+    };
+
+    const resultBuffer = await createStamp(currentData);
+    const base64Image = resultBuffer.toString("base64");
+
+    res.json({ base64Image });
   } catch (error) {
     console.log(error);
     res.status(500).json({ code: 500, message: "Internal Server Error" });

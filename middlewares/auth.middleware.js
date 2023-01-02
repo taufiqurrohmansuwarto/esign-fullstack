@@ -30,10 +30,11 @@ const auth =
       } else {
         const session = await getSession({ req });
         if (session) {
+          const token = session?.accessToken;
           const fetcher = axios.create({
             baseURL: process.env.API_GATEWAY,
             headers: {
-              Authorization: `Bearer ${session?.accessToken}`,
+              Authorization: `Bearer ${token}`,
             },
           });
           req.mc = mc;
