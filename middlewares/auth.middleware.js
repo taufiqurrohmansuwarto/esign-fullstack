@@ -1,7 +1,7 @@
 const Minio = require("minio");
 
 import { getSession } from "next-auth/react";
-import { options } from "pages/api/auth/[...nextauth]";
+import axios from "axios";
 
 const port = process.env.MINIO_PORT;
 const endPoint = process.env.MINIO_ENDPOINT;
@@ -30,8 +30,16 @@ const auth =
       } else {
         const session = await getSession({ req });
         if (session) {
+          const fetcher = axios.create({
+            baseURL: process.env.API_GATEWAY,
+            headers: {
+              Authorization: `Bearer ${session?.accessToken}`,
+            },
+          });
           req.mc = mc;
           req.user = session?.user;
+          req.fetcher = fetcher;
+
           next();
         } else {
           // sending with header 401
