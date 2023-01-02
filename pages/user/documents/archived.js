@@ -8,4 +8,8 @@ Archived.getLayout = (page) => {
   return <UserLayout active="/user/settings">{page}</UserLayout>;
 };
 
+Archived.Auth = {
+  role: "USER",
+};
+
 export default Archived;

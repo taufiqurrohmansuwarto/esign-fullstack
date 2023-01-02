@@ -8,4 +8,8 @@ Rejected.getLayout = (page) => {
   return <UserLayout active="/user/settings">{page}</UserLayout>;
 };
 
+Rejected.Auth = {
+  role: "USER",
+};
+
 export default Rejected;

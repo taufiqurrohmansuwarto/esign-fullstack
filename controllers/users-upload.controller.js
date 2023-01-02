@@ -6,7 +6,78 @@ const { nanoid } = require("nanoid");
 const selfSignUploadController = async (req, res) => {
   try {
     const { user, file } = req;
-    const { title, worflow } = req?.body;
+    const { title, workflow } = req?.body;
+
+    // check file format result is .pdf
+
+    // tentukan filename
+    const currentFilename = title
+      ? `${nanoid()}_${title}.pdf`
+      : `${nanoid()}_${file?.originalname}`;
+
+    // siapkan data pada database
+    const dataDocument = {
+      original_filename: file?.originalname,
+      type: file?.mimetype,
+      status: "draft",
+      filename: currentFilename,
+      workflow,
+      size: file?.size,
+      initial_document: file?.filename,
+      upload_date: new Date(),
+      created_at: new Date(),
+      user_id: user?.id,
+      initial_document: currentFilename,
+    };
+
+    // ini di insert dulu untuk mendapatkan document id kemudian kita ubah filenamnye sesuai document id
+    const result = await prisma.Document.create({
+      data: dataDocument,
+    });
+
+    // print footer
+    const resultFooter = await footer({
+      file,
+      documentId: result?.id,
+    });
+
+    const { pdfBuffer, totalPage } = resultFooter;
+
+    // upload to s3
+    await uploadFile({
+      fileBuffer: pdfBuffer,
+      filename: currentFilename,
+      minio: req?.mc,
+    });
+
+    // dan update untuk document pages
+    await prisma.Document.update({
+      where: {
+        id: result?.id,
+      },
+      data: {
+        document_pages: totalPage,
+      },
+    });
+
+    // now upsert to recipients
+    const dataRecipient = {
+      recipient_id: user?.id,
+      document_id: result?.id,
+      created_at: new Date(),
+      sequence: 0,
+      role: "signer",
+      signatory_status: "pending",
+      is_owner: true,
+      uploader_id: user?.id,
+      status: "draft",
+    };
+
+    await prisma.Recipient.create({
+      data: dataRecipient,
+    });
+
+    res.json({ code: 200, message: "ok" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -99,4 +170,5 @@ const documentUpload = async (req, res) => {
 
 module.exports = {
   documentUpload,
+  selfSignUploadController,
 };

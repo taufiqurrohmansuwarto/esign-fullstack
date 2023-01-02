@@ -8,4 +8,8 @@ Signatures.getLayout = (page) => {
   return <UserLayout active="/user/settings">{page}</UserLayout>;
 };
 
+Signatures.Auth = {
+  role: "USER",
+};
+
 export default Signatures;

@@ -1,5 +1,6 @@
 import "antd/dist/reset.css";
 import "../styles/global.css";
+import id from "antd/locale/id_ID";
 
 import { useState } from "react";
 import {
@@ -8,6 +9,7 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
+import { ConfigProvider } from "antd";
 
 const Auth = ({ children, role }) => {
   const { data: session, status } = useSession({
@@ -39,17 +41,19 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       baseUrl="/esign"
       basePath="/esign/api/auth"
     >
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydrateState}>
-          {Component.Auth ? (
-            <Auth role={Component?.Auth?.role}>
-              {getLayout(<Component {...pageProps} />)}
-            </Auth>
-          ) : (
-            <Component {...pageProps} />
-          )}
-        </Hydrate>
-      </QueryClientProvider>
+      <ConfigProvider locale={id}>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydrateState}>
+            {Component.Auth ? (
+              <Auth role={Component?.Auth?.role}>
+                {getLayout(<Component {...pageProps} />)}
+              </Auth>
+            ) : (
+              <Component {...pageProps} />
+            )}
+          </Hydrate>
+        </QueryClientProvider>
+      </ConfigProvider>
     </SessionProvider>
   );
 }
