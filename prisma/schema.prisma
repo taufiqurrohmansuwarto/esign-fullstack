@@ -28,6 +28,8 @@ model User {
   status_code_tte    String?
   status_tte         String?
   status_message_tte String?
+  golongan           String?
+  pangkat            String?
 
   createdat     DateTime?      @default(now())
   updatedat     DateTime?      @updatedAt
@@ -50,14 +52,13 @@ model Document {
   initial_document  String?
   document_pages    Int?
   user_id           String?
-  user              User?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  uploader          User?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   type              String?
   sign_document     String?
   ongoing_document  String?
   upload_date       DateTime?      @default(now())
   can_discuss       Boolean?       @default(false)
   expired_at        DateTime?
-  url_file          String?
   histories         History[]
   created_at        DateTime?      @default(now())
   updated_at        DateTime?      @updatedAt
