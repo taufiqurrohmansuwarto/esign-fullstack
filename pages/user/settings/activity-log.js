@@ -8,4 +8,8 @@ ActivityLog.getLayout = (page) => {
   return <UserLayout active="/user/settings">{page}</UserLayout>;
 };
 
+ActivityLog.Auth = {
+  role: "USER",
+};
+
 export default ActivityLog;

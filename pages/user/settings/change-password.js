@@ -8,4 +8,8 @@ ChangePassword.getLayout = (page) => {
   return <UserLayout active="/user/settings">{page}</UserLayout>;
 };
 
+ChangePassword.Auth = {
+  role: "USER",
+};
+
 export default ChangePassword;

@@ -8,4 +8,8 @@ Expired.getLayout = (page) => {
   return <UserLayout active="/user/settings">{page}</UserLayout>;
 };
 
+Expired.Auth = {
+  role: "USER",
+};
+
 export default Expired;

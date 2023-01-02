@@ -8,4 +8,8 @@ Pending.getLayout = (page) => {
   return <UserLayout active="/user/settings">{page}</UserLayout>;
 };
 
+Pending.Auth = {
+  role: "USER",
+};
+
 export default Pending;
