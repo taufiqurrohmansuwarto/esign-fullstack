@@ -68,8 +68,9 @@ export default NextAuth({
       },
       idToken: true,
       checks: ["pkce", "state"],
-      profile: async (profile) => {
+      profile: async (profile, tokens) => {
         try {
+          const accessToken = tokens?.access_token;
           const currentUser = {
             id: profile?.sub,
             email: profile?.email,
@@ -82,7 +83,7 @@ export default NextAuth({
             employee_number: profile?.employee_number,
           };
 
-          await upsertUserAttr(currentUser.id, currentUser);
+          await upsertUserAttr(currentUser.id, currentUser, accessToken);
           return currentUser;
         } catch (error) {
           console.log(error);

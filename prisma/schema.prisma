@@ -30,6 +30,7 @@ model User {
   status_message_tte String?
   golongan           String?
   pangkat            String?
+  user_info          Json?
 
   createdat     DateTime?      @default(now())
   updatedat     DateTime?      @updatedAt

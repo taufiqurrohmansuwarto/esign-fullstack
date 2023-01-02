@@ -31,6 +31,18 @@ const index = async (req, res) => {
   }
 };
 
+// delete dapat digunakan untuk menghapus dokumen hanya pada status draft dan dia juga sebagai uploader
+const remove = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
 module.exports = {
   index,
+  remove,
 };
