@@ -20,7 +20,7 @@ const selfSignUploadController = async (req, res) => {
       original_filename: file?.originalname,
       type: file?.mimetype,
       status: "draft",
-      filename: currentFilename,
+      filename: title ? `${title}.pdf` : file?.originalname,
       workflow,
       size: file?.size,
       initial_document: file?.filename,
@@ -76,6 +76,8 @@ const selfSignUploadController = async (req, res) => {
     await prisma.Recipient.create({
       data: dataRecipient,
     });
+
+    // todo buat riwayat
 
     res.json({ code: 200, message: "ok" });
   } catch (error) {
