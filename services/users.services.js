@@ -16,10 +16,10 @@ export const detailUser = () => {
   return fetcher.get("/").then((res) => res?.data);
 };
 
-export const stamps = () => {
+export const stampInfo = () => {
   return fetcher.get("/stamps").then((res) => res?.data);
 };
 
-export const stampByEmployeeNumber = (employeeNumber) => {
+export const stampInfoByEmployeeNumber = (employeeNumber) => {
   return fetcher.get(`/stamps/${employeeNumber}`).then((res) => res?.data);
 };

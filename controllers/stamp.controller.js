@@ -24,14 +24,13 @@ const index = async (req, res) => {
       },
     });
 
-    const { employee_number } = result;
-    const employee = await biodataPegawai(fetcher, employee_number);
-    const currentData = serializeAttr(employee);
-
+    const { user_info } = result;
+    const currentData = serializeAttr(user_info);
     const resultBuffer = await createStamp(currentData);
     const base64Image = resultBuffer.toString("base64");
+    const data = { userInfo: user_info, image: base64Image };
 
-    res.json({ base64Image });
+    res.json(data);
   } catch (error) {
     console.log(error);
     res.status(500).json({ code: 500, message: "Internal Server Error" });
@@ -44,10 +43,16 @@ const get = async (req, res) => {
     const { employeeNumber } = req?.query;
     const { fetcher } = req;
     const employee = await biodataPegawai(fetcher, employeeNumber);
-    const currentData = serializeAttr(employee);
-    const resultBuffer = await createStamp(currentData);
-    const base64Image = resultBuffer.toString("base64");
-    res.json({ base64Image });
+
+    // if empty object
+    if (Object.keys(employee).length === 0) {
+      res.json(null);
+    } else {
+      const currentData = serializeAttr(employee);
+      const resultBuffer = await createStamp(currentData);
+      const base64Image = resultBuffer.toString("base64");
+      res.json({ image: base64Image, userInfo: employee });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ code: 500, message: "Internal Server Error" });
