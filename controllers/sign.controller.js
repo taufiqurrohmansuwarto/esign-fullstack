@@ -36,7 +36,9 @@ const confirmSelfSign = async (req, res) => {
           "document not valid (not found or not draft or not self sign or not your document))",
       });
     } else {
+      // maybe check
       const { body } = req;
+
       const properties = body?.properties || [];
 
       const initialDocument = currentDocument?.initial_document;
