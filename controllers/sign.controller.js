@@ -1,42 +1,56 @@
 const { default: prisma } = require("lib/prisma");
+const { downloadFileSelFSign } = require("lib/utils");
 
 const confirmSelfSign = async (req, res) => {
   try {
     const { documentId } = req?.query;
-    const { user } = req;
+    const { user, mc: minio } = req;
     const userId = user?.id;
 
     // ga dibuat middleware karena hanya dipakai disini, dan karena ini self sign maka ngeceknya berdasarkan uploader,id_document dan statusnya masih draft
-    const currentDocument = await prisma.Document.findUnique({
+    const currentDocument = await prisma.Document.findFirst({
       where: {
         id: documentId,
-        userId: userId,
+        user_id: userId,
       },
       include: {
         Recipient: true,
       },
     });
 
+    const currentUser = await prisma.User.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
     const documentValid =
       currentDocument?.status === "draft" &&
-      currentDocument?.userId === userId &&
-      currentDocument?.workflow === "self_sign";
+      currentDocument?.user_id === userId &&
+      currentDocument?.workflow === "selfSign";
 
     if (!documentValid) {
       return res.status(404).json({
         code: 404,
         message:
-          "document status is not draft or document workflow is not self_sign",
+          "document not valid (not found or not draft or not self sign or not your document))",
       });
     } else {
-      // berikan parameter dari req.body ke variable
-      // cetak stempel
-      // upload ke s3
-      // simpan ke database
-      // todo : buat history
-
       const { body } = req;
       const properties = body?.properties || [];
+
+      const initialDocument = currentDocument?.initial_document;
+
+      const hasil = await downloadFileSelFSign({
+        minio,
+        initialDocument,
+        signCoordinates: properties,
+        userInfo: currentUser?.user_info,
+      });
+
+      res.json({ hasil });
+
+      // x,y,width, and height
     }
   } catch (error) {
     console.log(error);

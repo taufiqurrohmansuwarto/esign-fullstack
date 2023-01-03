@@ -14,7 +14,11 @@ module.exports.downloadSignedDokumen = (id) => {
 
 // service untuk signing dokumen pdf
 module.exports.signPdf = (data) => {
-  return bsreFetcher.post(`${BASE_PATH}/pdf`, data);
+  return bsreFetcher.post(`${BASE_PATH}/pdf`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 // verifikasi dokumen yang telah ditandatangani
