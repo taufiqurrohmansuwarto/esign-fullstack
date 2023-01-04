@@ -1,43 +1,10 @@
-import { signPdf } from "@/services/bsre/bsre.sign.service";
-import axios from "axios";
-import { PDFDocument } from "pdf-lib";
-const FormData = require("form-data");
+const { createCanvas, loadImage, registerFont } = require("canvas");
 const { nanoid } = require("nanoid");
-
-const { createCanvas, Image, registerFont, loadImage } = require("canvas");
 const fs = require("fs");
 const path = require("path");
-// info signer untuk pengecekan dokumen
-const infoSigner = (data) => {
-  const [information] = data?.details;
-  const { info_signer } = information;
+import { PDFDocument } from "pdf-lib";
+import axios from "axios";
 
-  return {
-    signer_name: info_signer?.signer_name,
-    jumlah_signature: data?.jumlah_signature,
-    nama_dokumen: data?.nama_dokumen,
-  };
-};
-
-const uploadFile = ({ minio, filename, fileBuffer }) => {
-  return new Promise((resolve, reject) => {
-    minio.putObject(
-      "storage",
-      `/esign/${filename}`,
-      fileBuffer,
-      fileBuffer.length,
-      "application/pdf",
-      (err, etag) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(etag);
-      }
-    );
-  });
-};
-
-// preview document with minio
 const downloadFile = async ({ minio, filename }) => {
   return new Promise((resolve, reject) => {
     minio.presignedGetObject(
@@ -109,42 +76,6 @@ const createStamp = async (data) => {
   return canvas.toBuffer();
 };
 
-const downloadFileSelFSign = async ({
-  initialDocument,
-  filename,
-  properties,
-  minio,
-  userInfo,
-  passphrase,
-}) => {
-  try {
-    const presignedUrl = await downloadFile({
-      minio,
-      filename: initialDocument,
-    });
-    const stampBuffer = await createStamp(userInfo);
-
-    const { data: fileBuffer } = await axios.get(presignedUrl, {
-      responseType: "arraybuffer",
-    });
-
-    const dataStamp = {
-      fileBuffer,
-      stampBuffer,
-      filename,
-      properties,
-      passphrase,
-      nik: userInfo.nik,
-    };
-
-    const result = await createStampSelfSign(dataStamp);
-
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const createStampSelfSign = async ({
   properties,
   filename,
@@ -199,47 +130,50 @@ const createStampSelfSign = async ({
     };
 
     return data;
-
-    // upload to esign server
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 
-const signDocumentWithoutStamp = async ({
-  fileBuffer,
-  nik,
-  filename,
-  passphrase,
-}) => {
+const downloadAndStamp = async (req, res, next) => {
   try {
-    const form = new FormData();
+    const {
+      mc: minio,
+      document: { initialDocument, filename, properties, userInfo, passphrase },
+    } = req;
 
-    form.append("file", fileBuffer, filename);
-    form.append("nik", nik);
-    form.append("passphrase", passphrase);
-    form.append("tampilan", "invisible");
-    form.append("image", "true");
-    form.append("jenis_response", "BASE64");
-
-    const data = await signPdf(form, {
-      headers: form.getHeaders(),
+    const presignedUrl = await downloadFile({
+      minio,
+      filename: initialDocument,
     });
 
-    const result = data?.base64_file;
-    const currentBufferFile = Buffer.from(result, "base64");
+    const stampBuffer = await createStamp(userInfo);
 
-    return currentBufferFile;
+    const { data: fileBuffer } = await axios.get(presignedUrl, {
+      responseType: "arraybuffer",
+    });
+
+    const dataStamp = {
+      fileBuffer,
+      stampBuffer,
+      filename,
+      properties,
+      passphrase,
+      nik: userInfo.nik,
+    };
+
+    const data = await createStampSelfSign(dataStamp);
+    req.edited_document = data;
+    next();
   } catch (error) {
-    console.log(error);
+    res.status(500).json({
+      code: 500,
+      message: error.message,
+      data: null,
+    });
   }
 };
 
 module.exports = {
-  infoSigner,
-  uploadFile,
-  downloadFile,
-  createStamp,
-  downloadFileSelFSign,
-  createStampSelfSign,
+  downloadAndStamp,
 };

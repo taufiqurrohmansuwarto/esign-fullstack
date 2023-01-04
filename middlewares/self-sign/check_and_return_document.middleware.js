@@ -1,10 +1,9 @@
 const { default: prisma } = require("lib/prisma");
-const { downloadFileSelFSign } = require("lib/utils");
 
-const confirmSelfSign = async (req, res) => {
+const CheckAndReturnMiddleware = async (req, res, next) => {
   try {
     const { documentId } = req?.query;
-    const { user, mc: minio } = req;
+    const { user } = req;
     const userId = user?.id;
 
     // penting
@@ -33,7 +32,7 @@ const confirmSelfSign = async (req, res) => {
       currentDocument?.workflow === "selfSign";
 
     if (!documentValid) {
-      return res.status(404).json({
+      res.status(404).json({
         code: 404,
         message:
           "document not valid (not found or not draft or not self sign or not your document))",
@@ -44,25 +43,21 @@ const confirmSelfSign = async (req, res) => {
       const userInfo = currentUser?.user_info;
       const filename = currentDocument?.filename;
 
-      const hasil = await downloadFileSelFSign({
-        minio,
-        filename,
+      req.document = {
         initialDocument,
-        properties,
         userInfo,
+        filename,
         passphrase,
-      });
+        properties,
+      };
 
-      res.json({ hasil });
-
-      // x,y,width, and height
+      next();
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ code: 500, message: "Internal Server Error" });
+    next(error);
   }
 };
 
 module.exports = {
-  confirmSelfSign,
+  CheckAndReturnMiddleware,
 };

@@ -60,6 +60,7 @@ model Document {
   upload_date       DateTime?      @default(now())
   can_discuss       Boolean?       @default(false)
   expired_at        DateTime?
+  document_id_bsre  String?
   histories         History[]
   created_at        DateTime?      @default(now())
   updated_at        DateTime?      @updatedAt

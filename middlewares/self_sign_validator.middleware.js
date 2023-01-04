@@ -8,16 +8,16 @@ const validator = [
     .withMessage("properties must be array")
     .notEmpty()
     .withMessage("properties must not be empty"),
-  body("properties.*.x")
+  body("properties.*.xPos")
     .isNumeric()
-    .withMessage("x must be number")
+    .withMessage("xPos must be number")
     .notEmpty()
-    .withMessage("x must not be empty"),
-  body("properties.*.y")
+    .withMessage("xPos must not be empty"),
+  body("properties.*.yPos")
     .isNumeric()
-    .withMessage("y must be number")
+    .withMessage("yPos must be number")
     .notEmpty()
-    .withMessage("y must not be empty"),
+    .withMessage("yPos must not be empty"),
   body("properties.*.width")
     .isNumeric()
     .withMessage("width must be number")
