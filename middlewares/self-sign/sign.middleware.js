@@ -1,5 +1,6 @@
 const { signPdf } = require("@/services/bsre/bsre.sign.service");
 const FormData = require("form-data");
+import prisma from "@/lib/prisma";
 import { uploadFile } from "@/lib/utils";
 
 const signMiddleware = async (req, res, next) => {
@@ -30,6 +31,29 @@ const signMiddleware = async (req, res, next) => {
       minio: req.mc,
       filename,
       fileBuffer: currentBufferFile,
+    });
+
+    await prisma.Document.update({
+      where: {
+        id: req?.query?.documentId,
+      },
+      data: {
+        status: "completed",
+        sign_document: filename,
+        document_id_bsre: resultBsre?.id_dokumen,
+      },
+    });
+
+    await prisma.Recipient.updateMany({
+      where: {
+        document_id: req?.query?.documentId,
+      },
+      data: {
+        signatory_status: "completed",
+        status: "completed",
+        sign_properties: req?.body?.properties,
+        approval_date: new Date(),
+      },
     });
 
     req.signDocument = {
