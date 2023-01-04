@@ -7,6 +7,9 @@ const confirmSelfSign = async (req, res) => {
     const { user, mc: minio } = req;
     const userId = user?.id;
 
+    // penting
+    const { passphrase, properties } = req?.body;
+
     // ga dibuat middleware karena hanya dipakai disini, dan karena ini self sign maka ngeceknya berdasarkan uploader,id_document dan statusnya masih draft
     const currentDocument = await prisma.Document.findFirst({
       where: {
@@ -37,17 +40,16 @@ const confirmSelfSign = async (req, res) => {
       });
     } else {
       // maybe check
-      const { body } = req;
-
-      const properties = body?.properties || [];
-
       const initialDocument = currentDocument?.initial_document;
+      const userInfo = currentUser?.user_info;
 
       const hasil = await downloadFileSelFSign({
         minio,
+        filename,
         initialDocument,
-        signCoordinates: properties,
-        userInfo: currentUser?.user_info,
+        properties,
+        userInfo,
+        passphrase,
       });
 
       res.json({ hasil });
