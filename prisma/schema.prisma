@@ -70,14 +70,16 @@ model Document {
 }
 
 model Recipient {
-  id             String    @id @default(cuid())
-  document_id    String?
-  document       Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id            String    @id @default(cuid())
+  document_id   String?
+  document      Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  filename String?
+
   recipient_id   String?
   recipient_json Json?
   // status dari dokumen jadi ndak perlu ke documen table
   status         String?
-  recipient_user User?     @relation(name: "RecipientUser", fields: [recipient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  recipient_user User?   @relation(name: "RecipientUser", fields: [recipient_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   sign_properties  Json?
   sequence         Int?      @default(0)
