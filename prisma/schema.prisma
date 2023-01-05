@@ -94,7 +94,6 @@ model Recipient {
 
   reason          String?
   rejected_reason String?
-  uploader_id     String?
 
   rejected_at DateTime?
   created_at  DateTime? @default(now())
