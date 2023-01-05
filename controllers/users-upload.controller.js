@@ -1,3 +1,8 @@
+const {
+  changeFilenamePdf,
+  documentData,
+  firstRecipientRequestFromOthers,
+} = require("@/lib/document-modifiers");
 const footer = require("lib/document-footer");
 const { default: prisma } = require("lib/prisma");
 const { uploadFile } = require("lib/utils");
@@ -23,7 +28,6 @@ const selfSignUploadController = async (req, res) => {
       filename: title ? `${title}.pdf` : file?.originalname,
       workflow,
       size: file?.size,
-      initial_document: file?.filename,
       upload_date: new Date(),
       created_at: new Date(),
       user_id: user?.id,
@@ -91,7 +95,59 @@ const selfSignUploadController = async (req, res) => {
 const requestFromOthersController = async (req, res) => {
   try {
     const { user, file } = req;
-    const { title, worflow } = req?.body;
+    const { title, workflow } = req?.body;
+
+    const currentFilename = changeFilenamePdf(title, file);
+    const currentData = documentData({
+      file,
+      user,
+      title,
+      currentFilename,
+      workflow,
+    });
+
+    const document = await prisma.Document.create({
+      data: currentData,
+    });
+    const documentFooter = await footer({
+      documentId: document?.id,
+      file,
+    });
+
+    const { pdfBuffer, totalPage } = documentFooter;
+
+    await uploadFile({
+      fileBuffer: pdfBuffer,
+      filename: currentFilename,
+      minio: req?.mc,
+    });
+
+    const updateParams = {
+      where: {
+        id: document?.id,
+      },
+      data: {
+        document_pages: totalPage,
+      },
+    };
+
+    await prisma.Document.update(updateParams);
+
+    const recipientData = firstRecipientRequestFromOthers({
+      document,
+      user,
+    });
+
+    await prisma.Recipient.create({
+      data: recipientData,
+    });
+
+    res.json({
+      code: 200,
+      message: "ok",
+      currentFilename,
+      currentData,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -173,4 +229,5 @@ const documentUpload = async (req, res) => {
 module.exports = {
   documentUpload,
   selfSignUploadController,
+  requestFromOthersController,
 };

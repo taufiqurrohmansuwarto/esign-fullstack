@@ -6,7 +6,8 @@
       "@/controllers/*": ["controllers/*"],
       "@/middlewares/*": ["middlewares/*"],
       "@/services/*": ["services/*"],
-      "@/lib/*": ["lib/*"]
+      "@/lib/*": ["lib/*"],
+      "@/validators/*": ["validators/*"]
     }
   }
 }
