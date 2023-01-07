@@ -1,15 +1,15 @@
 import UserLayout from "@/components/UserLayout";
 
-function SignAndRequest() {
+function SignAndRequestUpload() {
   return <div>upload</div>;
 }
 
-SignAndRequest.Auth = {
+SignAndRequestUpload.Auth = {
   role: "USER",
 };
 
-SignAndRequest.getLayout = (page) => {
+SignAndRequestUpload.getLayout = (page) => {
   return <UserLayout>{page}</UserLayout>;
 };
 
-export default SignAndRequest;
+export default SignAndRequestUpload;

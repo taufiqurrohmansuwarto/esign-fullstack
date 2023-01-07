@@ -1,16 +1,16 @@
+import SelfSignUploadHeader from "@/components/SelfSignUploadHeader";
 import UserLayout from "@/components/UserLayout";
-import React from "react";
 
-function Upload() {
-  return <div>upload</div>;
+function SelfSignUpload() {
+  return <SelfSignUploadHeader>hello world</SelfSignUploadHeader>;
 }
 
-Upload.Auth = {
+SelfSignUpload.Auth = {
   role: "USER",
 };
 
-Upload.getLayout = (page) => {
+SelfSignUpload.getLayout = (page) => {
   return <UserLayout>{page}</UserLayout>;
 };
 
-export default Upload;
+export default SelfSignUpload;

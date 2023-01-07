@@ -1,5 +1,4 @@
 import UserLayout from "@/components/UserLayout";
-import React from "react";
 
 function RequestFromOthersUpload() {
   return <div>upload</div>;

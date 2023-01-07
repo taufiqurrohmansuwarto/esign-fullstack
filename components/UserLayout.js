@@ -39,6 +39,7 @@ const UploadModal = ({ open, onCancel }) => {
 
   const handleClick = (route) => {
     router.push(route);
+    onCancel();
   };
 
   const listButton = [
