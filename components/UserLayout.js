@@ -209,16 +209,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             margin: "18px",
           }}
         >
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              minHeight: "calc(100vh - 144px)",
-              background: colorBgContainer,
-            }}
-          >
-            {children}
-          </div>
+          {children}
         </Content>
       </Layout>
     </Layout>

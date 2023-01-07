@@ -41,7 +41,14 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       baseUrl="/esign"
       basePath="/esign/api/auth"
     >
-      <ConfigProvider locale={id}>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#00b96b",
+          },
+        }}
+        locale={id}
+      >
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydrateState}>
             {Component.Auth ? (

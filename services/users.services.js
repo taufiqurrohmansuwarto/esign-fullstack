@@ -33,3 +33,9 @@ export const listDocuments = (query) => {
 
   return fetcher.get("/documents").then((res) => res?.data);
 };
+
+export const detailDocument = (documentId) => {
+  return fetcher
+    .get(`/documents/${documentId}/detail`)
+    .then((res) => res?.data);
+};
