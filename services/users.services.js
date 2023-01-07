@@ -23,3 +23,13 @@ export const stampInfo = () => {
 export const stampInfoByEmployeeNumber = (employeeNumber) => {
   return fetcher.get(`/stamps/${employeeNumber}`).then((res) => res?.data);
 };
+
+export const listDocuments = (query) => {
+  // object to qeury strign
+
+  const queryString = Object.keys(query)
+    .map((key) => key + "=" + query[key])
+    .join("&");
+
+  return fetcher.get("/documents").then((res) => res?.data);
+};

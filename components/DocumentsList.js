@@ -1,24 +1,35 @@
+import { listDocuments } from "@/services/users.services";
+import { useQuery } from "@tanstack/react-query";
 import { Table } from "antd";
+import { useState } from "react";
 
 function DocumentsList({ type = "all" }) {
-  const query = {
+  const [query, setQuery] = useState({
     page: 1,
-    perPage: 10,
-    search: "",
-    sort: "createdAt",
-    order: "desc",
-  };
+    limit: 10,
+    type,
+  });
+
+  const { data, isLoading } = useQuery(
+    ["documents", query],
+    () => listDocuments(query),
+    {
+      enabled: !!query,
+    }
+  );
 
   const columns = [
     {
       title: "Title",
-      dataIndex: "title",
       key: "title",
+      render: (_, row) => {
+        return <div>{row?.document?.filename}</div>;
+      },
     },
     {
       title: "Upload Date",
       dataIndex: "uploadDate",
-      key: "uploadDate",
+      render: (_, row) => <div>{row?.document?.upload_date}</div>,
     },
     {
       title: "Recipients",
@@ -39,8 +50,9 @@ function DocumentsList({ type = "all" }) {
 
   return (
     <div>
+      {JSON.stringify(data)}
       Berisi mengenai dokumen list dengan query dan searching
-      <Table dataSource={[]} columns={columns} />
+      <Table dataSource={data} columns={columns} />
     </div>
   );
 }

@@ -17,7 +17,11 @@ const index = async (req, res) => {
         recipient_id: userId,
       },
       include: {
-        Document: true,
+        document: {
+          include: {
+            Recipient: true,
+          },
+        },
       },
     };
 

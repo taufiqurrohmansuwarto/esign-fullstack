@@ -1,3 +1,4 @@
+const { default: prisma } = require("@/lib/prisma");
 const { checkNik } = require("services/bsre/bsre.user.service");
 
 const index = async (req, res) => {
@@ -5,11 +6,19 @@ const index = async (req, res) => {
     const { user } = req;
     const { nik } = user;
 
+    const { id } = user;
+
+    const currentUser = await prisma.User.findUnique({
+      where: {
+        id,
+      },
+    });
+
     const currentCheckNik = await checkNik(nik);
     const resultCheckNik = currentCheckNik?.data;
 
     const currentUserResult = {
-      ...user,
+      ...currentUser?.user_info,
       ...resultCheckNik,
     };
 

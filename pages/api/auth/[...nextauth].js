@@ -49,6 +49,7 @@ export default NextAuth({
     },
   },
   secret: process.env.NEXAUTH_SECRET,
+  theme: {},
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
   },

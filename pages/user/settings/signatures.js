@@ -1,17 +1,20 @@
 import UserLayout from "@/components/UserLayout";
 import { stampInfo } from "@/services/users.services";
+import { PageContainer } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";
-import { Image } from "antd";
+import { Image, Skeleton } from "antd";
 
 const Signatures = () => {
-  const { data } = useQuery(["stamps"], () => stampInfo(), {
+  const { data, isLoading } = useQuery(["stamps"], () => stampInfo(), {
     refetchOnWindowFocus: false,
   });
 
   return (
-    <div>
-      <Image src={`data:image/jpeg;base64,${data?.image}`} />
-    </div>
+    <PageContainer title="Signatures">
+      <Skeleton loading={isLoading}>
+        <Image src={`data:image/jpeg;base64,${data?.image}`} />
+      </Skeleton>
+    </PageContainer>
   );
 };
 
