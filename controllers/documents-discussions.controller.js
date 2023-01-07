@@ -6,9 +6,19 @@ const index = async (req, res) => {
   try {
     const { documentId } = req?.query;
 
-    const discussions = await prisma.Discussions.findMany({
+    const discussions = await prisma.Discussion.findMany({
       where: {
         document_id: documentId,
+      },
+      include: {
+        user: {
+          select: {
+            user_info: true,
+          },
+        },
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
 
@@ -24,13 +34,17 @@ const create = async (req, res) => {
     const { documentId } = req?.query;
     const { body } = req;
 
-    await prisma.Discussions.create({
-      data: {
-        body,
-        document_id: documentId,
-      },
+    const data = {
+      message: body.message,
+      document_id: documentId,
+      user_id: req.user.id,
+    };
+
+    await prisma.Discussion.create({
+      data,
     });
-    res.status(200).json({
+
+    res.json({
       message: "Discussion created",
     });
   } catch (error) {
@@ -67,10 +81,11 @@ const remove = async (req, res) => {
   try {
     const { documentId, discussionId } = req?.query;
 
-    await prisma.Discussions.deleteMany({
+    await prisma.Discussion.deleteMany({
       where: {
         id: discussionId,
         document_id: documentId,
+        user_id: req.user.id,
       },
     });
 

@@ -1,13 +1,22 @@
 import { useRouter } from "next/router";
 import PageContainer from "./pro/PageContainer";
-import { Button, Card } from "antd";
+import { Button, Card, Space, Tag } from "antd";
 import { useQuery } from "@tanstack/react-query";
 import { detailDocument } from "@/services/users.services";
+import { capitalize } from "@/lib/client-utils";
+
+const Content = ({ data }) => {
+  return (
+    <Space>
+      {data?.filename}
+      <Tag>{capitalize(data?.workflow)}</Tag>
+    </Space>
+  );
+};
 
 const DetailDocumentHeader = ({
   children,
   tabActiveKey,
-  content = null,
   title = "Document View",
 }) => {
   const router = useRouter();
@@ -24,13 +33,14 @@ const DetailDocumentHeader = ({
 
   return (
     <PageContainer
+      loading={isLoading}
       title={title}
       tabActiveKey={tabActiveKey}
       onBack={handleBack}
       onTabChange={(key) => {
         router.push(`/user/document/${router.query.id}/${key}`);
       }}
-      content={<div>{data?.filename}</div>}
+      content={<Content data={data} />}
       tabList={[
         {
           tab: "Document",
@@ -55,7 +65,7 @@ const DetailDocumentHeader = ({
         </Button>,
       ]}
     >
-      <Card>{children}</Card>
+      {children}
     </PageContainer>
   );
 };

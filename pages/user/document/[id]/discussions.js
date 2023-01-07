@@ -1,11 +1,14 @@
 import DetailDocumentHeader from "@/components/DetailDocumentHeader";
+import DisccussionList from "@/components/discussions/Discussions";
 import UserLayout from "@/components/UserLayout";
-import React from "react";
+import { Card } from "antd";
 
 function Discussions() {
   return (
     <DetailDocumentHeader title="Discussions" tabActiveKey="discussions">
-      <div>recipients</div>
+      <Card>
+        <DisccussionList />
+      </Card>
     </DetailDocumentHeader>
   );
 }

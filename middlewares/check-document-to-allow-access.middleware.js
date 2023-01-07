@@ -18,7 +18,12 @@ const CheckDocumentAllowAccessMiddleware = async (req, res, next) => {
     });
 
     if (recipient?.length === 0 || !currentDocument) {
-      res.status(404).json({ message: "Document not found" });
+      res
+        .status(404)
+        .json({
+          code: 404,
+          message: "Document not found or document is not belongs to you",
+        });
     } else {
       next();
     }

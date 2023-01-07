@@ -39,3 +39,21 @@ export const detailDocument = (documentId) => {
     .get(`/documents/${documentId}/detail`)
     .then((res) => res?.data);
 };
+
+export const discussions = (documentId) => {
+  return fetcher
+    .get(`/documents/${documentId}/discussions`)
+    .then((res) => res?.data);
+};
+
+export const createDiscussion = ({ documentId, data }) => {
+  return fetcher
+    .post(`/documents/${documentId}/discussions`, data)
+    .then((res) => res?.data);
+};
+
+export const removeDiscussion = ({ documentId, discussionId }) => {
+  return fetcher
+    .delete(`/documents/${documentId}/discussions/${discussionId}`)
+    .then((res) => res?.data);
+};

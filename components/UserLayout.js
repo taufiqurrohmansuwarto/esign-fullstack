@@ -170,7 +170,6 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             onClick={showModal}
             size="large"
             type="primary"
-            danger
             icon={<PlusOutlined />}
           />
         )}
