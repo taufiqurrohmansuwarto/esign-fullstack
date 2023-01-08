@@ -11,7 +11,10 @@ const index = async (req, res) => {
 
 const update = async (req, res) => {};
 
-const create = async (req, res) => {};
+const create = async (req, res) => {
+  try {
+  } catch (error) {}
+};
 
 const remove = async (req, res) => {};
 
