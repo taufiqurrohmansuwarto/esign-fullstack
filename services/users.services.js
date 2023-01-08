@@ -57,3 +57,59 @@ export const removeDiscussion = ({ documentId, discussionId }) => {
     .delete(`/documents/${documentId}/discussions/${discussionId}`)
     .then((res) => res?.data);
 };
+
+// self sign
+export const selfSignUpload = (data) => {
+  return fetcher
+    .post("/self-sign/upload", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => res?.data);
+};
+
+export const selfSignApproveSign = (data) => {
+  return fetcher.post("/self-sign/approve", data).then((res) => res?.data);
+};
+
+// request from others
+export const requestFromOthersUpload = (data) => {
+  return fetcher
+    .post("/request-from-others/upload", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => res?.data);
+};
+
+export const requestFromOthersAddRecipietns = (data) => {
+  return fetcher
+    .post("/request-from-others/add-recipients", data)
+    .then((res) => res?.data);
+};
+
+export const requestFromOthersApproveSign = (data) => {
+  return fetcher
+    .post("/request-from-others/approve", data)
+    .then((res) => res?.data);
+};
+
+export const requestFromOthersRejectSign = (data) => {
+  return fetcher
+    .post("/request-from-others/reject", data)
+    .then((res) => res?.data);
+};
+
+export const requestFromOthersApproveReview = (data) => {
+  return fetcher
+    .post("/request-from-others/approve-review", data)
+    .then((res) => res?.data);
+};
+
+export const requestFromOthersRejectReview = (data) => {
+  return fetcher
+    .post("/request-from-others/reject-review", data)
+    .then((res) => res?.data);
+};
