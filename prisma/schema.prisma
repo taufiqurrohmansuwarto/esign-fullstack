@@ -37,10 +37,11 @@ model User {
   documents     Document[]
   histories     History[]
   Discussions   Discussion[]
-  Notification  Notification[]
   Otp           Otp[]
   RecipientUser Recipient[]    @relation("RecipientUser")
   RejectedUser  Recipient[]    @relation("RejectedUser")
+  Sender        Notification[] @relation("sender")
+  Recipient     Notification[] @relation("recipient")
 }
 
 model Document {
@@ -70,10 +71,10 @@ model Document {
 }
 
 model Recipient {
-  id            String    @id @default(cuid())
-  document_id   String?
-  document      Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  filename String?
+  id          String    @id @default(cuid())
+  document_id String?
+  document    Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  filename    String?
 
   recipient_id   String?
   recipient_json Json?
@@ -135,13 +136,15 @@ model Discussion {
 
 model Notification {
   id          String    @id @default(cuid())
-  user_id     String?
+  from_id     String?
+  to_id       String?
   document_id String?
   message     String?
   is_read     Boolean?  @default(false)
   created_at  DateTime? @default(now())
   updated_at  DateTime? @updatedAt
-  user        User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  sender      User?     @relation(name: "sender", fields: [from_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  recipient   User?     @relation(name: "recipient", fields: [to_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   document    Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
