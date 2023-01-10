@@ -52,4 +52,5 @@ module.exports = {
   biodataPegawai,
   getBiodataWithHeaders,
   getBiodataPTTPKWIthHeaders,
+  getBiodataWithHeadersPTTPK,
 };

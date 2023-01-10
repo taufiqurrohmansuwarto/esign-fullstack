@@ -1,6 +1,6 @@
+import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 import { stampInfo } from "@/services/users.services";
-import { PageContainer } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";
 import { Image, Skeleton } from "antd";
 

@@ -4,7 +4,7 @@ const { createStamp } = require("lib/utils");
 
 const serializeAttr = (data) => {
   return {
-    nip: data?.nip,
+    nip: data?.nip || data?.niptt,
     nama: data?.nama,
     golongan: data?.golongan,
     pangkat: data?.pangkat,
@@ -15,7 +15,7 @@ const serializeAttr = (data) => {
 const index = async (req, res) => {
   try {
     // nip golongan pangkat
-    const { user, fetcher } = req;
+    const { user } = req;
     const { id } = user;
 
     const result = await prisma.User.findUnique({
