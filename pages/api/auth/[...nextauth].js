@@ -6,6 +6,12 @@ const masterClientSecret = process.env.MASTER_SECRET;
 const masterWellKnown = process.env.MASTER_WELLKNOWN;
 const masterScope = process.env.MASTER_SCOPE;
 
+// PTTPK
+const pttpkClientId = process.env.PTTPK_ID;
+const pttpkClientSecret = process.env.PTTPK_SECRET;
+const pttpkWellKnown = process.env.PTTPK_WELLKNOWN;
+const pttpkScope = process.env.PTTPK_SCOPE;
+
 export default NextAuth({
   callbacks: {
     redirect: async (url, baseUrl) => {
@@ -64,6 +70,43 @@ export default NextAuth({
       authorization: {
         params: {
           scope: masterScope,
+          prompt: "login",
+        },
+      },
+      idToken: true,
+      checks: ["pkce", "state"],
+      profile: async (profile, tokens) => {
+        try {
+          const accessToken = tokens?.access_token;
+          const currentUser = {
+            id: profile?.sub,
+            email: profile?.email,
+            nik: profile?.nik,
+            username: profile?.name,
+            group: profile?.group,
+            role: profile?.role,
+            organization_id: profile?.organization_id,
+            image: profile?.picture,
+            employee_number: profile?.employee_number,
+          };
+
+          await upsertUserAttr(currentUser.id, currentUser, accessToken);
+          return currentUser;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    },
+    {
+      name: "PTTPK",
+      id: "pttpk",
+      type: "oauth",
+      wellKnown: pttpkWellKnown,
+      clientId: pttpkClientId,
+      clientSecret: pttpkClientSecret,
+      authorization: {
+        params: {
+          scope: pttpkScope,
           prompt: "login",
         },
       },

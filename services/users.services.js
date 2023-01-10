@@ -25,13 +25,12 @@ export const stampInfoByEmployeeNumber = (employeeNumber) => {
 };
 
 export const listDocuments = (query) => {
-  // object to qeury strign
-
+  // object to qeury string
   const queryString = Object.keys(query)
     .map((key) => key + "=" + query[key])
     .join("&");
 
-  return fetcher.get("/documents").then((res) => res?.data);
+  return fetcher.get(`/documents?${queryString}`).then((res) => res?.data);
 };
 
 export const detailDocument = (documentId) => {
@@ -84,7 +83,7 @@ export const requestFromOthersUpload = (data) => {
     .then((res) => res?.data);
 };
 
-export const requestFromOthersAddRecipietns = (data) => {
+export const requestFromOthersAddRecipients = (data) => {
   return fetcher
     .post("/request-from-others/add-recipients", data)
     .then((res) => res?.data);
@@ -111,5 +110,22 @@ export const requestFromOthersApproveReview = (data) => {
 export const requestFromOthersRejectReview = (data) => {
   return fetcher
     .post("/request-from-others/reject-review", data)
+    .then((res) => res?.data);
+};
+
+// notifications
+export const notifications = async () => {
+  return fetcher.get("/notifications").then((res) => res?.data);
+};
+
+export const markAsRead = async (notificationId) => {
+  return fetcher
+    .post("/notifications/mark-as-read", { notificationId })
+    .then((res) => res?.data);
+};
+
+export const markAllAsRead = async () => {
+  return fetcher
+    .post("/notifications/mark-all-as-read")
     .then((res) => res?.data);
 };

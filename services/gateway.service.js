@@ -6,6 +6,12 @@ const biodataPegawai = async (fetcher, nip) => {
   return employeeData;
 };
 
+const biodataPegawaiPTTPK = async (fetcher) => {
+  const result = await fetcher.get(`/pttpk/info`);
+  const employeeData = result?.data;
+  return employeeData;
+};
+
 const getBiodataWithHeaders = async (accessToken, nip) => {
   const fetcher = axios.create({
     baseURL: process.env.API_GATEWAY,
@@ -15,6 +21,18 @@ const getBiodataWithHeaders = async (accessToken, nip) => {
   });
 
   const result = await biodataPegawai(fetcher, nip);
+  return result;
+};
+
+const getBiodataWithHeadersPTTPK = async (accessToken, nipttk) => {
+  const fetcher = axios.create({
+    baseURL: process.env.API_GATEWAY,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const result = await biodataPegawaiPTTPK(fetcher);
   return result;
 };
 
