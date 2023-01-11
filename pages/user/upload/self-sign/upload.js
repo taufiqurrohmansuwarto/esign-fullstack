@@ -1,8 +1,13 @@
+import SelfSignUploader from "@/components/SelfSign/SelfSignUploader";
 import SelfSignUploadHeader from "@/components/SelfSignUploadHeader";
 import UserLayout from "@/components/UserLayout";
 
 function SelfSignUpload() {
-  return <SelfSignUploadHeader>hello world</SelfSignUploadHeader>;
+  return (
+    <SelfSignUploadHeader>
+      <SelfSignUploader />
+    </SelfSignUploadHeader>
+  );
 }
 
 SelfSignUpload.Auth = {
