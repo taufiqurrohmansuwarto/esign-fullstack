@@ -88,7 +88,7 @@ const selfSignUploadController = async (req, res) => {
       },
     });
 
-    res.json({ code: 200, message: "ok", data });
+    res.json(data);
   } catch (error) {
     console.log(error);
     res.status(500).json({

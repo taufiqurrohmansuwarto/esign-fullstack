@@ -1,6 +1,8 @@
 import "antd/dist/reset.css";
 import "../styles/global.css";
 import id from "antd/locale/id_ID";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
 
 import { useState } from "react";
 import {

@@ -11,7 +11,7 @@ const ShowModalEdit = ({ onCancel, open, filename, file }) => {
 
   const [form] = Form.useForm();
   const onSuccess = (data) => {
-    router.puseh(`/user/upload/self-sign/upload?documentId=${data?.id}`);
+    router.push(`/user/upload/self-sign/upload?documentId=${data?.id}`);
   };
 
   const { mutate: onUpload, isLoading } = useMutation(

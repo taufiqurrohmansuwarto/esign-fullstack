@@ -129,3 +129,9 @@ export const markAllAsRead = async () => {
     .post("/notifications/mark-all-as-read")
     .then((res) => res?.data);
 };
+
+export const informationDocument = async (documentId) => {
+  return fetcher
+    .get(`/documents/${documentId}/information`)
+    .then((res) => res?.data);
+};
