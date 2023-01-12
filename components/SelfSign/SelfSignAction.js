@@ -1,8 +1,9 @@
 import { informationDocument } from "@/services/users.services";
 import { useQuery } from "@tanstack/react-query";
-import { Skeleton } from "antd";
+import { Button, Skeleton } from "antd";
 import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import DocumentLoading from "../DocumentLoading";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const RenderPdf = ({ url }) => {
@@ -15,16 +16,18 @@ const RenderPdf = ({ url }) => {
 
   return (
     <div>
-      {JSON.stringify({
-        numPages,
-        pageNumber,
-      })}
+      <Button type="primary">Hello word</Button>
       <Document
-        loading={<div>loading...</div>}
+        loading={<DocumentLoading />}
         file={{ url }}
         onLoadSuccess={onDocumentLoadSuccess}
       >
-        <Page pageNumber={pageNumber} />
+        <Page
+          renderTextLayer={false}
+          renderAnnotationLayer={false}
+          scale={1.2}
+          pageNumber={pageNumber}
+        />
       </Document>
     </div>
   );
