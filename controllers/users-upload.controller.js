@@ -69,11 +69,11 @@ const selfSignUploadController = async (req, res) => {
       recipient_id: user?.id,
       document_id: result?.id,
       created_at: new Date(),
+      filename: currentFilename,
       sequence: 0,
       role: "signer",
       signatory_status: "pending",
       is_owner: true,
-      uploader_id: user?.id,
       status: "draft",
     };
 
@@ -81,9 +81,14 @@ const selfSignUploadController = async (req, res) => {
       data: dataRecipient,
     });
 
-    // todo buat riwayat
+    // todo buat riwayat saja
+    const data = await prisma.Document.findUnique({
+      where: {
+        id: result?.id,
+      },
+    });
 
-    res.json({ code: 200, message: "ok" });
+    res.json({ code: 200, message: "ok", data });
   } catch (error) {
     console.log(error);
     res.status(500).json({

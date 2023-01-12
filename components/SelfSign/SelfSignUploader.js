@@ -1,17 +1,26 @@
 import { takeFormat } from "@/lib/client-utils";
+import { selfSignUpload } from "@/services/users.services";
 import { InboxOutlined } from "@ant-design/icons";
-import { Form, Input, Modal, Upload } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import { Form, Input, message, Modal, Upload } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const ShowModalEdit = ({ onCancel, open, filename, file }) => {
   const router = useRouter();
 
-  const onSuccess = () => {
-    router.push("/self-sign");
+  const [form] = Form.useForm();
+  const onSuccess = (data) => {
+    router.puseh(`/user/upload/self-sign/upload?documentId=${data?.id}`);
   };
 
-  const [form] = Form.useForm();
+  const { mutate: onUpload, isLoading } = useMutation(
+    (data) => selfSignUpload(data),
+    {
+      onSuccess,
+      onError: (e) => message.error(e),
+    }
+  );
 
   useEffect(() => {
     form.setFieldsValue({
@@ -22,10 +31,11 @@ const ShowModalEdit = ({ onCancel, open, filename, file }) => {
   const handleFinisih = async () => {
     try {
       const result = await form.validateFields();
-      const form = new FormData();
-      form.append("file", file);
-      form.append("title", result?.title);
-      form.append("workflow", "selfSign");
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("title", result?.title);
+      formData.append("workflow", "selfSign");
+      onUpload(formData);
     } catch (error) {
       console.log(error);
     }
@@ -33,9 +43,10 @@ const ShowModalEdit = ({ onCancel, open, filename, file }) => {
 
   return (
     <Modal
-      title="Nama File"
+      title="Filename"
       onOk={handleFinisih}
       centered
+      confirmLoading={isLoading}
       open={open}
       onCancel={onCancel}
     >
@@ -46,7 +57,8 @@ const ShowModalEdit = ({ onCancel, open, filename, file }) => {
         }}
       >
         <Form.Item
-          rules={[{ required: true, message: "Nama file tidak boleh kosong" }]}
+          extra="You can change the filename before uploading"
+          rules={[{ required: true, message: "Filename cannot be empty" }]}
           name="title"
         >
           <Input />

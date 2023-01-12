@@ -60,7 +60,7 @@ export const removeDiscussion = ({ documentId, discussionId }) => {
 // self sign
 export const selfSignUpload = (data) => {
   return fetcher
-    .post("/self-sign/upload", data, {
+    .post("/upload-self-sign", data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

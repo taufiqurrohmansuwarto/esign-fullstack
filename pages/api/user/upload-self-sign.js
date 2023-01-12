@@ -15,7 +15,7 @@ export const config = {
 // first use middleware to check file
 
 router.post(
-  auth("testing"),
+  auth(),
   multer().single("file"),
   checkingUploadMiddleware("selfSign"),
   selfSignUploadController
