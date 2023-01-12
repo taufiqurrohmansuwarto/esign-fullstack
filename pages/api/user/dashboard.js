@@ -3,10 +3,6 @@ import { createRouter } from "next-connect";
 
 const router = createRouter();
 
-router.use(auth()).get(async (req, res) => {
-  res.json({
-    user: "test",
-  });
-});
+router.use(auth()).get();
 
 export default router.handler();

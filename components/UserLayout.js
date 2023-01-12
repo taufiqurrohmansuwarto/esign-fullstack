@@ -118,6 +118,7 @@ const items = [
     getItem("Digital Certificate", "/user/settings/digital-certificate"),
     getItem("Personal Information", "/user/settings/personal-information"),
     getItem("Signature", "/user/settings/signatures"),
+    getItem("F.A.Q", "/user/settings/faq"),
   ]),
 ];
 
@@ -204,13 +205,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             </Col>
           </Row>
         </Header>
-        <Content
-          style={{
-            margin: "18px",
-          }}
-        >
-          {children}
-        </Content>
+        <Content>{children}</Content>
       </Layout>
     </Layout>
   );

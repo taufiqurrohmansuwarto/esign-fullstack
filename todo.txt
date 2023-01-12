@@ -1,1 +1,4 @@
-document rejected
+
+1. add status user dashboard
+2. add statistic to user dashboard
+3. add masing di document
