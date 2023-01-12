@@ -19,7 +19,7 @@ const index = async (req, res) => {
 
     const currentUserResult = {
       ...currentUser?.user_info,
-      ...resultCheckNik,
+      status_bsre: resultCheckNik,
     };
 
     res.status(200).json(currentUserResult);

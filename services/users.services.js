@@ -8,6 +8,10 @@ const fetcher = axios.create({
   baseURL,
 });
 
+export const getDashboard = () => {
+  return fetcher.get("/dashboard").then((res) => res?.data);
+};
+
 export const check = () => {
   return fetcher.get("/check");
 };

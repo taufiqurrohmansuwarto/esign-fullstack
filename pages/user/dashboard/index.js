@@ -1,9 +1,11 @@
 import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 import Link from "next/link";
-import { listUrl } from "@/lib/client-utils";
+import { alertHeader, listUrl } from "@/lib/client-utils";
 import { useQuery } from "@tanstack/react-query";
 import {
+  Button,
+  Statistic,
   Avatar,
   Card,
   Col,
@@ -12,8 +14,10 @@ import {
   Skeleton,
   Typography,
   Space,
+  Alert,
 } from "antd";
-import { detailUser } from "services/users.services";
+import { check, detailUser, getDashboard } from "services/users.services";
+import { useRouter } from "next/router";
 
 // HEADER USER INFORMATION
 const HeaderUser = ({ data }) => {
@@ -29,19 +33,62 @@ const HeaderUser = ({ data }) => {
           </Typography.Title>
         </Row>
         <Row>
-          <p>{data?.nip}</p>
+          <Typography.Text>{data?.nip}</Typography.Text>
+        </Row>
+        <Row>
+          <Typography.Text>{data?.skpd}</Typography.Text>
         </Row>
       </Col>
     </Row>
   );
 };
 
-const StatusUser = () => {
-  return <div>Status user</div>;
+const StatusUser = ({ data: { status_bsre } }) => {
+  const { type, text } = alertHeader(status_bsre);
+
+  return <Alert type={type} message={text} showIcon />;
 };
 
-const Statistic = () => {
-  return <div>Ini adalah statistic</div>;
+const StatisticUser = () => {
+  const router = useRouter();
+
+  const gotoDraftDocument = () => router.push("/user/documents/draft");
+
+  const { data, isLoading } = useQuery(["user-dashboard"], () =>
+    getDashboard()
+  );
+
+  return (
+    <Skeleton loading={isLoading}>
+      <Row gutter={16}>
+        <Col span={8}>
+          <Statistic
+            title="Waiting Document"
+            value={data?.document_type?.document_draft}
+          />
+          <Button
+            onClick={gotoDraftDocument}
+            style={{ marginTop: 15 }}
+            type="primary"
+          >
+            View
+          </Button>
+        </Col>
+        <Col span={8}>
+          <Statistic
+            title="Document Done"
+            value={data?.document_type?.document_completed}
+          />
+        </Col>
+        <Col span={8}>
+          <Statistic
+            title="All Document"
+            value={data?.document_type?.all_documents}
+          />
+        </Col>
+      </Row>
+    </Skeleton>
+  );
 };
 
 const ListItems = () => {
@@ -63,7 +110,9 @@ const ListItems = () => {
 };
 
 function Dashboard() {
-  const { data, isLoading } = useQuery(["user"], () => detailUser());
+  const { data, isLoading } = useQuery(["user"], () => detailUser(), {
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <PageContainer title="Dashboard">
@@ -71,9 +120,9 @@ function Dashboard() {
         <Skeleton loading={isLoading}>
           <HeaderUser data={data} />
           <Divider />
-          <StatusUser />
+          <StatusUser data={data} />
           <Divider />
-          <Statistic />
+          <StatisticUser />
           <Divider />
           <ListItems />
         </Skeleton>
