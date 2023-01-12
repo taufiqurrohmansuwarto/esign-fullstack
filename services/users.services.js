@@ -139,3 +139,11 @@ export const informationDocument = async (documentId) => {
     .get(`/documents/${documentId}/information`)
     .then((res) => res?.data);
 };
+
+export const getHistories = async (query) => {
+  const queryString = Object.keys(query)
+    .map((key) => key + "=" + query[key])
+    .join("&");
+
+  return fetcher.get(`/histories?${queryString}`).then((res) => res?.data);
+};

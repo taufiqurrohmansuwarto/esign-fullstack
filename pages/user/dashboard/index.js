@@ -1,6 +1,7 @@
 import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { alertHeader, listUrl } from "@/lib/client-utils";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -118,6 +119,7 @@ function Dashboard() {
     <PageContainer title="Dashboard">
       <Card bordered={false}>
         <Skeleton loading={isLoading}>
+          <Button onClick={signOut}>Logout</Button>
           <HeaderUser data={data} />
           <Divider />
           <StatusUser data={data} />

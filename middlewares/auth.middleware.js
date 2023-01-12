@@ -37,6 +37,8 @@ const auth =
               Authorization: `Bearer ${token}`,
             },
           });
+          req.ip =
+            req?.headers["x-forwarded-for"] || req?.connection?.remoteAddress;
           req.mc = mc;
           req.user = session?.user;
           req.fetcher = fetcher;
