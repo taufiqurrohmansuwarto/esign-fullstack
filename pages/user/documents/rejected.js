@@ -1,7 +1,13 @@
+import DocumentsList from "@/components/DocumentsList";
+import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 
 const Rejected = () => {
-  return <div>Rejected</div>;
+  return (
+    <PageContainer title="Rejected">
+      <DocumentsList type="rejected" />
+    </PageContainer>
+  );
 };
 
 Rejected.getLayout = (page) => {

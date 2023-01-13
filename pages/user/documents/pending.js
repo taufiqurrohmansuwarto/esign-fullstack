@@ -1,7 +1,13 @@
+import DocumentsList from "@/components/DocumentsList";
+import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 
 const Pending = () => {
-  return <div>pndng</div>;
+  return (
+    <PageContainer title="Pending">
+      <DocumentsList type="pending" />
+    </PageContainer>
+  );
 };
 
 Pending.getLayout = (page) => {

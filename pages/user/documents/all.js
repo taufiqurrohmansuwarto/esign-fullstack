@@ -1,8 +1,13 @@
 import DocumentsList from "@/components/DocumentsList";
+import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 
 const AllDocuments = () => {
-  return <DocumentsList type="all" />;
+  return (
+    <PageContainer title="All Document">
+      <DocumentsList type="all" />
+    </PageContainer>
+  );
 };
 
 AllDocuments.Auth = {

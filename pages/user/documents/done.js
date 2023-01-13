@@ -1,7 +1,13 @@
+import DocumentsList from "@/components/DocumentsList";
+import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 
 const Done = () => {
-  return <div>done</div>;
+  return (
+    <PageContainer title="Done">
+      <DocumentsList type="done" />
+    </PageContainer>
+  );
 };
 
 Done.getLayout = (page) => {

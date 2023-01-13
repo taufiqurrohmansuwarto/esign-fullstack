@@ -1,7 +1,13 @@
+import DocumentsList from "@/components/DocumentsList";
+import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 
 const Expired = () => {
-  return <div>Expired</div>;
+  return (
+    <PageContainer title="Expired">
+      <DocumentsList type="expired" />
+    </PageContainer>
+  );
 };
 
 Expired.getLayout = (page) => {

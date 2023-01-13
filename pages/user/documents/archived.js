@@ -1,7 +1,13 @@
+import DocumentsList from "@/components/DocumentsList";
+import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 
 const Archived = () => {
-  return <div>Archived</div>;
+  return (
+    <PageContainer title="Archieved">
+      <DocumentsList type="archieved" />
+    </PageContainer>
+  );
 };
 
 Archived.getLayout = (page) => {
