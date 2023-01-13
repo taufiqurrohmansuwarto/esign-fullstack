@@ -1,9 +1,36 @@
 import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
+import { formatDate } from "@/lib/client-utils";
 import { getHistories } from "@/services/users.services";
 import { useQuery } from "@tanstack/react-query";
-import { Card, Table } from "antd";
+import { Card, Row, Table, Col, Avatar, Typography } from "antd";
 import { useState } from "react";
+
+const TitleHistory = ({ row }) => {
+  const { type } = row;
+
+  if (type === "ACCOUNT") {
+    return (
+      <Row gutter={[16, 8]}>
+        <Col>
+          <Avatar src={row?.user?.image} />
+        </Col>
+        <Col>
+          <Row>
+            <Typography.Text strong>{row?.user?.username}</Typography.Text>
+          </Row>
+          <Row>
+            <Typography.Text type="secondary">
+              {formatDate(row?.created_at)}
+            </Typography.Text>
+          </Row>
+        </Col>
+      </Row>
+    );
+  } else if (type === "DOCUMENT") {
+    return <Row></Row>;
+  }
+};
 
 const ActivityLog = () => {
   const [query, setQuery] = useState({
@@ -16,11 +43,21 @@ const ActivityLog = () => {
     () => getHistories(query),
     {
       enabled: !!query,
+      refetchOnWindowFocus: false,
     }
   );
 
   const columns = [
-    { title: "Name", dataIndex: "name", key: "name" },
+    {
+      title: "No",
+      dataIndex: "no",
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: "Title",
+      dataIndex: "title",
+      render: (text, record) => <TitleHistory row={record} />,
+    },
     {
       title: "Type",
       dataIndex: "type",
@@ -32,9 +69,9 @@ const ActivityLog = () => {
       key: "action",
     },
     {
-      title: "Date",
-      dataIndex: "created_at",
-      key: "created_at",
+      title: "Info",
+      dataIndex: "useragent",
+      key: "useragent",
     },
     {
       title: "IP Address",
@@ -47,6 +84,7 @@ const ActivityLog = () => {
     <PageContainer title="Activity Log">
       <Card>
         <Table
+          size="middle"
           loading={isLoading}
           rowKey={(row) => row?.id}
           columns={columns}

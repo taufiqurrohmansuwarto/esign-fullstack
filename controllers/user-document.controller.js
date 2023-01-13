@@ -47,6 +47,19 @@ const detailDocument = async (req, res) => {
       filename: document,
     });
 
+    //  now create history
+    await prisma.History.create({
+      data: {
+        document_id: documentId,
+        user_id: id,
+        action: "opened",
+        ip_address: req?.ip,
+        useragent: req?.useragent,
+        type: "document",
+        created_at: new Date(),
+      },
+    });
+
     if (recipient?.length === 0 || !currentDocument) {
       res.status(404).json({ message: "Document not found" });
     } else {

@@ -114,6 +114,7 @@ model History {
   lattitude   String?
   longitude   String?
   type        String?
+  // action terdiri dari opened,login, request, otp, archieved, signed
   action      String?
   activity    String?
   information String?

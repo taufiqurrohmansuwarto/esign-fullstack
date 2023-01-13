@@ -39,6 +39,8 @@ const auth =
           });
           req.ip =
             req?.headers["x-forwarded-for"] || req?.connection?.remoteAddress;
+          req.useragent = session?.user?.useragent;
+
           req.mc = mc;
           req.user = session?.user;
           req.fetcher = fetcher;

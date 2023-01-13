@@ -14,6 +14,7 @@ const pttpkScope = process.env.PTTPK_SCOPE;
 
 export default async function (req, res) {
   const ip = req?.headers["x-forwarded-for"] || req?.connection?.remoteAddress;
+  const useragent = req?.headers["user-agent"];
 
   return NextAuth(req, res, {
     callbacks: {
@@ -33,6 +34,7 @@ export default async function (req, res) {
         session.user.organization_id = token?.organization_id;
         session.user.name = token?.username;
         session.user.nik = token?.nik;
+        session.user.useragent = token?.useragent;
         session.user.current_role = token?.role;
 
         const check = Date.now() < new Date(token?.expires * 1000);
@@ -45,6 +47,7 @@ export default async function (req, res) {
         if (account) {
           token.accessToken = account?.access_token;
           token.expires = profile?.exp;
+          token.useragent = useragent;
           token.username = profile?.name;
           token.id = account?.providerAccountId;
           token.role = profile?.role;
@@ -93,7 +96,14 @@ export default async function (req, res) {
               employee_number: profile?.employee_number,
             };
 
-            await upsertUserAttr(currentUser.id, currentUser, accessToken, ip);
+            await upsertUserAttr(
+              currentUser.id,
+              currentUser,
+              accessToken,
+              ip,
+              useragent
+            );
+
             return currentUser;
           } catch (error) {
             console.log(error);
@@ -128,9 +138,16 @@ export default async function (req, res) {
               organization_id: profile?.organization_id,
               image: profile?.picture,
               employee_number: profile?.employee_number,
+              useragent,
             };
 
-            await upsertUserAttr(currentUser.id, currentUser, accessToken, ip);
+            await upsertUserAttr(
+              currentUser.id,
+              currentUser,
+              accessToken,
+              ip,
+              useragent
+            );
             return currentUser;
           } catch (error) {
             console.log(error);
