@@ -1,4 +1,3 @@
-
-1. add status user dashboard
-2. add statistic to user dashboard
-3. add masing di document
+1. create histories base documents and user id
+2. create to document detail
+3. create self sign document with redux (diapiki)
