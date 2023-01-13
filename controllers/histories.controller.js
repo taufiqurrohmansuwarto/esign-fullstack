@@ -2,16 +2,35 @@ const index = async (req, res) => {
   // create paging
   const page = req?.query?.page || 1;
   const limit = req?.query?.limit || 20;
+  const type = req?.query?.type || "all";
 
   try {
     const {
       user: { id },
     } = req;
 
+    const where = {
+      user_id: id,
+    };
+
+    if (type === "all") {
+      where = {
+        ...where,
+      };
+    } else if (type === "DOCUMENT") {
+      where = {
+        ...where,
+        type: "DOCUMENT",
+      };
+    } else if (type === "ACTION") {
+      where = {
+        ...where,
+        type: "ACTION",
+      };
+    }
+
     const result = await prisma.History.findMany({
-      where: {
-        user_id: id,
-      },
+      where,
       include: {
         user: true,
         document: true,

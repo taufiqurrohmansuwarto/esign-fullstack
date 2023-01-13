@@ -53,6 +53,7 @@ const ActivityLog = () => {
   const [query, setQuery] = useState({
     page: 1,
     limit: 20,
+    type: "all",
   });
 
   const { data, isLoading } = useQuery(
