@@ -9,7 +9,7 @@ const index = async (req, res) => {
       user: { id },
     } = req;
 
-    const where = {
+    let where = {
       user_id: id,
     };
 

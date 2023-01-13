@@ -13,6 +13,12 @@ const selfSignUploadController = async (req, res) => {
     const { user, file } = req;
     const { title, workflow } = req?.body;
 
+    const currentUser = await prisma.User.findUnique({
+      where: {
+        id: user?.id,
+      },
+    });
+
     // check file format result is .pdf
 
     // tentukan filename
@@ -67,6 +73,7 @@ const selfSignUploadController = async (req, res) => {
     // now upsert to recipients
     const dataRecipient = {
       recipient_id: user?.id,
+      recipient_json: JSON.stringify(currentUser?.user_info),
       document_id: result?.id,
       created_at: new Date(),
       filename: currentFilename,

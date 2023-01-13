@@ -61,7 +61,11 @@ export default async function (req, res) {
       },
     },
     secret: process.env.NEXAUTH_SECRET,
-    theme: {},
+    theme: {
+      brandColor: "white",
+      colorScheme: "light",
+      buttonText: "white",
+    },
     jwt: {
       secret: process.env.NEXTAUTH_SECRET,
     },

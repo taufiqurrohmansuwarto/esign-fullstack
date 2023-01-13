@@ -191,3 +191,8 @@ body {
 .text-disabled {
   color: var(--textColorSecondary) !important;
 }
+
+.container {
+  background-color: '#8c8c8c';
+  padding: 20;
+}

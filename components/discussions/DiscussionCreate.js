@@ -38,11 +38,11 @@ function DiscussionCreate() {
   return (
     <div>
       <Form form={form} onFinish={handleFinish}>
-        <Row gutter={[8, 8]}>
-          <Col span={1}>
+        <Row gutter={[16, 8]}>
+          <Col>
             <Avatar src={user?.user?.image} size="large" />
           </Col>
-          <Col span={23}>
+          <Col span={21}>
             <Form.Item
               name="message"
               rules={[
@@ -52,7 +52,10 @@ function DiscussionCreate() {
                 },
               ]}
             >
-              <Input.TextArea rows={4} />
+              <Input.TextArea
+                placeholder="Write discussion about this document"
+                rows={4}
+              />
             </Form.Item>
             <Form.Item>
               <Button
@@ -61,7 +64,7 @@ function DiscussionCreate() {
                 htmlType="submit"
                 type="primary"
               >
-                Submit
+                Post
               </Button>
             </Form.Item>
           </Col>

@@ -147,3 +147,10 @@ export const getHistories = async (query) => {
 
   return fetcher.get(`/histories?${queryString}`).then((res) => res?.data);
 };
+
+// documents Information
+export const getRecipinents = async (documentId) => {
+  return fetcher
+    .get(`/documents/${documentId}/recipients`)
+    .then((res) => res?.data);
+};

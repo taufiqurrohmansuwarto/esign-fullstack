@@ -1,19 +1,19 @@
-const index = async (req, res) => {
+const recipientsIndex = async (req, res) => {
   try {
     const { documentId } = req?.query;
-    const recipients = await prisma.Recipient.findMany({
+    const currentDocument = await prisma.Document.findUnique({
       where: {
-        document_id: documentId,
+        id: documentId,
       },
-      include: {
-        user: {
-          select: {
-            user_info: true,
-          },
-        },
+      select: {
+        id: true,
+        filename: true,
+        status: true,
+        Recipient: true,
       },
     });
-    res.json(recipients);
+
+    res.json(currentDocument);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -32,6 +32,6 @@ const post = async (req, res) => {
 };
 
 module.exports = {
-  index,
+  recipientsIndex,
   post,
 };

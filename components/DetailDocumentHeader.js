@@ -1,16 +1,18 @@
 import { useRouter } from "next/router";
 import PageContainer from "./pro/PageContainer";
-import { Button, Card, Space, Tag } from "antd";
+import { Button, Card, Divider, Space, Tag } from "antd";
 import { useQuery } from "@tanstack/react-query";
 import { detailDocument } from "@/services/users.services";
 import { capitalize } from "@/lib/client-utils";
 
 const Content = ({ data }) => {
   return (
-    <Space>
-      {data?.filename}
-      <Tag>{capitalize(data?.workflow)}</Tag>
-    </Space>
+    <>
+      <Space>
+        {data?.filename}
+        <Tag>{capitalize(data?.workflow)}</Tag>
+      </Space>
+    </>
   );
 };
 
