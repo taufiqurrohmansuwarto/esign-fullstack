@@ -2,6 +2,7 @@ import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 import { formatDate } from "@/lib/client-utils";
 import { getHistories } from "@/services/users.services";
+import { FileOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import { Card, Row, Table, Col, Avatar, Typography } from "antd";
 import { useState } from "react";
@@ -27,8 +28,24 @@ const TitleHistory = ({ row }) => {
         </Col>
       </Row>
     );
-  } else if (type === "DOCUMENT") {
-    return <Row></Row>;
+  } else if (type === "DOCUMENT" || type === "document") {
+    return (
+      <Row gutter={[16, 8]}>
+        <Col>
+          <FileOutlined />
+        </Col>
+        <Col>
+          <Row>
+            <Typography.Text strong>{row?.document?.filename}</Typography.Text>
+          </Row>
+          <Row>
+            <Typography.Text type="secondary">
+              {formatDate(row?.created_at)}
+            </Typography.Text>
+          </Row>
+        </Col>
+      </Row>
+    );
   }
 };
 

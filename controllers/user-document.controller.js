@@ -52,10 +52,10 @@ const detailDocument = async (req, res) => {
       data: {
         document_id: documentId,
         user_id: id,
-        action: "opened",
+        action: "OPENED",
         ip_address: req?.ip,
         useragent: req?.useragent,
-        type: "document",
+        type: "DOCUMENT",
         created_at: new Date(),
       },
     });

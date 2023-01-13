@@ -88,6 +88,19 @@ const selfSignUploadController = async (req, res) => {
       },
     });
 
+    // create history to upload shome shit
+    await prisma.History.create({
+      data: {
+        document_id: data?.id,
+        user_id: user?.id,
+        action: "UPLOAD",
+        created_at: new Date(),
+        type: "DOCUMENT",
+        ip_address: req?.ip,
+        useragent: req?.useragent,
+      },
+    });
+
     res.json(data);
   } catch (error) {
     console.log(error);
