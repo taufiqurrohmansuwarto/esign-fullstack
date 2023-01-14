@@ -118,7 +118,14 @@ function Dashboard() {
   return (
     <PageContainer title="Dashboard">
       <Card bordered={false}>
-        <Skeleton loading={isLoading}>
+        <Skeleton
+          active
+          loading={isLoading}
+          avatar
+          paragraph={{
+            rows: 4,
+          }}
+        >
           <Button onClick={signOut}>Logout</Button>
           <HeaderUser data={data} />
           <Divider />

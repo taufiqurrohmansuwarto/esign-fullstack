@@ -38,7 +38,7 @@ const signMiddleware = async (req, res, next) => {
         id: req?.query?.documentId,
       },
       data: {
-        status: "completed",
+        status: "COMPLETED",
         sign_document: filename,
         document_id_bsre: resultBsre?.id_dokumen,
       },
@@ -49,8 +49,8 @@ const signMiddleware = async (req, res, next) => {
         document_id: req?.query?.documentId,
       },
       data: {
-        signatory_status: "completed",
-        status: "completed",
+        signatory_status: "COMPLETED",
+        status: "COMPLETED",
         sign_properties: req?.body?.properties,
         approval_date: new Date(),
       },

@@ -13,6 +13,7 @@ const index = async (req, res) => {
       include: {
         user: {
           select: {
+            id: true,
             user_info: true,
           },
         },

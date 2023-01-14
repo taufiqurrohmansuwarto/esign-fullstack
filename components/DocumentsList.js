@@ -102,6 +102,7 @@ function DocumentsList({ type = "all" }) {
 
   return (
     <Table
+      size="middle"
       title={() => (
         <Input.Search
           placeholder="Find by title"

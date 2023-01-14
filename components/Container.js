@@ -13,7 +13,7 @@ function Container({ children }) {
         minHeight: "70vh",
       }}
     >
-      <Col xs={24} sm={24} md={24} xl={16} xxl={16}>
+      <Col xs={24} sm={24} md={24} xl={18} xxl={18}>
         {children}
       </Col>
     </Row>

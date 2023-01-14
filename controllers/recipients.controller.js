@@ -8,6 +8,7 @@ const recipientsIndex = async (req, res) => {
       select: {
         id: true,
         filename: true,
+        workflow: true,
         status: true,
         Recipient: true,
       },

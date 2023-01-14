@@ -1,3 +1,4 @@
+import Container from "@/components/Container";
 import DocumentsList from "@/components/DocumentsList";
 import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
@@ -5,7 +6,9 @@ import UserLayout from "@/components/UserLayout";
 const AllDocuments = () => {
   return (
     <PageContainer title="All Document">
-      <DocumentsList type="all" />
+      <Container>
+        <DocumentsList type="all" />
+      </Container>
     </PageContainer>
   );
 };

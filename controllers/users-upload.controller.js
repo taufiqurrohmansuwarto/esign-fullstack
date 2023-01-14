@@ -30,7 +30,7 @@ const selfSignUploadController = async (req, res) => {
     const dataDocument = {
       original_filename: file?.originalname,
       type: file?.mimetype,
-      status: "draft",
+      status: "DRAFT",
       filename: title ? `${title}.pdf` : file?.originalname,
       workflow,
       size: file?.size,
@@ -70,29 +70,29 @@ const selfSignUploadController = async (req, res) => {
       },
     });
 
-    // now upsert to recipients
-    const dataRecipient = {
-      recipient_id: user?.id,
-      recipient_json: JSON.stringify(currentUser?.user_info),
-      document_id: result?.id,
-      created_at: new Date(),
-      filename: currentFilename,
-      sequence: 0,
-      role: "signer",
-      signatory_status: "pending",
-      is_owner: true,
-      status: "draft",
-    };
-
-    await prisma.Recipient.create({
-      data: dataRecipient,
-    });
-
     // todo buat riwayat saja
     const data = await prisma.Document.findUnique({
       where: {
         id: result?.id,
       },
+    });
+
+    // now upsert to recipients
+    const dataRecipient = {
+      recipient_id: user?.id,
+      recipient_json: currentUser?.user_info,
+      document_id: result?.id,
+      created_at: new Date(),
+      filename: data?.filename,
+      sequence: 0,
+      role: "signer",
+      signatory_status: "PENDING",
+      is_owner: true,
+      status: "DRAFT",
+    };
+
+    await prisma.Recipient.create({
+      data: dataRecipient,
     });
 
     // create history to upload shome shit

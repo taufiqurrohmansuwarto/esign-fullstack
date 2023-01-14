@@ -8,6 +8,36 @@ const previewDocumentController = async (req, res) => {};
 // preview tapi status dokumennya
 const previewDocumentWithStatusController = async (req, res) => {};
 
+// without document url
+const detailInformationDocument = async (req, res) => {
+  try {
+    const { documentId } = req?.query;
+    const result = await prisma.Document.findUnique({
+      where: {
+        id: documentId,
+      },
+      select: {
+        id: true,
+        workflow: true,
+        filename: true,
+        created_at: true,
+        size: true,
+        document_pages: true,
+        uploader: {
+          select: {
+            username: true,
+            image: true,
+          },
+        },
+      },
+    });
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 const detailDocument = async (req, res) => {
   try {
     const { documentId } = req?.query;
@@ -34,11 +64,11 @@ const detailDocument = async (req, res) => {
     const status = currentDocument?.status;
     let document;
 
-    if (status === "draft") {
+    if (status === "DRAFT") {
       document = currentDocument?.initial_document;
-    } else if (status === "completed") {
+    } else if (status === "COMPLETED") {
       document = currentDocument?.sing_document;
-    } else if (status === "ongoing") {
+    } else if (status === "ONGOING") {
       document = currentDocument?.ongoing_document;
     }
 
@@ -75,4 +105,5 @@ module.exports = {
   previewDocumentController,
   previewDocumentWithStatusController,
   detailDocument,
+  detailInformationDocument,
 };

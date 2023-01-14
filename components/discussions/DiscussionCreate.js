@@ -36,41 +36,39 @@ function DiscussionCreate() {
   };
 
   return (
-    <div>
-      <Form form={form} onFinish={handleFinish}>
-        <Row gutter={[16, 8]}>
-          <Col>
-            <Avatar src={user?.user?.image} size="large" />
-          </Col>
-          <Col span={21}>
-            <Form.Item
-              name="message"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your message",
-                },
-              ]}
+    <Form form={form} onFinish={handleFinish}>
+      <Row gutter={[16, 8]}>
+        <Col>
+          <Avatar src={user?.user?.image} size="large" />
+        </Col>
+        <Col span={21}>
+          <Form.Item
+            name="message"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your message",
+              },
+            ]}
+          >
+            <Input.TextArea
+              placeholder="Write discussion about this document"
+              rows={4}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              disabled={isLoading}
+              loading={isLoading}
+              htmlType="submit"
+              type="primary"
             >
-              <Input.TextArea
-                placeholder="Write discussion about this document"
-                rows={4}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                disabled={isLoading}
-                loading={isLoading}
-                htmlType="submit"
-                type="primary"
-              >
-                Post
-              </Button>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
-    </div>
+              Post
+            </Button>
+          </Form.Item>
+        </Col>
+      </Row>
+    </Form>
   );
 }
 

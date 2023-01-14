@@ -2,7 +2,10 @@ import { useRouter } from "next/router";
 import PageContainer from "./pro/PageContainer";
 import { Button, Card, Divider, Space, Tag } from "antd";
 import { useQuery } from "@tanstack/react-query";
-import { detailDocument } from "@/services/users.services";
+import {
+  detailDocument,
+  detailInformationDocument,
+} from "@/services/users.services";
 import { capitalize } from "@/lib/client-utils";
 
 const Content = ({ data }) => {
@@ -24,10 +27,11 @@ const DetailDocumentHeader = ({
   const router = useRouter();
 
   const { data, isLoading } = useQuery(
-    ["document", router.query.id],
-    () => detailDocument(router.query.id),
+    ["document-detail", router.query.id],
+    () => detailInformationDocument(router.query.id),
     {
       enabled: !!router.query.id,
+      refetchOnWindowFocus: false,
     }
   );
 

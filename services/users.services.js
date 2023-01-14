@@ -43,6 +43,12 @@ export const detailDocument = (documentId) => {
     .then((res) => res?.data);
 };
 
+export const detailInformationDocument = (documentId) => {
+  return fetcher
+    .get(`/documents/${documentId}/information`)
+    .then((res) => res?.data);
+};
+
 export const discussions = (documentId) => {
   return fetcher
     .get(`/documents/${documentId}/discussions`)
@@ -146,6 +152,16 @@ export const getHistories = async (query) => {
     .join("&");
 
   return fetcher.get(`/histories?${queryString}`).then((res) => res?.data);
+};
+
+export const documentHistories = async (documentId, query) => {
+  const queryString = Object.keys(query)
+    .map((key) => key + "=" + query[key])
+    .join("&");
+
+  return fetcher
+    .get(`/documents/${documentId}/histories?${queryString}`)
+    .then((res) => res?.data);
 };
 
 // documents Information
