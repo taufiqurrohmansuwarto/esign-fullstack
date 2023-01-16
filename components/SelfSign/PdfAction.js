@@ -1,10 +1,11 @@
-import { useEffect, useRef } from "react";
-import { Row, Col } from "antd";
+import { Col, Row } from "antd";
+import { useRef } from "react";
+import { Document, Page } from "react-pdf";
 import DocumentLoading from "../DocumentLoading";
-import { Page, Document } from "react-pdf";
 import SignMove from "./SelfSignMove";
 
 const PdfAction = ({
+  line,
   docUrl,
   changePageDocument,
   loadPageSuccess,
@@ -49,6 +50,7 @@ const PdfAction = ({
           <div ref={ref} style={{ position: "relative" }}>
             {signFilter.map((sign) => (
               <SignMove
+                line={line}
                 currentRef={ref.current}
                 frame={sign.frame}
                 key={sign.id}

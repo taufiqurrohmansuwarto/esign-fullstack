@@ -15,8 +15,10 @@ function DocumentLoading() {
             <Skeleton.Image size="large" active />
           </Space>
         </Row>
-        <Skeleton paragraph active />
-        <Skeleton paragraph active />
+        <Row style={{ marginTop: 10 }}>
+          <Skeleton paragraph active />
+          <Skeleton paragraph active />
+        </Row>
       </Card>
     </Row>
   );

@@ -8,6 +8,8 @@ import {
   fetchSignSymbol,
   removeSign,
   setDocumentProperty,
+  showLine,
+  hideLine,
   showSign,
   updateFrame,
 } from "features/self-sign.slice";
@@ -31,6 +33,14 @@ function View() {
 
   const changePageDocument = (payload) => {
     dispatch(changePage(payload));
+  };
+
+  const showLineStamp = () => {
+    dispatch(showLine());
+  };
+
+  const hideLineStamp = () => {
+    dispatch(hideLine());
   };
 
   const loadPageSuccess = (payload) => {
@@ -74,6 +84,8 @@ function View() {
         changePagination={changePaginations}
         addSign={addSignDocument}
         updateFrame={updateFrameDocument}
+        showLineStamp={showLineStamp}
+        hideLineStamp={hideLineStamp}
         removeSign={removeSignDocument}
         {...data}
       />

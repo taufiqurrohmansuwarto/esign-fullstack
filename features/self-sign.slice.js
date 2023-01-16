@@ -25,22 +25,24 @@ export const selfSignSlice = createSlice({
       url: undefined,
     },
     documentData: undefined,
-
-    // sign requirement
     documents: {
       currentPage: 1,
       totalPage: 10,
     },
-
     documentProperty: null,
     signs: [],
     signFilter: [],
-
-    // sending data and show dialog
     dataPos: null,
     showDialog: false,
+    line: true,
   },
   reducers: {
+    showLine(state) {
+      state.line = true;
+    },
+    hideLine(state) {
+      state.line = false;
+    },
     changeDocumentProperties(state, { payload }) {
       const { signSymbol, documentData, docUrl } = payload;
       state.signSymbol = signSymbol;
@@ -108,7 +110,6 @@ export const selfSignSlice = createSlice({
       state.signFilter = [];
     });
     builder.addCase(fetchSignSymbol.pending, (state, action) => {
-      console.log("loading..");
       state.loading = "loading";
     });
   },
@@ -126,6 +127,8 @@ export const {
   setDocumentProperty,
   showSign,
   updateFrame,
+  showLine,
+  hideLine,
 } = selfSignSlice.actions;
 
 export default selfSignSlice.reducer;

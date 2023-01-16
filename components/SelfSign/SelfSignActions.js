@@ -3,8 +3,8 @@ import {
   Button,
   Card,
   Col,
+  Form,
   Input,
-  InputNumber,
   Modal,
   Pagination,
   Row,
@@ -16,6 +16,77 @@ import { pdfjs } from "react-pdf";
 import PdfAction from "./PdfAction";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
+const ConfirmModal = ({ open, onCancel, documentData, signs }) => {
+  const [form] = Form.useForm();
+
+  const handleConfirm = async () => {
+    const result = await form.validateFields();
+
+    const properties = signs.map((sign) => {
+      const { frame, page } = sign;
+      const [x, y] = frame.translate;
+      const { height, width } = frame;
+
+      const xPos = x < 0 ? 0 : x;
+      const yPos = y < 0 ? 0 : y;
+
+      return {
+        xPos,
+        yPos,
+        height,
+        width,
+        page,
+      };
+    });
+
+    const data = {
+      signs,
+      id: documentData?.id,
+      passphrase: result.passphrase,
+      reason: result.reason,
+      properties,
+    };
+
+    console.log(data);
+  };
+
+  return (
+    <Modal
+      centered
+      title="Confirm"
+      closable={false}
+      maskClosable={false}
+      open={open}
+      onOk={handleConfirm}
+      onCancel={onCancel}
+    >
+      <p>Are you sure you want to sign this document?</p>
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={{
+          reason: "I approve this document",
+        }}
+      >
+        <Form.Item
+          rules={[{ required: true, message: "Passphrase cannot be empty" }]}
+          name="passphrase"
+          label="Passphrase"
+        >
+          <Input.Password />
+        </Form.Item>
+        <Form.Item
+          rules={[{ required: true, message: "Reason cannot be empty" }]}
+          name="reason"
+          label="Reason"
+        >
+          <Input.TextArea />
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+};
 
 // main export
 const SelfSignActions = function ({
@@ -33,45 +104,51 @@ const SelfSignActions = function ({
   documentData,
   addSign,
   removeSign,
+  showLineStamp,
+  hideLineStamp,
+  line,
 }) {
   const [open, setOpen] = useState(false);
   const [document, setDocument] = useState(null);
-  const [otp, setOtp] = useState("");
   const [reason, setReason] = useState("I approve this document");
   const [passphrase, setPassphrase] = useState("");
 
+  const handleOpen = () => {
+    setOpen(true);
+    hideLineStamp();
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+    showLineStamp();
+  };
+
   const handleSign = async () => {
-    try {
-      const { id } = documentData;
-      const properties = signs.map((sign) => {
-        const { frame, page } = sign;
-        const [x, y] = frame.translate;
-        const { height, width } = frame;
+    const { id } = documentData;
+    const properties = signs.map((sign) => {
+      const { frame, page } = sign;
+      const [x, y] = frame.translate;
+      const { height, width } = frame;
 
-        const xPos = x < 0 ? 0 : x;
-        const yPos = y < 0 ? 0 : y;
+      const xPos = x < 0 ? 0 : x;
+      const yPos = y < 0 ? 0 : y;
 
-        return {
-          xPos,
-          yPos,
-          height,
-          width,
-          page,
-        };
-      });
-
-      const data = {
-        documentId: id,
-        properties,
-        otp,
-        passphrase,
-        reason,
+      return {
+        xPos,
+        yPos,
+        height,
+        width,
+        page,
       };
+    });
 
-      //   await approveSignMutation.mutateAsync(data);
-    } catch (error) {
-      console.log(error);
-    }
+    const data = {
+      documentId: id,
+      properties,
+      otp,
+      passphrase,
+      reason,
+    };
   };
 
   const onSubmit = async () => {
@@ -101,40 +178,12 @@ const SelfSignActions = function ({
 
   return (
     <>
-      <Modal
-        title="OTP Verification"
-        width={700}
-        zIndex={99999}
-        closable={false}
-        onOk={handleSign}
-        maskClosable={false}
-        centered
-        onCancel={() => {
-          setOpen(false);
-        }}
-      >
-        <p>We already sent code verification to your email. Please verify.</p>
-        <Space direction="vertical">
-          <Input
-            style={{ width: 300 }}
-            placeholder="Passphrase"
-            value={passphrase}
-            onChange={(e) => setPassphrase(e?.target?.value)}
-          />
-          <InputNumber
-            style={{ width: 300 }}
-            placeholder="OTP Number"
-            value={otp}
-            onChange={(e) => setOtp(e)}
-          />
-          <Input
-            placeholder="Reason"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-          />
-        </Space>
-      </Modal>
-      {JSON.stringify(loading)}
+      <ConfirmModal
+        documentData={documentData}
+        signs={signs}
+        open={open}
+        onCancel={handleCancel}
+      />
       {loading === "idle" && (
         <div style={{ padding: 5 }}>
           <Row justify="center">
@@ -150,18 +199,10 @@ const SelfSignActions = function ({
             </Col>
             <Col push={6}>
               <Space>
-                <Button
-                  type="primary"
-                  onClick={addSign}
-                  // disabled={otpMutation.isLoading}
-                >
+                <Button type="primary" onClick={addSign}>
                   Place Signature
                 </Button>
-                <Button
-                  disabled={signs.length === 0}
-                  // loading={otpMutation.isLoading}
-                  onClick={onSubmit}
-                >
+                <Button disabled={signs.length === 0} onClick={handleOpen}>
                   Finish
                 </Button>
               </Space>
@@ -191,14 +232,17 @@ const SelfSignActions = function ({
             <div
               style={{
                 width: "100%",
+                borderRadius: 5,
                 height: "100%",
                 overflow: "hidden",
                 textAlign: "center",
+                backgroundColor: "#8c8c8c",
               }}
             >
               {loading === "idle" && docUrl && (
                 <>
                   <PdfAction
+                    line={line}
                     docUrl={docUrl}
                     loadPageSuccess={loadPageSuccess}
                     changePageDocument={changePageDocument}
