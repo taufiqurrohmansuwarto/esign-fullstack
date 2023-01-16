@@ -21,7 +21,9 @@ export const selfSignSlice = createSlice({
     loading: "idle",
     step: 0,
     signSymbol: null,
-    docUrl: undefined,
+    docUrl: {
+      url: undefined,
+    },
     documentData: undefined,
 
     // sign requirement
@@ -98,12 +100,15 @@ export const selfSignSlice = createSlice({
     builder.addCase(fetchSignSymbol.fulfilled, (state, action) => {
       state.loading = "idle";
       state.signSymbol = action.payload.stamp?.image;
-      state.docUrl = action.payload.document?.document_url;
+      state.docUrl = {
+        url: action.payload.document?.document_url,
+      };
       state.documentData = action.payload.document;
       state.signs = [];
       state.signFilter = [];
     });
     builder.addCase(fetchSignSymbol.pending, (state, action) => {
+      console.log("loading..");
       state.loading = "loading";
     });
   },
