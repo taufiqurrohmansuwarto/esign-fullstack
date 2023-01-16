@@ -12,6 +12,8 @@ import {
 } from "@tanstack/react-query";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { ConfigProvider } from "antd";
+import { Provider } from "react-redux";
+import store from "../features";
 
 const Auth = ({ children, role }) => {
   const { data: session, status } = useSession({
@@ -43,26 +45,28 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       baseUrl="/esign"
       basePath="/esign/api/auth"
     >
-      <ConfigProvider
-        locale={id}
-        theme={{
-          token: {
-            colorPrimary: "#eb2f96",
-          },
-        }}
-      >
-        <QueryClientProvider client={queryClient}>
-          <Hydrate state={pageProps.dehydrateState}>
-            {Component.Auth ? (
-              <Auth role={Component?.Auth?.role}>
-                {getLayout(<Component {...pageProps} />)}
-              </Auth>
-            ) : (
-              <Component {...pageProps} />
-            )}
-          </Hydrate>
-        </QueryClientProvider>
-      </ConfigProvider>
+      <Provider store={store}>
+        <ConfigProvider
+          locale={id}
+          theme={{
+            token: {
+              colorPrimary: "#eb2f96",
+            },
+          }}
+        >
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydrateState}>
+              {Component.Auth ? (
+                <Auth role={Component?.Auth?.role}>
+                  {getLayout(<Component {...pageProps} />)}
+                </Auth>
+              ) : (
+                <Component {...pageProps} />
+              )}
+            </Hydrate>
+          </QueryClientProvider>
+        </ConfigProvider>
+      </Provider>
     </SessionProvider>
   );
 }

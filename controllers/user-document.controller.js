@@ -64,11 +64,11 @@ const detailDocument = async (req, res) => {
     const status = currentDocument?.status;
     let document;
 
-    if (status === "DRAFT") {
+    if (status === "DRAFT" || status === "draft") {
       document = currentDocument?.initial_document;
-    } else if (status === "COMPLETED") {
+    } else if (status === "COMPLETED" || status === "completed") {
       document = currentDocument?.sing_document;
-    } else if (status === "ONGOING") {
+    } else if (status === "ONGOING" || status === "ongoing") {
       document = currentDocument?.ongoing_document;
     }
 

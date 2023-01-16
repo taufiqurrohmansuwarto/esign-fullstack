@@ -1,14 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
-import documents from "../../src/services/documents";
+import { stampInfo, detailDocument } from "@/services/users.services";
 
 export const fetchSignSymbol = createAsyncThunk(
   "users/signSymbol",
   async (documentId) => {
-    const data = await documents.getStamps();
-    const result = await documents.getDocumentFile(documentId);
-    const { data: stamp, ...akhir } = result;
-    const results = { stamp: data, document: stamp, documentData: akhir };
+    const currentUserStamp = await stampInfo();
+    const currentDocument = await detailDocument(documentId);
+    const results = {
+      stamp: currentUserStamp,
+      document: currentDocument,
+    };
     return results;
   }
 );
@@ -95,9 +97,9 @@ export const selfSignSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchSignSymbol.fulfilled, (state, action) => {
       state.loading = "idle";
-      state.signSymbol = action.payload.stamp;
-      state.docUrl = action.payload.document;
-      state.documentData = action.payload.documentData;
+      state.signSymbol = action.payload.stamp?.image;
+      state.docUrl = action.payload.document?.document_url;
+      state.documentData = action.payload.document;
       state.signs = [];
       state.signFilter = [];
     });

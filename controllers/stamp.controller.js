@@ -51,7 +51,7 @@ const get = async (req, res) => {
       const currentData = serializeAttr(employee);
       const resultBuffer = await createStamp(currentData);
       const base64Image = resultBuffer.toString("base64");
-      res.json({ image: base64Image, userInfo: employee });
+      res.json({ userInfo: employee, image: base64Image });
     }
   } catch (error) {
     console.log(error);

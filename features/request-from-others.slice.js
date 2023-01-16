@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
-import documents from "../../src/services/documents";
 
 export const fetchDocuments = createAsyncThunk(
   "users/documents",
   async (documentId) => {
-    const result = await documents.getDocumentFile(documentId);
-    const { data: document, ...documentData } = result;
+    // const result = await documents.getDocumentFile(documentId);
+    // const { data: document, ...documentData } = result;
 
-    const hasil = { document, documentData };
-    console.log(hasil);
+    // const hasil = { document, documentData };
+    // console.log(hasil);
+    const hasil = {};
     return hasil;
   }
 );

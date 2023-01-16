@@ -16,6 +16,7 @@ function DocumentLoading() {
           </Space>
         </Row>
         <Skeleton paragraph active />
+        <Skeleton paragraph active />
       </Card>
     </Row>
   );
