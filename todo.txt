@@ -1,3 +1,2 @@
-1. create histories base documents and user id
-2. create to document detail
-3. create self sign document with redux (diapiki)
+1. create document component in view just for self sign 
+2. create kalau sukses, redirect ke halaman lain untuk self sign
