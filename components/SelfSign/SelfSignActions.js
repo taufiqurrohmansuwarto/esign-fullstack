@@ -1,10 +1,13 @@
+import { selfSignApproveSign } from "@/services/users.services";
 import { WarningOutlined } from "@ant-design/icons";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Card,
   Col,
   Form,
   Input,
+  message,
   Modal,
   Pagination,
   Row,
@@ -19,6 +22,22 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const ConfirmModal = ({ open, onCancel, documentData, signs }) => {
   const [form] = Form.useForm();
+
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading } = useMutation(
+    (data) => selfSignApproveSign(data),
+    {
+      onSuccess: () => {
+        message.success("Document is sign successfully");
+        // queryClient.invalidateQueries()
+      },
+      onError: (error) => {
+        const messageError = error?.response?.data?.message;
+        message.error(messageError);
+      },
+    }
+  );
 
   const handleConfirm = async () => {
     const result = await form.validateFields();
@@ -49,13 +68,14 @@ const ConfirmModal = ({ open, onCancel, documentData, signs }) => {
       },
     };
 
-    console.log({ signs, properties });
+    mutate(dataSend);
   };
 
   return (
     <Modal
       centered
       title="Confirm"
+      confirmLoading={isLoading}
       closable={false}
       maskClosable={false}
       open={open}
