@@ -1,5 +1,7 @@
 const { default: prisma } = require("lib/prisma");
 
+const lower = (str) => str?.toLower();
+
 const CheckAndReturnMiddleware = async (req, res, next) => {
   try {
     const { documentId } = req?.query;
@@ -26,12 +28,13 @@ const CheckAndReturnMiddleware = async (req, res, next) => {
       },
     });
 
-    const documentValid =
-      currentDocument?.status === "draft" &&
+    // valid terbukti kalau dia statusnya draft dan workflow menggunakan self sign
+    const isValid =
+      lower(currentDocument?.status) === "draft" &&
       currentDocument?.user_id === userId &&
       currentDocument?.workflow === "selfSign";
 
-    if (!documentValid) {
+    if (!isValid) {
       res.status(404).json({
         code: 404,
         message:

@@ -78,8 +78,10 @@ export const selfSignUpload = (data) => {
     .then((res) => res?.data);
 };
 
-export const selfSignApproveSign = (data) => {
-  return fetcher.post("/self-sign/approve", data).then((res) => res?.data);
+export const selfSignApproveSign = ({ documentId, data }) => {
+  return fetcher
+    .patch(`/documents/${documentId}/self-sign`, data)
+    .then((res) => res?.data);
 };
 
 // request from others

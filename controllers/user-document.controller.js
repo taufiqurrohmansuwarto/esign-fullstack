@@ -67,7 +67,7 @@ const detailDocument = async (req, res) => {
     if (status === "DRAFT" || status === "draft") {
       document = currentDocument?.initial_document;
     } else if (status === "COMPLETED" || status === "completed") {
-      document = currentDocument?.sing_document;
+      document = currentDocument?.sign_document;
     } else if (status === "ONGOING" || status === "ongoing") {
       document = currentDocument?.ongoing_document;
     }
