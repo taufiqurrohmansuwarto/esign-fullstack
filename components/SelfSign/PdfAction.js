@@ -72,7 +72,8 @@ const PdfAction = ({
               <Page
                 onRenderSuccess={onLoadPageSuccess}
                 renderTextLayer={false}
-                scale={1.2}
+                // this magic number dont change
+                scale={1}
                 pageNumber={documents?.currentPage}
               />
             </Document>

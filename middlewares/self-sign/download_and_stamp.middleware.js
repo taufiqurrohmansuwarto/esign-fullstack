@@ -99,23 +99,28 @@ const createStampSelfSign = async ({
         width: width / originalImageWidth,
       };
 
+      const stampScaleWidth = stamp.scale(imageProperty.width).width;
+      const stampScaleHeight = stamp.scale(imageProperty.height).height;
+
       const clientCoord = { x, y };
 
-      const serverPage = pages[page - 1];
+      const currentPage = pages[page - 1];
+      const currentPageHeight = currentPage.getHeight();
+
       const serverCoord = {
         x,
-        y: serverPage.getHeight() - (clientCoord.y + height).toFixed(2),
+        y: currentPageHeight - (clientCoord.y + height)?.toFixed(2),
       };
 
       const serverData = {
         x: serverCoord.x,
         y: serverCoord.y,
-        width: stamp.scale(imageProperty.width).width,
-        height: stamp.scale(imageProperty.height).height,
+        width: stampScaleWidth,
+        height: stampScaleHeight,
       };
 
       currentPosition.push({ x, y, width, height, page });
-      serverPage.drawImage(stamp, serverData);
+      currentPage.drawImage(stamp, serverData);
     });
 
     const newPdf = await pdfDocNew.save();

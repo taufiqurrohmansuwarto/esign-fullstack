@@ -20,7 +20,13 @@ import PdfAction from "./PdfAction";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const ConfirmModal = ({ open, onCancel, documentData, signs }) => {
+const ConfirmModal = ({
+  open,
+  onCancel,
+  documentData,
+  signs,
+  documentProperty,
+}) => {
   const [form] = Form.useForm();
 
   const queryClient = useQueryClient();
@@ -41,6 +47,12 @@ const ConfirmModal = ({ open, onCancel, documentData, signs }) => {
 
   const handleConfirm = async () => {
     const result = await form.validateFields();
+
+    const secondProperties = signs.map((sign) => {
+      const { frame, page } = sign;
+      const [x, y] = frame.translate;
+      const { height, width } = frame;
+    });
 
     const properties = signs.map((sign) => {
       const { frame, page } = sign;
@@ -67,6 +79,8 @@ const ConfirmModal = ({ open, onCancel, documentData, signs }) => {
         properties,
       },
     };
+
+    console.log(documentProperty);
 
     mutate(dataSend);
   };
@@ -201,6 +215,7 @@ const SelfSignActions = function ({
     <>
       <ConfirmModal
         documentData={documentData}
+        documentProperty={documentProperty}
         signs={signs}
         open={open}
         onCancel={handleCancel}
@@ -228,7 +243,6 @@ const SelfSignActions = function ({
                 </Button>
               </Space>
             </Col>
-            {/* )} */}
           </Row>
         </div>
       )}

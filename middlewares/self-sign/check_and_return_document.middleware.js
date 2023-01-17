@@ -1,6 +1,6 @@
 const { default: prisma } = require("lib/prisma");
 
-const lower = (str) => str?.toLower();
+const lower = (str) => str?.toLowerCase();
 
 const CheckAndReturnMiddleware = async (req, res, next) => {
   try {
@@ -57,6 +57,7 @@ const CheckAndReturnMiddleware = async (req, res, next) => {
       next();
     }
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
