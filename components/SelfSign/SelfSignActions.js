@@ -14,29 +14,27 @@ import {
   Skeleton,
   Space,
 } from "antd";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { pdfjs } from "react-pdf";
 import PdfAction from "./PdfAction";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
-const ConfirmModal = ({
-  open,
-  onCancel,
-  documentData,
-  signs,
-  documentProperty,
-}) => {
+const ConfirmModal = ({ open, onCancel, documentData, signs }) => {
   const [form] = Form.useForm();
 
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const { mutate, isLoading } = useMutation(
     (data) => selfSignApproveSign(data),
     {
       onSuccess: () => {
         message.success("Document is sign successfully");
-        // queryClient.invalidateQueries()
+        queryClient.invalidateQueries(["document-detail", documentData?.id]);
+        router.push(`/user/documents/${documentData?.id}/view`);
+        onCancel();
       },
       onError: (error) => {
         const messageError = error?.response?.data?.message;
@@ -47,12 +45,6 @@ const ConfirmModal = ({
 
   const handleConfirm = async () => {
     const result = await form.validateFields();
-
-    const secondProperties = signs.map((sign) => {
-      const { frame, page } = sign;
-      const [x, y] = frame.translate;
-      const { height, width } = frame;
-    });
 
     const properties = signs.map((sign) => {
       const { frame, page } = sign;
@@ -80,15 +72,13 @@ const ConfirmModal = ({
       },
     };
 
-    console.log(documentProperty);
-
     mutate(dataSend);
   };
 
   return (
     <Modal
       centered
-      title="Confirm"
+      title="Confirmation"
       confirmLoading={isLoading}
       closable={false}
       maskClosable={false}
@@ -96,7 +86,6 @@ const ConfirmModal = ({
       onOk={handleConfirm}
       onCancel={onCancel}
     >
-      <p>Are you sure you want to sign this document?</p>
       <Form
         form={form}
         layout="vertical"
@@ -144,9 +133,6 @@ const SelfSignActions = function ({
   line,
 }) {
   const [open, setOpen] = useState(false);
-  const [document, setDocument] = useState(null);
-  const [reason, setReason] = useState("I approve this document");
-  const [passphrase, setPassphrase] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
@@ -157,59 +143,6 @@ const SelfSignActions = function ({
     setOpen(false);
     showLineStamp();
   };
-
-  const handleSign = async () => {
-    const { id } = documentData;
-    const properties = signs.map((sign) => {
-      const { frame, page } = sign;
-      const [x, y] = frame.translate;
-      const { height, width } = frame;
-
-      const xPos = x < 0 ? 0 : x;
-      const yPos = y < 0 ? 0 : y;
-
-      return {
-        xPos,
-        yPos,
-        height,
-        width,
-        page,
-      };
-    });
-
-    const data = {
-      documentId: id,
-      properties,
-      otp,
-      passphrase,
-      reason,
-    };
-  };
-
-  const onSubmit = async () => {
-    const { id } = documentData;
-    await otpMutation.mutateAsync(id);
-  };
-
-  if (loading == "loading") {
-    return (
-      <Row justify="center" align="middle" style={{ padding: 18 }}>
-        <Card style={{ width: 600, height: 800 }}>
-          <Skeleton avatar={{ size: 100 }} active />
-          <Skeleton paragraph active />
-          <Skeleton paragraph active />
-          <Row justify="center" align="middle">
-            <Space size="large">
-              <Skeleton.Image size="large" active />
-              <Skeleton.Image size="large" active />
-              <Skeleton.Image size="large" active />
-            </Space>
-          </Row>
-          <Skeleton paragraph active />
-        </Card>
-      </Row>
-    );
-  }
 
   return (
     <>
@@ -246,7 +179,7 @@ const SelfSignActions = function ({
           </Row>
         </div>
       )}
-      {signs.length !== 0 && (
+      {signs?.length !== 0 && (
         <div style={{ backgroundColor: "#531dab", padding: 10 }}>
           <Row justify="center">
             <Col>
@@ -271,6 +204,7 @@ const SelfSignActions = function ({
                 height: "100%",
                 overflow: "hidden",
                 textAlign: "center",
+                padding: 4,
                 backgroundColor: "#8c8c8c",
               }}
             >

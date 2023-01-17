@@ -1,94 +1,53 @@
 import Container from "@/components/Container";
 import DetailDocumentHeader from "@/components/DetailDocumentHeader";
+import PdfView from "@/components/PdfView";
+import SelfSignView from "@/components/SelfSign/SelfSignView";
 import UserLayout from "@/components/UserLayout";
-import {
-  addSign,
-  changePage,
-  changePagination,
-  fetchSignSymbol,
-  removeSign,
-  setDocumentProperty,
-  showLine,
-  hideLine,
-  showSign,
-  updateFrame,
-} from "features/self-sign.slice";
-import dynamic from "next/dynamic";
+import { detailDocument } from "@/services/users.services";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "antd";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-// signselfactions to client
-const SelfSignActions = dynamic(
-  () => import("../../../../components/SelfSign/SelfSignActions"),
-  {
-    ssr: false,
+const SignView = ({ data }) => {
+  const { status, workflow, id } = data;
+
+  const selfSignAction = status === "DRAFT" && workflow === "selfSign";
+  const selfSignView = status === "COMPLETED" && workflow === "selfSign";
+
+  if (selfSignAction) {
+    return <SelfSignView documentId={id} />;
   }
-);
+
+  if (selfSignView) {
+    return (
+      <PdfView
+        data={data}
+        url={{
+          url: data?.document_url,
+        }}
+      />
+    );
+  }
+};
 
 function View() {
   const router = useRouter();
-  const data = useSelector((state) => state?.selfSign, shallowEqual);
-  const dispatch = useDispatch();
+  const documentId = router.query.id;
 
-  const changePageDocument = (payload) => {
-    dispatch(changePage(payload));
-  };
-
-  const showLineStamp = () => {
-    dispatch(showLine());
-  };
-
-  const hideLineStamp = () => {
-    dispatch(hideLine());
-  };
-
-  const loadPageSuccess = (payload) => {
-    dispatch(setDocumentProperty(payload));
-  };
-
-  const changePaginations = (payload) => {
-    dispatch(changePagination(payload));
-    dispatch(showSign());
-  };
-
-  const addSignDocument = () => {
-    dispatch(
-      addSign({
-        frame: {
-          height: 175,
-          width: 350,
-          translate: [0, 0, 0],
-        },
-      })
-    );
-  };
-
-  const updateFrameDocument = (payload) => {
-    dispatch(updateFrame(payload));
-  };
-
-  const removeSignDocument = (id) => {
-    dispatch(removeSign(id));
-  };
-
-  useEffect(() => {
-    dispatch(fetchSignSymbol(router?.query?.id));
-  }, [router?.query?.id]);
+  const { data, isLoading } = useQuery(
+    ["document-detail", documentId],
+    () => detailDocument(documentId),
+    {
+      enabled: !!documentId,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   return (
     <Container>
-      <SelfSignActions
-        changePageDocument={changePageDocument}
-        loadPageSuccess={loadPageSuccess}
-        changePagination={changePaginations}
-        addSign={addSignDocument}
-        updateFrame={updateFrameDocument}
-        showLineStamp={showLineStamp}
-        hideLineStamp={hideLineStamp}
-        removeSign={removeSignDocument}
-        {...data}
-      />
+      <Skeleton loading={isLoading}>
+        <SignView data={data} />
+      </Skeleton>
     </Container>
   );
 }

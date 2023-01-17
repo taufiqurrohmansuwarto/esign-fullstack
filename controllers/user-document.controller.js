@@ -20,9 +20,20 @@ const detailInformationDocument = async (req, res) => {
         id: true,
         workflow: true,
         filename: true,
+        status: true,
         created_at: true,
         size: true,
         document_pages: true,
+        Recipient: {
+          select: {
+            sign_properties: true,
+          },
+          where: {
+            recipient_id: req?.user?.id,
+            signatory_status: "COMPLETED",
+            role: "signer",
+          },
+        },
         uploader: {
           select: {
             username: true,
@@ -77,6 +88,31 @@ const detailDocument = async (req, res) => {
       filename: document,
     });
 
+    let initialDocUrl = null;
+    let ongoingDocUrl = null;
+    let signDocUrl = null;
+
+    if (currentDocument?.initial_document) {
+      initialDocUrl = await downloadFile({
+        minio: req?.mc,
+        filename: currentDocument?.initial_document,
+      });
+    }
+
+    if (currentDocument?.ongoing_document) {
+      ongoingDocUrl = await downloadFile({
+        minio: req?.mc,
+        filename: currentDocument?.ongoing_document,
+      });
+    }
+
+    if (currentDocument?.sign_document) {
+      signDocUrl = await downloadFile({
+        minio: req?.mc,
+        filename: currentDocument?.sign_document,
+      });
+    }
+
     //  now create history
     await prisma.History.create({
       data: {
@@ -93,7 +129,15 @@ const detailDocument = async (req, res) => {
     if (recipient?.length === 0 || !currentDocument) {
       res.status(404).json({ message: "Document not found" });
     } else {
-      res.status(200).json({ ...currentDocument, document_url: result });
+      res.status(200).json({
+        ...currentDocument,
+        document_url: result,
+        urls: {
+          initialDocUrl,
+          ongoingDocUrl,
+          signDocUrl,
+        },
+      });
     }
   } catch (error) {
     console.log(error);

@@ -24,6 +24,7 @@ export const selfSignSlice = createSlice({
     docUrl: {
       url: undefined,
     },
+    view: null,
     documentData: undefined,
     documents: {
       currentPage: 1,
@@ -102,6 +103,13 @@ export const selfSignSlice = createSlice({
     builder.addCase(fetchSignSymbol.fulfilled, (state, action) => {
       state.loading = "idle";
       state.signSymbol = action.payload.stamp?.image;
+
+      if (action?.payload?.document?.status === "COMPLETED") {
+        state.view = "view";
+      } else {
+        state.view = "sign";
+      }
+
       state.docUrl = {
         url: action.payload.document?.document_url,
       };

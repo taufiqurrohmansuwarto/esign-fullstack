@@ -4,7 +4,7 @@ import React from "react";
 function DocumentLoading() {
   return (
     <Row justify="center" align="middle" style={{ padding: 18 }}>
-      <Card style={{ width: 600, height: 800 }}>
+      <Card style={{ width: 600, height: 900 }}>
         <Skeleton avatar={{ size: 100 }} active />
         <Skeleton paragraph active />
         <Skeleton paragraph active />

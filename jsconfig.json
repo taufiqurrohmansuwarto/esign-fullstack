@@ -7,7 +7,8 @@
       "@/middlewares/*": ["middlewares/*"],
       "@/services/*": ["services/*"],
       "@/lib/*": ["lib/*"],
-      "@/validators/*": ["validators/*"]
+      "@/validators/*": ["validators/*"],
+      "@/features/*": ["features/*"],
     }
   }
 }

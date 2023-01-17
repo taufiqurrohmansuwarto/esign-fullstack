@@ -50,7 +50,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           locale={id}
           theme={{
             token: {
-              colorPrimary: "#eb2f96",
+              colorPrimary: "#52c41a",
             },
           }}
         >

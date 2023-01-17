@@ -1,5 +1,5 @@
-import SelfSignAction from "@/components/SelfSign/SelfSignAction";
 import SelfSignUploader from "@/components/SelfSign/SelfSignUploader";
+import SelfSignView from "@/components/SelfSign/SelfSignView";
 import SelfSignUploadHeader from "@/components/SelfSignUploadHeader";
 import UserLayout from "@/components/UserLayout";
 import { useRouter } from "next/router";
@@ -11,7 +11,7 @@ function SelfSignUpload() {
   if (router?.query?.documentId) {
     return (
       <SelfSignUploadHeader current={1}>
-        <SelfSignAction documentId={router?.query?.documentId} />
+        <SelfSignView documentId={router?.query?.documentId} />
       </SelfSignUploadHeader>
     );
   }

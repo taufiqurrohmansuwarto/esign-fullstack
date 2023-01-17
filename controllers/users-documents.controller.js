@@ -16,6 +16,9 @@ const index = async (req, res) => {
       where: {
         recipient_id: userId,
       },
+      orderBy: {
+        created_at: "desc",
+      },
       include: {
         document: {
           include: {

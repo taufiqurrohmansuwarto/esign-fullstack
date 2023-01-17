@@ -105,7 +105,9 @@ const DocumentDetail = ({ documentId }) => {
         </Descriptions.Item>
       </Descriptions>
       <Divider />
-      <Descriptions title="My Signatures" layout="vertical"></Descriptions>
+      <Descriptions title="My Signatures" layout="vertical">
+        <Descriptions.Item>{JSON.stringify(data?.Recipient)}</Descriptions.Item>
+      </Descriptions>
     </Skeleton>
   );
 };
