@@ -40,15 +40,16 @@ const ConfirmModal = ({ open, onCancel, documentData, signs }) => {
       };
     });
 
-    const data = {
-      signs,
-      id: documentData?.id,
-      passphrase: result.passphrase,
-      reason: result.reason,
-      properties,
+    const dataSend = {
+      documentId: documentData?.id,
+      data: {
+        passphrase: result.passphrase,
+        reason: result.reason,
+        properties,
+      },
     };
 
-    console.log(data);
+    console.log({ signs, properties });
   };
 
   return (
