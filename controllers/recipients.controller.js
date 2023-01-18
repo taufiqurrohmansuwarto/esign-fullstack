@@ -21,6 +21,7 @@ const recipientsIndex = async (req, res) => {
   }
 };
 
+// post merupakan penambahan recipients dalam dokumen
 const post = async (req, res) => {
   try {
     // must be array to simplified
