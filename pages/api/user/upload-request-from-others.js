@@ -13,9 +13,9 @@ export const config = {
 const router = createRouter();
 
 router
-  .use(auth("testing"))
+  .use(auth())
   .post(
-    multer().single("document"),
+    multer().single("file"),
     checkingUploadMiddleware("requestFromOthers"),
     requestFromOthersController
   );

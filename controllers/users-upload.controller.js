@@ -122,6 +122,12 @@ const requestFromOthersController = async (req, res) => {
     const { user, file } = req;
     const { title, workflow } = req?.body;
 
+    const currentUser = await prisma.User.findUnique({
+      where: {
+        id: user?.id,
+      },
+    });
+
     const currentFilename = changeFilenamePdf(title, file);
     const currentData = documentData({
       file,
@@ -134,6 +140,7 @@ const requestFromOthersController = async (req, res) => {
     const document = await prisma.Document.create({
       data: currentData,
     });
+
     const documentFooter = await footer({
       documentId: document?.id,
       file,
@@ -160,19 +167,32 @@ const requestFromOthersController = async (req, res) => {
 
     const recipientData = firstRecipientRequestFromOthers({
       document,
-      user,
+      user: currentUser,
     });
 
     await prisma.Recipient.create({
       data: recipientData,
     });
 
-    res.json({
-      code: 200,
-      message: "ok",
-      currentFilename,
-      currentData,
+    await prisma.History.create({
+      data: {
+        document_id: document?.id,
+        user_id: currentUser?.id,
+        action: "UPLOAD",
+        created_at: new Date(),
+        type: "DOCUMENT",
+        ip_address: req?.ip,
+        useragent: req?.useragent,
+      },
     });
+
+    const currentDocument = await prisma.Document.findUnique({
+      where: {
+        id: document?.id,
+      },
+    });
+
+    res.json(currentDocument);
   } catch (error) {
     console.log(error);
     res.status(500).json({

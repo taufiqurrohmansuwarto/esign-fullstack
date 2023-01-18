@@ -87,12 +87,16 @@ export const selfSignApproveSign = ({ documentId, data }) => {
 // request from others
 export const requestFromOthersUpload = (data) => {
   return fetcher
-    .post("/request-from-others/upload", data, {
+    .post("/upload-request-from-others", data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     })
     .then((res) => res?.data);
+};
+
+export const findRecipients = (employeeNumber) => {
+  return fetcher.get(`/stamps/${employeeNumber}`).then((res) => res?.data);
 };
 
 export const requestFromOthersAddRecipients = (data) => {
