@@ -18,18 +18,18 @@ module.exports.beforeInsertMiddleware = async (req, res, next) => {
       where: {
         document_id: documentId,
         recipient_id: user?.id,
-        status: "draft",
+        status: "DRAFT",
         role: "owner",
         is_owner: true,
       },
     });
 
-    if (!recipient) {
+    if (!recipient?.length) {
       res.status(404).json({
         code: 404,
-        message: "document not found or you are not owner of this document",
+        message: "document not found or you are not the owner of this document",
       });
-    } else if (document?.workflow === "requestFromOthers") {
+    } else if (document?.workflow !== "requestFromOthers") {
       res.status(400).json({
         code: 400,
         message: "Only requestFromOthers workflow can add recipients",

@@ -1,3 +1,4 @@
+const { checkNik } = require("@/services/bsre/bsre.user.service");
 const { biodataPegawai } = require("@/services/gateway.service");
 const { default: prisma } = require("lib/prisma");
 const { createStamp } = require("lib/utils");
@@ -51,7 +52,20 @@ const get = async (req, res) => {
       const currentData = serializeAttr(employee);
       const resultBuffer = await createStamp(currentData);
       const base64Image = resultBuffer.toString("base64");
-      res.json({ userInfo: employee, image: base64Image });
+
+      // const currentNik = employee?.nik;
+      // const result = await checkNik(currentNik);
+      // let isRegistered = false;
+
+      // if (result?.data?.status_code === 1111) {
+      //   isRegistered = true;
+      // }
+
+      res.json({
+        userInfo: employee,
+        image: base64Image,
+        // is_registered: isRegistered,
+      });
     }
   } catch (error) {
     console.log(error);

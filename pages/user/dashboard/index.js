@@ -126,7 +126,9 @@ function Dashboard() {
             rows: 4,
           }}
         >
-          <Button onClick={signOut}>Logout</Button>
+          <Button style={{ marginBottom: 10 }} onClick={signOut}>
+            Logout
+          </Button>
           <HeaderUser data={data} />
           <Divider />
           <StatusUser data={data} />

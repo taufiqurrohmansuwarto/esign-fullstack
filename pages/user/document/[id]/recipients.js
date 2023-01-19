@@ -5,28 +5,27 @@ import { upperCase } from "@/lib/client-utils";
 import { getRecipinents } from "@/services/users.services";
 import { ClockCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Avatar,
-  Card,
-  Divider,
-  Space,
-  Tag,
-  Timeline,
-  Tooltip,
-  Typography,
-} from "antd";
+import { Avatar, Card, Space, Tag, Timeline, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
-import React from "react";
 
 const Recipient = ({ document }) => {
   const documentStatus = document?.status?.toLowerCase();
 
-  // if (
-  //   document?.workflow === "requestFromOthers" &&
-  //   documentStatus === "draft"
-  // ) {
-  //   return null;
-  // }
+  const router = useRouter();
+
+  const addRecipient = () =>
+    router.push(`/user/document/${document?.id}/add-recipient`);
+
+  if (
+    document?.workflow === "requestFromOthers" &&
+    documentStatus === "draft"
+  ) {
+    return (
+      <div>
+        Document still in draft mode, please add recipient first in document tab
+      </div>
+    );
+  }
 
   return (
     <Timeline mode="left">

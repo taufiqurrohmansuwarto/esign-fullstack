@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <>
       <Head>
-        <title>E-Sign BKD</title>
+        <title>E-Sign</title>
       </Head>
       <SessionProvider
         session={session}

@@ -25,7 +25,8 @@ const recipientsIndex = async (req, res) => {
 const post = async (req, res) => {
   try {
     // must be array to simplified
-    const { employee_number } = req?.body;
+    const recipients = req?.body?.recipients;
+
     res.status(200).json({ message: "ok", employee_number });
   } catch (error) {
     console.log(error);
