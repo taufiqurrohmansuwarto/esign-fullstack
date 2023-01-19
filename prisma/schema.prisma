@@ -95,7 +95,7 @@ model Recipient {
 
   reason          String?
   rejected_reason String?
-  is_archieved    Boolean? @default(false)
+  is_archived     Boolean? @default(false)
 
   rejected_at DateTime?
   created_at  DateTime? @default(now())

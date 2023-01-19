@@ -14,6 +14,7 @@ import { SessionProvider, signIn, useSession } from "next-auth/react";
 import { ConfigProvider } from "antd";
 import { Provider } from "react-redux";
 import store from "../features";
+import Head from "next/head";
 
 const Auth = ({ children, role }) => {
   const { data: session, status } = useSession({
@@ -40,34 +41,39 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <SessionProvider
-      session={session}
-      baseUrl="/esign"
-      basePath="/esign/api/auth"
-    >
-      <Provider store={store}>
-        <ConfigProvider
-          locale={id}
-          theme={{
-            token: {
-              colorPrimary: "#52c41a",
-            },
-          }}
-        >
-          <QueryClientProvider client={queryClient}>
-            <Hydrate state={pageProps.dehydrateState}>
-              {Component.Auth ? (
-                <Auth role={Component?.Auth?.role}>
-                  {getLayout(<Component {...pageProps} />)}
-                </Auth>
-              ) : (
-                <Component {...pageProps} />
-              )}
-            </Hydrate>
-          </QueryClientProvider>
-        </ConfigProvider>
-      </Provider>
-    </SessionProvider>
+    <>
+      <Head>
+        <title>E-Sign BKD</title>
+      </Head>
+      <SessionProvider
+        session={session}
+        baseUrl="/esign"
+        basePath="/esign/api/auth"
+      >
+        <Provider store={store}>
+          <ConfigProvider
+            locale={id}
+            theme={{
+              token: {
+                colorPrimary: "#52c41a",
+              },
+            }}
+          >
+            <QueryClientProvider client={queryClient}>
+              <Hydrate state={pageProps.dehydrateState}>
+                {Component.Auth ? (
+                  <Auth role={Component?.Auth?.role}>
+                    {getLayout(<Component {...pageProps} />)}
+                  </Auth>
+                ) : (
+                  <Component {...pageProps} />
+                )}
+              </Hydrate>
+            </QueryClientProvider>
+          </ConfigProvider>
+        </Provider>
+      </SessionProvider>
+    </>
   );
 }
 
