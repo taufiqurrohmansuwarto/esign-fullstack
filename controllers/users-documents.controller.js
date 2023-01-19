@@ -12,13 +12,16 @@ const index = async (req, res) => {
     const userId = user?.id;
 
     // todo : add search, limit, page, type
-    const currentQuery = {
+    let currentQuery = {
       where: {
         recipient_id: userId,
       },
       orderBy: {
         created_at: "desc",
       },
+    };
+
+    const withInclude = {
       include: {
         document: {
           include: {
@@ -28,8 +31,38 @@ const index = async (req, res) => {
       },
     };
 
-    const result = await prisma.Recipient.findMany(currentQuery);
-    res.json(result);
+    if (search) {
+      currentQuery = {
+        ...currentQuery,
+        where: {
+          ...currentQuery.where,
+          document: {
+            filename: {
+              contains: search,
+            },
+          },
+        },
+      };
+    }
+
+    const [total, results] = await prisma.$transaction([
+      prisma.Recipient.count({ ...currentQuery }),
+      prisma.Recipient.findMany({
+        ...currentQuery,
+        ...withInclude,
+        take: parseInt(limit),
+        skip: (parseInt(page) - 1) * parseInt(limit),
+      }),
+    ]);
+
+    const data = {
+      page: parseInt(page),
+      limit: parseInt(limit),
+      total,
+      results,
+    };
+
+    res.json(data);
   } catch (error) {
     console.log(error);
     res.status(500).json({

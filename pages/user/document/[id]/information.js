@@ -56,9 +56,10 @@ const Histories = ({ documentId }) => {
   });
 
   const { data, isLoading } = useQuery(
-    ["detail-document-histories", documentId],
+    ["detail-document-histories", documentId, query],
     () => documentHistories(documentId, query),
     {
+      enabled: !!query,
       refetchOnWindowFocus: false,
     }
   );
@@ -74,7 +75,8 @@ const Histories = ({ documentId }) => {
       pagination={{
         pageSize: query.limit,
         current: query.page,
-        onChange: (page) => setQuery({ ...query, page }),
+        total: data?.total,
+        onChange: (page, limit) => setQuery({ ...query, page, limit }),
       }}
     />
   );

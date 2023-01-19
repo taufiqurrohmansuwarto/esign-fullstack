@@ -1,8 +1,8 @@
-import { formatDate, upperCase } from "@/lib/client-utils";
+import { debounceValue, formatDate, upperCase } from "@/lib/client-utils";
 import { listDocuments } from "@/services/users.services";
 import { UserOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Col, Button, Popover, Row, Table, Avatar, Input } from "antd";
+import { Col, Button, Popover, Row, Table, Avatar, Input, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -34,16 +34,13 @@ const Title = ({ row }) => {
 
 const Recipients = ({ row }) => {
   return (
-    <Popover
-      style={{ width: 700 }}
-      title="Recipient"
-      trigger="click"
-      content={<div>hello world</div>}
-    >
-      <Button size="middle" type="primary" icon={<UserOutlined />}>
-        {row?.document?.Recipient?.length}
-      </Button>
-    </Popover>
+    <Avatar.Group>
+      {row?.document?.Recipient?.map((recipient) => (
+        <Tooltip title={recipient?.recipient_json?.nama}>
+          <Avatar src={recipient?.recipient_json?.fileDiri?.foto} />
+        </Tooltip>
+      ))}
+    </Avatar.Group>
   );
 };
 
@@ -54,9 +51,11 @@ function DocumentsList({ type = "all" }) {
     type,
   });
 
-  const handleChangeSearch = (e) => {
-    if (e) {
-      setQuery({ ...query, search: e });
+  const handleChangeSearch = async (e) => {
+    const value = e?.target?.value;
+
+    if (value) {
+      setQuery({ ...query, search: value });
     } else {
       // remove search query
       const { search, ...rest } = query;
@@ -65,7 +64,7 @@ function DocumentsList({ type = "all" }) {
   };
 
   const { data, isLoading } = useQuery(
-    ["documents", query],
+    ["documents", type, query],
     () => listDocuments(query),
     {
       enabled: !!query,
@@ -101,19 +100,30 @@ function DocumentsList({ type = "all" }) {
   ];
 
   return (
-    <Table
-      size="middle"
-      title={() => (
-        <Input.Search
-          placeholder="Find by title"
-          onSearch={handleChangeSearch}
-          style={{ width: "20%" }}
-        />
-      )}
-      loading={isLoading}
-      dataSource={data}
-      columns={columns}
-    />
+    <>
+      <Table
+        title={() => (
+          <Input.Search
+            placeholder="Find by title"
+            loading={isLoading}
+            onChange={handleChangeSearch}
+            style={{ width: "20%" }}
+          />
+        )}
+        pagination={{
+          current: query.page,
+          pageSize: query.limit,
+          total: data?.total,
+          onChange: (page, limit) => setQuery({ ...query, page, limit }),
+          showTotal: (total, range) =>
+            `${range[0]}-${range[1]} of ${total} items`,
+        }}
+        rowKey={(row) => row?.id}
+        loading={isLoading}
+        dataSource={data?.results}
+        columns={columns}
+      />
+    </>
   );
 }
 

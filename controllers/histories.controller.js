@@ -88,6 +88,13 @@ const historyByDocument = async (req, res) => {
       where: {
         document_id: documentId,
       },
+
+      orderBy: {
+        created_at: "desc",
+      },
+    };
+
+    const select = {
       select: {
         id: true,
         created_at: true,
@@ -105,16 +112,32 @@ const historyByDocument = async (req, res) => {
           },
         },
       },
-      orderBy: {
-        created_at: "desc",
-      },
+    };
+
+    const withPaging = {
       take: parseInt(limit),
       skip: (parseInt(page) - 1) * parseInt(limit),
     };
 
-    const result = await prisma.History.findMany(query);
+    const [count, data] = await prisma.$transaction([
+      prisma.History.count({
+        ...query,
+      }),
+      prisma.History.findMany({
+        ...query,
+        ...withPaging,
+        ...select,
+      }),
+    ]);
 
-    res.json({ page: parseInt(page), limit: parseInt(limit), result });
+    const result = {
+      page: parseInt(page),
+      limit: parseInt(limit),
+      total: count,
+      result: data,
+    };
+
+    res.json(result);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
