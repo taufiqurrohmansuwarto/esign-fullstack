@@ -13,8 +13,8 @@ import {
 import { useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import currentDocuments from "../services/documents";
+import RequestFromOthersMove from "./RequestFromOthersMove";
 import ShareAndRequest from "./ShareAndRequest";
-import SignMove from "./SignMoveMultiple";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -58,7 +58,7 @@ const PdfDocument = ({
         <Col>
           <div ref={ref} style={{ position: "relative" }}>
             {dataSignFilter.map((sign) => (
-              <SignMove
+              <RequestFromOthersMove
                 currentRef={ref.current}
                 frame={sign.frame}
                 key={sign.id}
