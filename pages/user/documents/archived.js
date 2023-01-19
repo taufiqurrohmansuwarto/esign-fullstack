@@ -5,7 +5,7 @@ import UserLayout from "@/components/UserLayout";
 const Archived = () => {
   return (
     <PageContainer title="Archieved">
-      <DocumentsList type="archieved" />
+      <DocumentsList type="archived" />
     </PageContainer>
   );
 };

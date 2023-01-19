@@ -1,11 +1,16 @@
 import DocumentsList from "@/components/DocumentsList";
 import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
+import { Result } from "antd";
 
 const Expired = () => {
   return (
     <PageContainer title="Expired">
-      <DocumentsList type="expired" />
+      <Result
+        status={404}
+        title="Under Construction"
+        subTitle="This features is not implemented yet"
+      />
     </PageContainer>
   );
 };

@@ -21,6 +21,57 @@ const index = async (req, res) => {
       },
     };
 
+    if (type === "draft") {
+      currentQuery = {
+        ...currentQuery,
+        where: {
+          ...currentQuery.where,
+          role: "owner",
+          status: "DRAFT",
+        },
+      };
+    }
+
+    if (type === "pending") {
+      currentQuery = {
+        ...currentQuery,
+        where: {
+          ...currentQuery.where,
+          signatory_status: "PENDING",
+        },
+      };
+    }
+
+    if (type === "done") {
+      currentQuery = {
+        ...currentQuery,
+        where: {
+          ...currentQuery.where,
+          signatory_status: "COMPLETED",
+        },
+      };
+    }
+
+    if (type === "archived") {
+      currentQuery = {
+        ...currentQuery,
+        where: {
+          ...currentQuery.where,
+          is_archived: true,
+        },
+      };
+    }
+
+    if (type === "rejected") {
+      currentQuery = {
+        ...currentQuery,
+        where: {
+          ...currentQuery.where,
+          signatory_status: "REJECTED",
+        },
+      };
+    }
+
     const withInclude = {
       include: {
         document: {
