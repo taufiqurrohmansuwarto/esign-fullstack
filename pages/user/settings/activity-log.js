@@ -57,7 +57,7 @@ const ActivityLog = () => {
   });
 
   const { data, isLoading } = useQuery(
-    ["histories"],
+    ["histories", query],
     () => getHistories(query),
     {
       enabled: !!query,
@@ -108,12 +108,15 @@ const ActivityLog = () => {
           columns={columns}
           dataSource={data?.result}
           pagination={{
-            current: data?.page,
+            current: query.page,
+            position: ["bottomRight", "topRight"],
             pageSize: data?.limit,
             total: data?.total,
             onChange: (page, limit) => {
               setQuery({ ...query, page, limit });
             },
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} of ${total} items`,
           }}
         />
       </Card>

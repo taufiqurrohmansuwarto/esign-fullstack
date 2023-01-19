@@ -1,2 +1,6 @@
 1. create document component in view just for self sign 
 2. create kalau sukses, redirect ke halaman lain untuk self sign
+
+
+todo hari ini
+buat pagination di di semua halaman bekerja

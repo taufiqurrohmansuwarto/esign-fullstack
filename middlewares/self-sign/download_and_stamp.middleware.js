@@ -1,9 +1,7 @@
-const { createCanvas, loadImage, registerFont } = require("canvas");
 const { nanoid } = require("nanoid");
-const fs = require("fs");
-const path = require("path");
-import { PDFDocument } from "pdf-lib";
 import axios from "axios";
+import { PDFDocument } from "pdf-lib";
+import { createStamp } from "@/lib/utils";
 
 const downloadFile = async ({ minio, filename }) => {
   return new Promise((resolve, reject) => {
@@ -19,61 +17,6 @@ const downloadFile = async ({ minio, filename }) => {
       }
     );
   });
-};
-
-const createStamp = async (data) => {
-  const { nip, nama, golonganPangkat } = data;
-  const assetDirectory = path.resolve(process.cwd(), "public/assets");
-  const logo = fs.readFileSync(path.join(assetDirectory, "logo_pemprov.png"));
-  const image = await loadImage(logo);
-
-  // generate width and heigth
-  const width = 350;
-  const height = 175;
-
-  const canvas = createCanvas(width, height);
-
-  const context = canvas.getContext("2d");
-  const pengantar = "Dintandatangani secara elektronik";
-
-  context.fillStyle = "rgba(255,255,255,0)";
-  context.fillRect(0, 0, width, height);
-  context.fillStyle = "#000";
-
-  context.imageSmoothingEnabled = true;
-  context.antialias = "subpixel";
-  context.imageSmoothingEnabled = true;
-
-  context.patternQuality = "best";
-
-  registerFont("fonts/Menlo Regular.ttf", { family: "Menlo" });
-  context.font = "6pt Menlo";
-
-  // img.src = result;
-  const measureImage = context.measureText(image).width;
-  const measurePengantar = context.measureText(pengantar).width;
-
-  context.drawImage(image, width / 2 - measureImage / 2 + 10, height / 3);
-  context.fillText(pengantar, width / 2 - measurePengantar / 2, 40);
-  context.fillText(
-    nama,
-    width / 2 - context.measureText(nama).width / 2,
-    height / 2 + 50
-  );
-
-  context.fillText(
-    nip,
-    width / 2 - context.measureText(nip).width / 2,
-    height / 2 + 60
-  );
-
-  context.fillText(
-    golonganPangkat,
-    width / 2 - context.measureText(golonganPangkat).width / 2,
-    height / 2 + 70
-  );
-
-  return canvas.toBuffer();
 };
 
 const createStampSelfSign = async ({

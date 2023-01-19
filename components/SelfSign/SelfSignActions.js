@@ -33,7 +33,7 @@ const ConfirmModal = ({ open, onCancel, documentData, signs }) => {
       onSuccess: () => {
         message.success("Document is sign successfully");
         queryClient.invalidateQueries(["document-detail", documentData?.id]);
-        router.push(`/user/documents/${documentData?.id}/view`);
+        router.push(`/user/document/${documentData?.id}/view`);
         onCancel();
       },
       onError: (error) => {

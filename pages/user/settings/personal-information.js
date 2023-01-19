@@ -14,7 +14,7 @@ const PersonalInformation = () => {
       <Card loading={isLoading}>
         <Row>
           <Col span={8}>
-            <Avatar size={160} src={data?.fileDiri?.foto} />
+            <Avatar size={80} src={data?.fileDiri?.foto} />
             <Form form={form} initialValues={data} layout="vertical">
               <Form.Item id="username" name="nama" label="Nama">
                 <Input readOnly />

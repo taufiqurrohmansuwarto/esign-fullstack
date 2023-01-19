@@ -56,6 +56,19 @@ const signMiddleware = async (req, res, next) => {
       },
     });
 
+    // dont forget to create history after user do some action
+    await prisma.History.create({
+      data: {
+        document_id: req?.query?.documentId,
+        user_id: req?.user?.id,
+        action: "SIGN",
+        ip_address: req?.ip,
+        useragent: req?.useragent,
+        type: "DOCUMENT",
+        action: "SIGN",
+      },
+    });
+
     req.signDocument = {
       buffer: currentBufferFile,
       filename,

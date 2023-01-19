@@ -1,3 +1,5 @@
+const { default: prisma } = require("@/lib/prisma");
+
 const index = async (req, res) => {
   // create paging
   const page = req?.query?.page || 1;
@@ -29,7 +31,7 @@ const index = async (req, res) => {
       };
     }
 
-    const result = await prisma.History.findMany({
+    const query = {
       where,
       include: {
         user: true,
@@ -38,13 +40,27 @@ const index = async (req, res) => {
       orderBy: {
         created_at: "desc",
       },
-      take: parseInt(limit),
-      skip: (parseInt(page) - 1) * parseInt(limit),
-    });
+    };
 
-    res
-      .status(200)
-      .json({ page: parseInt(page), limit: parseInt(limit), result });
+    const [count, result] = await prisma.$transaction([
+      prisma.History.count({
+        where,
+      }),
+      prisma.History.findMany({
+        ...query,
+        take: parseInt(limit),
+        skip: (parseInt(page) - 1) * parseInt(limit),
+      }),
+    ]);
+
+    const data = {
+      page: parseInt(page),
+      limit: parseInt(limit),
+      total: count,
+      result,
+    };
+
+    res.status(200).json(data);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
