@@ -19,6 +19,7 @@ import {
 } from "antd";
 import { check, detailUser, getDashboard } from "services/users.services";
 import { useRouter } from "next/router";
+import { LogoutOutlined } from "@ant-design/icons";
 
 // HEADER USER INFORMATION
 const HeaderUser = ({ data }) => {
@@ -126,7 +127,12 @@ function Dashboard() {
             rows: 4,
           }}
         >
-          <Button style={{ marginBottom: 10 }} onClick={signOut}>
+          <Button
+            icon={<LogoutOutlined />}
+            type="primary"
+            style={{ marginBottom: 10 }}
+            onClick={signOut}
+          >
             Logout
           </Button>
           <HeaderUser data={data} />

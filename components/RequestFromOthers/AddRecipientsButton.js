@@ -1,4 +1,16 @@
+import {
+  addRecipients,
+  addSigntoSigner,
+  changeRole,
+  removeRecipients,
+} from "@/features/request-from-others.slice";
+import { isEmpty } from "@/lib/client-utils";
+import {
+  findRecipients,
+  requestFromOthersAddRecipients,
+} from "@/services/users.services";
 import { DeleteOutlined, PlusCircleFilled } from "@ant-design/icons";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useDebounce } from "ahooks";
 import {
   Avatar,
@@ -13,16 +25,7 @@ import {
 } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addRecipients,
-  addSigntoSigner,
-  changeRole,
-  removeRecipients,
-} from "@/features/request-from-others.slice";
-import documents from "../services/documents";
-import { isEmpty } from "@/lib/client-utils";
 
 const ListRecipients = ({
   recipients,
@@ -99,10 +102,10 @@ const ShareAndRequest = () => {
 
   // untuk menghandle membuat recipients
   const recipientsMutation = useMutation(
-    (data) => documents.createRecipients(data),
+    (data) => requestFromOthersAddRecipients(data),
     {
       onSettled: () => {},
-      onError: (error) => {},
+      onError: () => {},
       onSuccess: () => {},
     }
   );
@@ -121,7 +124,7 @@ const ShareAndRequest = () => {
 
   const { data: employeeData, isLoading: loadingEmployee } = useQuery(
     ["employees", debouncFilter],
-    () => documents.findEmployee(debouncFilter),
+    () => findRecipients(debouncFilter),
     { enabled: Boolean(debouncFilter) }
   );
 
@@ -223,6 +226,7 @@ const ShareAndRequest = () => {
       </Button>
       <Drawer
         width={800}
+        title="Add Recipients"
         visible={showDrawer}
         onClose={() => setShowDrawer(false)}
         extra={
@@ -238,7 +242,6 @@ const ShareAndRequest = () => {
         }
       >
         <Select
-          size="small"
           style={{ width: "80%" }}
           placeholder="Employee number"
           defaultActiveFirstOption={false}
@@ -251,15 +254,16 @@ const ShareAndRequest = () => {
           onChange={handleChange}
         >
           {!isEmpty(employeeData) && (
-            <Select.Option key={employeeData?.nip}>
+            <Select.Option key={employeeData?.userInfo?.pegawai_id}>
               <Space>
-                {employeeData.nama} - {employeeData.nip}
+                {employeeData.userInfo?.nama} - {employeeData.userInfo?.nip}
               </Space>
             </Select.Option>
           )}
         </Select>
         <Button
-          size="small"
+          style={{ marginLeft: 10 }}
+          type="primary"
           onClick={() => dispatch(addRecipients(user))}
           disabled={loadingEmployee || !employeeData}
         >

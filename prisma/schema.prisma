@@ -63,6 +63,8 @@ model Document {
   expired_at        DateTime?
   document_id_bsre  String?
   is_published      Boolean?       @default(false)
+  is_void           Boolean?       @default(false)
+  void_reason       String?
   histories         History[]
   created_at        DateTime?      @default(now())
   updated_at        DateTime?      @updatedAt

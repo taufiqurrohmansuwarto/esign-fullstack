@@ -1,10 +1,17 @@
 import { infoSigner } from "@/lib/client-utils";
-import { Button, Layout, message, Result, Upload } from "antd";
-import { useRouter } from "next/router";
-import React from "react";
-import { useState } from "react";
 import { verifyDocumentUser } from "@/services/public.services";
-import Container from "./Container";
+import { CloseCircleOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Layout,
+  message,
+  Result,
+  Space,
+  Typography,
+  Upload,
+} from "antd";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import PageContainer from "./pro/PageContainer";
 
 const HasilPengecekan = ({ data }) => {
@@ -33,7 +40,19 @@ const HasilPengecekan = ({ data }) => {
         status="success"
         title="Dokumen Valid!"
         // extra={[<Button type="primary">Lihat Dokumen</Button>]}
-      />
+      >
+        <Space>
+          <Typography.Paragraph>
+            <CloseCircleOutlined
+              color="red"
+              style={{ marginRight: 10, color: "red" }}
+            />
+            Please ensure that you scan the barcode located at the bottom right
+            corner of this document if this document is from Badan Kepegawaian
+            Daerah Provinsi Jawa Timur
+          </Typography.Paragraph>
+        </Space>
+      </Result>
     </>
   );
 };
@@ -108,7 +127,11 @@ function CheckDocumentVerify() {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      <PageContainer title="Document Checker" onBack={() => router.push("/")}>
+      <PageContainer
+        title="Document Checker"
+        subTitle="Upload your document to check the validity of the signature"
+        onBack={() => router.push("/")}
+      >
         <Upload accept=".pdf" {...uploadProps}>
           <Button>Upload</Button>
         </Upload>
