@@ -85,6 +85,8 @@ export const selfSignApproveSign = ({ documentId, data }) => {
 };
 
 // request from others
+
+// upload
 export const requestFromOthersUpload = (data) => {
   return fetcher
     .post("/upload-request-from-others", data, {
@@ -95,38 +97,50 @@ export const requestFromOthersUpload = (data) => {
     .then((res) => res?.data);
 };
 
+// add recipients
+export const requestFromOthersAddRecipients = ({ documentId, data }) => {
+  return fetcher
+    .post(`/documents/${documentId}/request-from-others/recipients`, data)
+    .then((res) => res?.data);
+};
+
+// submit recipients
+export const requestFromOthrersSubmitRecipients = (documentId) => {
+  return fetcher
+    .put(`/documents/${documentId}/request-from-others`)
+    .then((res) => res?.data);
+};
+
+// approve sign and reject sign
+export const requestFromOthersApproveSign = (documentId) => {
+  return fetcher
+    .put(`/documents/${documentId}/request-from-others/sign`)
+    .then((res) => res?.data);
+};
+
+export const requestFromOthersRejectSign = (documentId) => {
+  return fetcher
+    .delete(`/documents/${documentId}/request-from-othres/sign`)
+    .then((res) => res?.data);
+};
+
+// approve review and reject review
+export const requestFromOthersApproveReview = (documentId) => {
+  return fetcher
+    .put(`/documents/${documentId}/request-from-others/review`)
+    .then((res) => res?.data);
+};
+
+export const requestFromOthersRejectReview = (documentId) => {
+  return fetcher
+    .delete(`/documents/${documentId}/request-from-others/review`)
+    .then((res) => res?.data);
+};
+
+// end request from others
+
 export const findRecipients = (employeeNumber) => {
   return fetcher.get(`/stamps/${employeeNumber}`).then((res) => res?.data);
-};
-
-export const requestFromOthersAddRecipients = (data) => {
-  return fetcher
-    .post("/request-from-others/add-recipients", data)
-    .then((res) => res?.data);
-};
-
-export const requestFromOthersApproveSign = (data) => {
-  return fetcher
-    .post("/request-from-others/approve", data)
-    .then((res) => res?.data);
-};
-
-export const requestFromOthersRejectSign = (data) => {
-  return fetcher
-    .post("/request-from-others/reject", data)
-    .then((res) => res?.data);
-};
-
-export const requestFromOthersApproveReview = (data) => {
-  return fetcher
-    .post("/request-from-others/approve-review", data)
-    .then((res) => res?.data);
-};
-
-export const requestFromOthersRejectReview = (data) => {
-  return fetcher
-    .post("/request-from-others/reject-review", data)
-    .then((res) => res?.data);
 };
 
 // notifications

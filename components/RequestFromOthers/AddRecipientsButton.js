@@ -20,7 +20,7 @@ import {
   addSigntoSigner,
   changeRole,
   removeRecipients,
-} from "../../features/sign/request-from-others.slice";
+} from "@/features/request-from-others.slice";
 import documents from "../services/documents";
 import { isEmpty } from "@/lib/client-utils";
 
