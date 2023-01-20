@@ -1,3 +1,6 @@
+yang belum
 
-1. buat api untuk cek dokumen 
-2. buat page untuk cek dokumen juga
+1. check file
+2. request from others semua 
+3. download button
+4. tombol aksi
