@@ -62,6 +62,7 @@ model Document {
   can_discuss       Boolean?       @default(false)
   expired_at        DateTime?
   document_id_bsre  String?
+  is_published      Boolean?       @default(false)
   histories         History[]
   created_at        DateTime?      @default(now())
   updated_at        DateTime?      @updatedAt
