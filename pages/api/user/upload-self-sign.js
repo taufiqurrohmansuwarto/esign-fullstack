@@ -14,11 +14,12 @@ export const config = {
 
 // first use middleware to check file
 
-router.post(
-  auth(),
-  multer().single("file"),
-  checkingUploadMiddleware("selfSign"),
-  selfSignUploadController
-);
+router
+  .use(auth())
+  .post(
+    multer().single("file"),
+    checkingUploadMiddleware("selfSign"),
+    selfSignUploadController
+  );
 
 export default router.handler();

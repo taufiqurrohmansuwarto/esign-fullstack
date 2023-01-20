@@ -20,7 +20,7 @@ const SignInPages = ({ providers }) => {
         <Divider />
         <Space>
           <Typography.Text>
-            <Link href="/check-document">Ingin Check Dokumen</Link>
+            <Link href="/check">Ingin Check Dokumen</Link>
           </Typography.Text>
         </Space>
       </Col>

@@ -1,8 +1,11 @@
-import { Button, message, Result, Upload } from "antd";
-import { infoSigner } from "lib/utils";
+import { infoSigner } from "@/lib/client-utils";
+import { Button, Layout, message, Result, Upload } from "antd";
+import { useRouter } from "next/router";
 import React from "react";
 import { useState } from "react";
-import { verifyDocumentUser } from "services/users.services";
+import { verifyDocumentUser } from "@/services/public.services";
+import Container from "./Container";
+import PageContainer from "./pro/PageContainer";
 
 const HasilPengecekan = ({ data }) => {
   if (!data) return null;
@@ -29,7 +32,7 @@ const HasilPengecekan = ({ data }) => {
         } sebanyak ${infoSigner(data)?.jumlah_signature} kali`}
         status="success"
         title="Dokumen Valid!"
-        extra={[<Button type="primary">Lihat Dokumen</Button>]}
+        // extra={[<Button type="primary">Lihat Dokumen</Button>]}
       />
     </>
   );
@@ -101,22 +104,26 @@ function CheckDocumentVerify() {
     fileList,
   };
 
+  const router = useRouter();
+
   return (
-    <>
-      <Upload accept=".pdf" {...uploadProps}>
-        <Button>Upload</Button>
-      </Upload>
-      <Button
-        type="primary"
-        onClick={handleUpload}
-        disabled={fileList.length === 0}
-        loading={uploading}
-        style={{ marginTop: 16 }}
-      >
-        {uploading ? "Tunggu.." : "Mulai Unggah"}
-      </Button>
-      {fileInformation && <HasilPengecekan data={fileInformation} />}
-    </>
+    <Layout style={{ minHeight: "100vh" }}>
+      <PageContainer title="Document Checker" onBack={() => router.push("/")}>
+        <Upload accept=".pdf" {...uploadProps}>
+          <Button>Upload</Button>
+        </Upload>
+        <Button
+          type="primary"
+          onClick={handleUpload}
+          disabled={fileList.length === 0}
+          loading={uploading}
+          style={{ marginTop: 16 }}
+        >
+          {uploading ? "Loading..." : "Start Check"}
+        </Button>
+        {fileInformation && <HasilPengecekan data={fileInformation} />}
+      </PageContainer>
+    </Layout>
   );
 }
 
