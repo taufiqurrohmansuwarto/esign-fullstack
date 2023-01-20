@@ -1,4 +1,4 @@
-import AddRecipientsButton from "@/components/RequestFromOthers/AddRecipientsButton";
+import RequestFromOthers from "@/components/RequestFromOthers/RequestFromOthers";
 import RequestFromOthersHeader from "@/components/RequestFromOthers/RequestFromOthersHeader";
 import RequestFromOthersUploader from "@/components/RequestFromOthers/RequestFromOthersUploader";
 import UserLayout from "@/components/UserLayout";
@@ -12,7 +12,7 @@ function RequestFromOthersUpload() {
   if (documentId) {
     return (
       <RequestFromOthersHeader current={1}>
-        <AddRecipientsButton />
+        <RequestFromOthers id={documentId} />
       </RequestFromOthersHeader>
     );
   } else {

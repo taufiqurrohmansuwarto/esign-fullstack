@@ -1,18 +1,6 @@
-import {
-  Card,
-  Col,
-  Input,
-  InputNumber,
-  message,
-  Modal,
-  Pagination,
-  Row,
-  Skeleton,
-  Space,
-} from "antd";
-import { useRef, useState } from "react";
+import { Card, Col, Pagination, Row, Skeleton, Space } from "antd";
+import { useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import currentDocuments from "../services/documents";
 import RequestFromOthersMove from "./RequestFromOthersMove";
 import ShareAndRequest from "./ShareAndRequest";
 
@@ -106,41 +94,6 @@ const RequestFromOthersActions = function ({
   documentData,
   removeSign,
 }) {
-  const [open, setOpen] = useState(false);
-  const [document, setDocument] = useState(null);
-  const [otp, setOtp] = useState("");
-  const [reason, setReason] = useState("I approve this document");
-
-  const onSubmit = async () => {
-    try {
-      const { id } = documentData;
-      const properties = dataSign.map((sign) => {
-        const { frame, page } = sign;
-        const [x, y] = frame.translate;
-        const { height, width } = frame;
-
-        const xPos = x < 0 ? 0 : x;
-        const yPos = y < 0 ? 0 : y;
-
-        return {
-          xPos,
-          yPos,
-          height,
-          width,
-          page,
-        };
-      });
-
-      const data = { documentId: id, properties };
-      console.log(data);
-      const result = await currentDocuments.approveDocument(data?.documentId, {
-        properties,
-      });
-    } catch (error) {
-      message.error("hello");
-    }
-  };
-
   if (loading == "loading") {
     return (
       <Row justify="center" align="middle" style={{ padding: 18 }}>
@@ -163,30 +116,6 @@ const RequestFromOthersActions = function ({
 
   return (
     <>
-      <Modal
-        title="OTP Verification"
-        visible={open}
-        zIndex={99999}
-        closable={false}
-        onOk={() => {}}
-        maskClosable={false}
-        // confirmLoading={signDocumentRequest.loading}
-        onCancel={() => {
-          setOpen(false);
-        }}
-      >
-        <p>We already sent code verification to your email. Please verify.</p>
-        <InputNumber
-          placeholder="OTP Number"
-          value={otp}
-          onChange={(e) => setOtp(e)}
-        />
-        <Input
-          placeholder="Reason"
-          value={reason}
-          onChange={(e) => setReason(e.target.value)}
-        />
-      </Modal>
       <div style={{ padding: 5 }}>
         <Row justify="center">
           <Space>

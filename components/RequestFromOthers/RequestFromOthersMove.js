@@ -1,7 +1,7 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import dynamic from "next/dynamic";
-import { createRef, useCallback, useEffect, useRef, useState } from "react";
+import { createRef, useCallback, useEffect, useState } from "react";
 
 const Moveable = dynamic(() => import("react-moveable"), {
   ssr: false,
@@ -14,6 +14,7 @@ const RequestFromOthersMove = ({
   updateFrame,
   removeSign,
   currentRef,
+  line,
   id,
 }) => {
   const [target, setTarget] = useState();
@@ -43,14 +44,17 @@ const RequestFromOthersMove = ({
             transform: `translate(${frame?.translate[0]}px, ${frame?.translate[1]}px)`,
           }}
         >
-          <Button
-            shape="circle"
-            icon={<DeleteOutlined />}
-            danger
-            onClick={() => {
-              removeSign(id);
-            }}
-          />
+          {line && (
+            <Tooltip title="Remove Stamp">
+              <Button
+                icon={<DeleteOutlined />}
+                type="primary"
+                onClick={() => {
+                  removeSign(id);
+                }}
+              />
+            </Tooltip>
+          )}
         </div>
         <img
           src={`data:image/jpeg;base64,${images}`}
@@ -81,10 +85,11 @@ const RequestFromOthersMove = ({
         }}
         throttleDrag={0}
         originDraggable={false}
-        draggable
+        draggable={line}
         keepRatio
+        hideDefaultLines={!line}
         target={target}
-        resizable
+        resizable={line}
         throttleResize={0}
         onResizeStart={({ setOrigin, dragStart }) => {
           setOrigin(["%", "%"]);
