@@ -17,6 +17,9 @@ export default async function (req, res) {
   const useragent = req?.headers["user-agent"];
 
   return NextAuth(req, res, {
+    pages: {
+      signIn: "/esign/signin",
+    },
     callbacks: {
       redirect: async (url, baseUrl) => {
         const urlCallback = `${url?.baseUrl}${process.env.BASE_PATH}`;

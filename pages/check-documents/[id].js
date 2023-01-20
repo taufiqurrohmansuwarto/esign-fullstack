@@ -1,3 +1,4 @@
+import DocumentLoading from "@/components/DocumentLoading";
 import { formatDate, toKB, upperCaseFirst } from "@/lib/client-utils";
 import { checkDocumentById } from "@/services/public.services";
 import { useQuery } from "@tanstack/react-query";
@@ -129,12 +130,19 @@ const CheckDocumentById = () => {
     }
   );
 
+  if (isLoading) {
+    return (
+      <>
+        Loading...
+        <DocumentLoading />;
+      </>
+    );
+  }
+
   return (
-    <Skeleton loading={isLoading}>
-      <Layout style={{ padding: 32, minHeight: "100vh" }}>
-        <Checker data={data} />
-      </Layout>
-    </Skeleton>
+    <Layout style={{ padding: 32, minHeight: "100vh" }}>
+      <Checker data={data} />
+    </Layout>
   );
 };
 
