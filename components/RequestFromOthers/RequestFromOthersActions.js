@@ -1,8 +1,8 @@
 import { Card, Col, Pagination, Row, Skeleton, Space } from "antd";
 import { useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import AddRecipientsButton from "./AddRecipientsButton";
 import RequestFromOthersMove from "./RequestFromOthersMove";
-import ShareAndRequest from "./ShareAndRequest";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -55,13 +55,13 @@ const PdfDocument = ({
                   height: documentProperty.height,
                   width: documentProperty.width,
                 }}
-                images={sign.stamp}
+                images={sign.image}
                 updateFrame={updateFrame}
                 removeSign={removeSign}
               />
             ))}
             <Document
-              file={`data:application/pdf;base64,${docUrl}`}
+              file={docUrl}
               onLoadSuccess={onLoadDocumentSucces}
             >
               <Page
@@ -119,7 +119,7 @@ const RequestFromOthersActions = function ({
       <div style={{ padding: 5 }}>
         <Row justify="center">
           <Space>
-            <ShareAndRequest />
+            <AddRecipientsButton />
             <Pagination
               simple
               current={documents.currentPage}
@@ -140,6 +140,8 @@ const RequestFromOthersActions = function ({
                 height: "100%",
                 overflow: "hidden",
                 textAlign: "center",
+                padding: 4,
+                backgroundColor: "#8c8c8c",
               }}
             >
               {loading === "idle" && docUrl && (

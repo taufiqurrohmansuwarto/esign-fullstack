@@ -1,3 +1,9 @@
+import {
+  changePage, changePagination, fetchDocuments, removeSign, setDocumentProperty, showSign,
+  updateFrame
+} from '@/features/request-from-others.slice';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import RequestFromOthersActions from "./RequestFromOthersActions";
 
 function RequestFromOthers({ id }) {
@@ -7,9 +13,11 @@ function RequestFromOthers({ id }) {
   const changePageDocument = (payload) => {
     dispatch(changePage(payload));
   };
+
   const loadPageSuccess = (payload) => {
     dispatch(setDocumentProperty(payload));
   };
+
   const changePaginations = (payload) => {
     dispatch(changePagination(payload));
     dispatch(showSign());

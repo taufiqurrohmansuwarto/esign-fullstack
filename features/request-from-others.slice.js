@@ -28,8 +28,11 @@ export const shareSignSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchDocuments.fulfilled, (state, { payload }) => {
-      state.docUrl = payload.document;
-      state.documentData = payload.documentData;
+      state.docUrl = {
+        url: payload.document_url
+      };
+
+      state.documentData = payload;
 
       state.dataUser = [];
       state.dataSign = [];
@@ -55,6 +58,7 @@ export const shareSignSlice = createSlice({
       const isExists = state.dataUser.findIndex(
         (e) => e.pegawai_id === payload.pegawai_id
       );
+
       if (isExists < 0) {
         state.dataUser.push({
           id: nanoid(),
@@ -102,7 +106,7 @@ export const shareSignSlice = createSlice({
         ...data,
       });
 
-      state.signSymbol = payload.stamp;
+      state.signSymbol = payload.image;
       state.dataSignFilter = state.dataSign.filter(
         (sign) => sign.page === state.documents.currentPage
       );

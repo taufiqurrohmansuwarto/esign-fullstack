@@ -2,12 +2,12 @@ import {
   addRecipients,
   addSigntoSigner,
   changeRole,
-  removeRecipients,
+  removeRecipients
 } from "@/features/request-from-others.slice";
 import { isEmpty } from "@/lib/client-utils";
 import {
   findRecipients,
-  requestFromOthersAddRecipients,
+  requestFromOthersAddRecipients
 } from "@/services/users.services";
 import { DeleteOutlined, PlusCircleFilled } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -16,12 +16,13 @@ import {
   Avatar,
   Button,
   Drawer,
+  FloatButton,
   List,
   message,
   Radio,
   Select,
   Space,
-  Spin,
+  Spin
 } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -39,57 +40,59 @@ const ListRecipients = ({
       itemLayout="horizontal"
       dataSource={recipients}
       renderItem={(item) => (
-        <List.Item
-          actions={[
-            <Button
-              type="danger"
-              onClick={() => handleRemoveRecipients(item.id)}
-              icon={<DeleteOutlined />}
-              size="small"
-            />,
-            <Radio.Group
-              size="small"
-              defaultValue={item?.role}
-              onChange={() => handleChangeRole(item.id)}
-            >
-              <Radio.Button value={"reviewer"}>Reviewer</Radio.Button>
-              <Radio.Button value={"signer"}>Signer</Radio.Button>
-            </Radio.Group>,
-            <div>
-              {item?.role === "signer" && (
-                <Button
-                  onClick={() =>
-                    handleAddSign({
-                      ...item,
-                      frame: {
-                        height: 175,
-                        width: 350,
-                        translate: [0, 0, 0],
-                      },
-                      userId: item.id,
-                    })
-                  }
-                  size="small"
-                  type="primary"
-                >
-                  sign
-                </Button>
-              )}
-            </div>,
-          ]}
-        >
-          <List.Item.Meta
-            avatar={<Avatar src={item?.fileDiri?.foto} />}
-            title={`${item?.nama} (${item?.role})`}
-            description={item?.nip}
-          />
-        </List.Item>
+        <>
+          <List.Item
+            actions={[
+              <Button
+                type="danger"
+                onClick={() => handleRemoveRecipients(item.id)}
+                icon={<DeleteOutlined />}
+                size="small"
+              />,
+              <Radio.Group
+                size="small"
+                defaultValue={item?.role}
+                onChange={() => handleChangeRole(item.id)}
+              >
+                <Radio.Button value={"reviewer"}>Reviewer</Radio.Button>
+                <Radio.Button value={"signer"}>Signer</Radio.Button>
+              </Radio.Group>,
+              <div>
+                {item?.role === "signer" && (
+                  <Button
+                    onClick={() =>
+                      handleAddSign({
+                        ...item,
+                        frame: {
+                          height: 175,
+                          width: 350,
+                          translate: [0, 0, 0],
+                        },
+                        userId: item.userInfo?.id,
+                      })
+                    }
+                    size="small"
+                    type="primary"
+                  >
+                    sign
+                  </Button>
+                )}
+              </div>,
+            ]}
+          >
+            <List.Item.Meta
+              avatar={<Avatar src={item?.userInfo?.fileDiri?.foto} />}
+              title={`${item?.userInfo?.nama} (${item?.role})`}
+              description={item?.userInfo?.nip}
+            />
+          </List.Item>
+        </>
       )}
     />
   );
 };
 
-const ShareAndRequest = () => {
+const AddRecipientsButton = () => {
   const data = useSelector((state) => state.requestFromOthers);
   const dispatch = useDispatch();
   const [searching, setSearching] = useState(undefined);
@@ -104,9 +107,9 @@ const ShareAndRequest = () => {
   const recipientsMutation = useMutation(
     (data) => requestFromOthersAddRecipients(data),
     {
-      onSettled: () => {},
-      onError: () => {},
-      onSuccess: () => {},
+      onSettled: () => { },
+      onError: () => { },
+      onSuccess: () => { },
     }
   );
 
@@ -125,7 +128,7 @@ const ShareAndRequest = () => {
   const { data: employeeData, isLoading: loadingEmployee } = useQuery(
     ["employees", debouncFilter],
     () => findRecipients(debouncFilter),
-    { enabled: Boolean(debouncFilter) }
+    { enabled: Boolean(debouncFilter), refetchOnWindowFocus: false }
   );
 
   // this fucking multiple request like shit
@@ -210,20 +213,22 @@ const ShareAndRequest = () => {
     } else {
       const data = { documentId, data: currentDataPost };
       await recipientsMutation.mutateAsync(data);
-      router.push(`/documents/${documentId}/view`);
+      router.push(`/user/document/${documentId}/view`);
       // send this to backend server
     }
   };
 
   return (
     <div>
-      <Button
+      <FloatButton
         icon={<PlusCircleFilled />}
+        tooltip="Add Recipients"
         onClick={() => setShowDrawer(true)}
+        shape='square'
         type="primary"
       >
         Recipients
-      </Button>
+      </FloatButton>
       <Drawer
         width={800}
         title="Add Recipients"
@@ -284,4 +289,4 @@ const ShareAndRequest = () => {
   );
 };
 
-export default ShareAndRequest;
+export default AddRecipientsButton;

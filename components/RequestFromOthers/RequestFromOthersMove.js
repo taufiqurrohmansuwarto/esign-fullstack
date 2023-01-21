@@ -44,7 +44,7 @@ const RequestFromOthersMove = ({
             transform: `translate(${frame?.translate[0]}px, ${frame?.translate[1]}px)`,
           }}
         >
-          {line && (
+          {(
             <Tooltip title="Remove Stamp">
               <Button
                 icon={<DeleteOutlined />}
@@ -85,11 +85,11 @@ const RequestFromOthersMove = ({
         }}
         throttleDrag={0}
         originDraggable={false}
-        draggable={line}
+        draggable={true}
         keepRatio
-        hideDefaultLines={!line}
+        hideDefaultLines={false}
         target={target}
-        resizable={line}
+        resizable={true}
         throttleResize={0}
         onResizeStart={({ setOrigin, dragStart }) => {
           setOrigin(["%", "%"]);
