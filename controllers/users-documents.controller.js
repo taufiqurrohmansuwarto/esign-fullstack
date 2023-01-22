@@ -133,7 +133,29 @@ const remove = async (req, res) => {
   }
 };
 
+// const archieved
+const archived = async (req, res) => {
+  try {
+    const { documentId, recipientId } = req?.query;
+    await prisma.Recipient?.updateMany({
+      where: {
+        document_id: documentId,
+        id: recipientId
+      },
+      data: {
+        is_archived: true
+      }
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+}
+
 module.exports = {
   index,
   remove,
+  archived
 };
