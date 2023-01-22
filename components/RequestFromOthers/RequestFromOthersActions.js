@@ -1,3 +1,4 @@
+import DocumentLoading from '@/components/DocumentLoading';
 import { Card, Col, Pagination, Row, Skeleton, Space } from "antd";
 import { useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -62,6 +63,7 @@ const PdfDocument = ({
             ))}
             <Document
               file={docUrl}
+              loading={<DocumentLoading />}
               onLoadSuccess={onLoadDocumentSucces}
             >
               <Page
@@ -119,15 +121,20 @@ const RequestFromOthersActions = function ({
       <div style={{ padding: 5 }}>
         <Row justify="center">
           <Space>
-            <AddRecipientsButton />
-            <Pagination
-              simple
-              current={documents.currentPage}
-              total={documents.totalPage}
-              defaultPageSize={1}
-              size="small"
-              onChange={changePagination}
-            />
+            {documentData && (
+              <>
+                <AddRecipientsButton />
+                <Pagination
+                  simple
+                  current={documents.currentPage}
+                  total={documents.totalPage}
+                  defaultPageSize={1}
+                  size="small"
+                  onChange={changePagination}
+                />
+              </>
+            )}
+
           </Space>
         </Row>
       </div>

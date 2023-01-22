@@ -34,6 +34,16 @@ const ListRecipients = ({
   handleChangeRole,
   handleAddSign,
 }) => {
+
+
+  const removeRecipient = (item) => {
+    handleRemoveRecipients(item?.id);
+  }
+
+  const changeRoleRecipient = (item) => {
+    handleChangeRole(item?.id);
+  }
+
   return (
     <List
       size="small"
@@ -45,14 +55,14 @@ const ListRecipients = ({
             actions={[
               <Button
                 type="danger"
-                onClick={() => handleRemoveRecipients(item.id)}
+                onClick={() => removeRecipient(item)}
                 icon={<DeleteOutlined />}
                 size="small"
               />,
               <Radio.Group
                 size="small"
                 defaultValue={item?.role}
-                onChange={() => handleChangeRole(item.id)}
+                onChange={() => changeRoleRecipient(item)}
               >
                 <Radio.Button value={"reviewer"}>Reviewer</Radio.Button>
                 <Radio.Button value={"signer"}>Signer</Radio.Button>
@@ -68,13 +78,13 @@ const ListRecipients = ({
                           width: 350,
                           translate: [0, 0, 0],
                         },
-                        userId: item.userInfo?.id,
+                        userId: item.pegawai_id,
                       })
                     }
                     size="small"
                     type="primary"
                   >
-                    sign
+                    Sign
                   </Button>
                 )}
               </div>,
@@ -82,7 +92,7 @@ const ListRecipients = ({
           >
             <List.Item.Meta
               avatar={<Avatar src={item?.userInfo?.fileDiri?.foto} />}
-              title={`${item?.userInfo?.nama} (${item?.role})`}
+              title={`${item?.userInfo?.nama} (${item?.role?.toUpperCase()})`}
               description={item?.userInfo?.nip}
             />
           </List.Item>
@@ -96,7 +106,7 @@ const AddRecipientsButton = () => {
   const data = useSelector((state) => state.requestFromOthers);
   const dispatch = useDispatch();
   const [searching, setSearching] = useState(undefined);
-  const debouncFilter = useDebounce(searching, 500);
+  const debouncFilter = useDebounce(searching, 1500);
   const [user, setUser] = useState(undefined);
 
   const [showDrawer, setShowDrawer] = useState(false);
@@ -128,7 +138,7 @@ const AddRecipientsButton = () => {
   const { data: employeeData, isLoading: loadingEmployee } = useQuery(
     ["employees", debouncFilter],
     () => findRecipients(debouncFilter),
-    { enabled: Boolean(debouncFilter), refetchOnWindowFocus: false }
+    { enabled: !!debouncFilter, refetchOnWindowFocus: false }
   );
 
   // this fucking multiple request like shit
@@ -144,14 +154,24 @@ const AddRecipientsButton = () => {
     // first thing you must get the document id and looping throung the users / the recipients
     const { dataSign, dataUser, documentData } = data;
 
+
+
+
+
     const { id: documentId } = documentData;
+
+
+
+
 
     const users = dataUser.map((user) => ({
       id: user?.id,
       userId: user?.pegawai_id,
-      nama: user?.nama,
+      nama: user?.userInfo?.nama,
       role: user?.role,
+      recipient_json: user?.userInfo
     }));
+
 
     const signs = dataSign.map((sign) => {
       const { frame, page, id, userId } = sign;
@@ -173,8 +193,11 @@ const AddRecipientsButton = () => {
       };
     });
 
+
+
     const currentDataPost = users.map((user, index) => {
-      const properties = signs.filter((sign) => sign.userId === user.id);
+      const properties = signs.filter((sign) => sign.userId === user.userId);
+
 
       // fucking serialize this data
       const sign_coordinate = properties?.map((prop) => ({
@@ -198,25 +221,41 @@ const AddRecipientsButton = () => {
         sign_pages: user?.role === "reviewer" ? null : sign_pages,
         sign_coordinate: user?.role == "reviewer" ? null : sign_coordinate,
         total_sign_pages: user?.role === "reviewer" ? null : total_sign_pages,
+        recipient_json: user?.recipient_json
       };
     });
 
+
+
     // cek dulu
     const signerWithZeroProperty = currentDataPost.filter(
-      (user) => user?.role === "signer" && user?.properties?.length === 0
+      (user) => user?.role === "signer" && user?.sign_coordinate?.length === 0
     );
 
     if (signerWithZeroProperty?.length > 0 || dataUser?.length === 0) {
+
+      const name = signerWithZeroProperty?.map(x => x?.recipient_json?.nama).join(', ')
+
       message.error(
-        "Ada signer yang memiliki properti kosong atau tidak ada yang dientri"
+        `${name} is SIGNER but none of them have sign properties.`
       );
     } else {
       const data = { documentId, data: currentDataPost };
-      await recipientsMutation.mutateAsync(data);
-      router.push(`/user/document/${documentId}/view`);
+      // console.log(data)
+
+      // await recipientsMutation.mutateAsync(data);
+      // router.push(`/user/document/${documentId}/view`);
       // send this to backend server
     }
   };
+
+  const handleSearch = (e) => {
+    if (!e) {
+      return;
+    } else {
+      setSearching(e)
+    }
+  }
 
   return (
     <div>
@@ -232,7 +271,7 @@ const AddRecipientsButton = () => {
       <Drawer
         width={800}
         title="Add Recipients"
-        visible={showDrawer}
+        open={showDrawer}
         onClose={() => setShowDrawer(false)}
         extra={
           <Space>
@@ -246,20 +285,21 @@ const AddRecipientsButton = () => {
           </Space>
         }
       >
+
         <Select
           style={{ width: "80%" }}
-          placeholder="Employee number"
+          placeholder="Please type employee number"
           defaultActiveFirstOption={false}
           showSearch
           notFoundContent={loadingEmployee ? <Spin size="small" /> : null}
           loading={loadingEmployee}
           showArrow={false}
           filterOption={false}
-          onSearch={(e) => setSearching(e)}
+          onSearch={handleSearch}
           onChange={handleChange}
         >
           {!isEmpty(employeeData) && (
-            <Select.Option key={employeeData?.userInfo?.pegawai_id}>
+            <Select.Option key={employeeData?.pegawai_id}>
               <Space>
                 {employeeData.userInfo?.nama} - {employeeData.userInfo?.nip}
               </Space>

@@ -16,10 +16,10 @@ export const shareSignSlice = createSlice({
     loading: "idle",
     dataUser: [],
     dataSign: [],
-    signSymbol: undefined,
+    signSymbol: null,
     dataSignFilter: [],
-    docUrl: undefined,
-    documentData: undefined,
+    docUrl: null,
+    documentData: null,
     documentProperty: null,
     documents: {
       currentPage: 1,
@@ -31,9 +31,7 @@ export const shareSignSlice = createSlice({
       state.docUrl = {
         url: payload.document_url
       };
-
       state.documentData = payload;
-
       state.dataUser = [];
       state.dataSign = [];
       state.dataSignFilter = [];
@@ -68,11 +66,14 @@ export const shareSignSlice = createSlice({
       }
     },
     removeRecipients(state, { payload }) {
+
+      const currentUser = state?.dataUser?.find(user => user?.id === payload)?.pegawai_id
       const result = state.dataUser.filter((e) => e.id !== payload);
       state.dataUser = result;
 
+
       // ini harus dihapus juga tanda tangannya
-      const newDataSign = state.dataSign.filter((e) => e.userId !== payload);
+      const newDataSign = state.dataSign.filter((e) => e.userId !== currentUser);
       state.dataSign = newDataSign;
       state.dataSignFilter = newDataSign.filter(
         (d) => d.page === state.documents.currentPage
@@ -80,13 +81,14 @@ export const shareSignSlice = createSlice({
     },
     changeRole(state, { payload }) {
       const current = state.dataUser.findIndex((e) => e.id === payload);
+      const currentUser = state.dataUser[current].pegawai_id;
       const { role } = state.dataUser[current];
       let currentRole;
       if (role === "reviewer") {
         currentRole = "signer";
       } else {
         currentRole = "reviewer";
-        const newDataSign = state.dataSign.filter((e) => e.userId !== payload);
+        const newDataSign = state.dataSign.filter((e) => e.userId !== currentUser);
         state.dataSign = newDataSign;
         state.dataSignFilter = newDataSign.filter(
           (d) => d.page === state.documents.currentPage

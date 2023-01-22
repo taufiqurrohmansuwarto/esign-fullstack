@@ -29,7 +29,7 @@ const index = async (req, res) => {
     const currentData = serializeAttr(user_info);
     const resultBuffer = await createStamp(currentData);
     const base64Image = resultBuffer.toString("base64");
-    const data = { userInfo: user_info, image: base64Image };
+    const data = { pegawai_id: user_info?.pegawai_id, userInfo: user_info, image: base64Image };
 
     res.json(data);
   } catch (error) {
@@ -52,19 +52,10 @@ const get = async (req, res) => {
       const currentData = serializeAttr(employee);
       const resultBuffer = await createStamp(currentData);
       const base64Image = resultBuffer.toString("base64");
-
-      // const currentNik = employee?.nik;
-      // const result = await checkNik(currentNik);
-      // let isRegistered = false;
-
-      // if (result?.data?.status_code === 1111) {
-      //   isRegistered = true;
-      // }
-
       res.json({
+        pegawai_id: employee?.pegawai_id,
         userInfo: employee,
         image: base64Image,
-        // is_registered: isRegistered,
       });
     }
   } catch (error) {
