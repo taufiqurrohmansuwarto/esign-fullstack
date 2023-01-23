@@ -1,6 +1,7 @@
 import Container from "@/components/Container";
 import DetailDocumentHeader from "@/components/DetailDocumentHeader";
 import PdfView from "@/components/PdfView";
+import RecipientsActions from '@/components/Recipients/RecipientsActions';
 import RequestFromOthers from '@/components/RequestFromOthers/RequestFromOthers';
 import SelfSignView from "@/components/SelfSign/SelfSignView";
 import UserLayout from "@/components/UserLayout";
@@ -15,7 +16,7 @@ import { useRouter } from "next/router";
 // request from others : diperlukan beberapa komponen untuk ini 
 // 1. komponen pemilik request from others ketika belum dilakukan aksi / pemilihan user
 const CheckRequestFromOthers = ({ data, user }) => {
-  const { status, workflow, id } = data;
+  const { status, id } = data;
   const checkOwner = isOwner(data, user?.id);
 
   const ownerNotFinished = status === 'DRAFT' && checkOwner;
@@ -30,9 +31,7 @@ const CheckRequestFromOthers = ({ data, user }) => {
 
   if (ownerFinishCheck) {
     return (
-      <div>
-        Finish check
-      </div>
+      <RecipientsActions id={id} />
     )
   }
 

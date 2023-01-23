@@ -1,25 +1,19 @@
 import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
-import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { alertHeader, listUrl } from "@/lib/client-utils";
+import { LogoutOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Button,
-  Statistic,
-  Avatar,
-  Card,
+  Alert, Avatar, Button, Card,
   Col,
   Divider,
   Row,
-  Skeleton,
-  Typography,
-  Space,
-  Alert,
+  Skeleton, Space, Statistic, Typography
 } from "antd";
-import { check, detailUser, getDashboard } from "services/users.services";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { LogoutOutlined } from "@ant-design/icons";
+import { detailUser, getDashboard } from "services/users.services";
 
 // HEADER USER INFORMATION
 const HeaderUser = ({ data }) => {
@@ -98,7 +92,7 @@ const ListItems = () => {
     <>
       {listUrl?.map((item) => {
         return (
-          <div style={{ paddingTop: 10, paddingBottom: 10 }}>
+          <div style={{ paddingTop: 10, paddingBottom: 10 }} key={item?.url}>
             <Space>
               <Link href={item?.url}>
                 {item?.icon} {item?.text}

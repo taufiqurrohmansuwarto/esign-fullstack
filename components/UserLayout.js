@@ -4,7 +4,7 @@ import {
   LogoutOutlined,
   PlusOutlined,
   SettingOutlined,
-  UploadOutlined,
+  UploadOutlined
 } from "@ant-design/icons/lib/icons";
 import {
   AutoComplete,
@@ -19,8 +19,9 @@ import {
   Space,
   theme,
   Tooltip,
-  Typography,
+  Typography
 } from "antd";
+import { useSession } from 'next-auth/react';
 import { useRouter } from "next/router";
 import { useState } from "react";
 const { Header, Content, Sider } = Layout;
@@ -128,6 +129,8 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
     router.push(item.key);
   };
 
+  const { data: session, status } = useSession();
+
   const [collapsed, setCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
 
@@ -198,8 +201,10 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
               />
               <Dropdown menu={{ items: drawItems }} placement="bottom" arrow>
                 <Space align="center">
-                  <Typography.Text>IPUT TAUFIQURROHMAN SUWARTO</Typography.Text>
-                  <Avatar />
+                  <Typography.Text>
+                    {session?.user?.name}
+                  </Typography.Text>
+                  <Avatar src={session?.user?.image} />
                 </Space>
               </Dropdown>
             </Col>
