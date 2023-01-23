@@ -10,7 +10,7 @@ import {
   requestFromOthersAddRecipients
 } from "@/services/users.services";
 import { DeleteOutlined, PlusCircleFilled } from "@ant-design/icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "ahooks";
 import {
   Avatar,
@@ -112,14 +112,19 @@ const AddRecipientsButton = () => {
   const [showDrawer, setShowDrawer] = useState(false);
 
   const router = useRouter();
+  const queryClient = useQueryClient();
+
 
   // untuk menghandle membuat recipients
-  const recipientsMutation = useMutation(
+  const { mutate: addRecipientMutation, isLoading } = useMutation(
     (data) => requestFromOthersAddRecipients(data),
     {
       onSettled: () => { },
-      onError: () => { },
-      onSuccess: () => { },
+      onError: (error) => message.error(error?.response?.data?.message),
+      onSuccess: () => {
+        queryClient.invalidateQueries(['document-detail', data?.documentData?.id])
+        router.push(`/user/document/${data?.documentData?.id}/view`)
+      },
     }
   );
 
@@ -153,16 +158,7 @@ const AddRecipientsButton = () => {
   const handleSubmit = async () => {
     // first thing you must get the document id and looping throung the users / the recipients
     const { dataSign, dataUser, documentData } = data;
-
-
-
-
-
-    const { id: documentId } = documentData;
-
-
-
-
+    const { id: documentId, filename } = documentData;
 
     const users = dataUser.map((user) => ({
       id: user?.id,
@@ -198,7 +194,6 @@ const AddRecipientsButton = () => {
     const currentDataPost = users.map((user, index) => {
       const properties = signs.filter((sign) => sign.userId === user.userId);
 
-
       // fucking serialize this data
       const sign_coordinate = properties?.map((prop) => ({
         xPos: prop?.xPos,
@@ -214,13 +209,17 @@ const AddRecipientsButton = () => {
       // kalau user itu merupakan reviewer dinullkan
       return {
         sequence: index + 1,
-        role: user?.role,
-        signatory_status: "in progress",
-        status: "on progress",
-        employee_id: user?.userId,
-        sign_pages: user?.role === "reviewer" ? null : sign_pages,
-        sign_coordinate: user?.role == "reviewer" ? null : sign_coordinate,
-        total_sign_pages: user?.role === "reviewer" ? null : total_sign_pages,
+        role: user?.role?.toUpperCase(),
+        document_id: documentId,
+        signatory_status: "PENDING",
+        status: "ONGOING",
+        // karena penambahan recipient hanya untuk pns jadi perlu ditambahkan master didepannya
+        recipient_id: `master|${user?.userId}`,
+        sign_pages: user?.role?.toUpperCase() === "REVIEWER" ? null : sign_pages,
+        sign_coordinate: user?.role?.toUpperCase() == "REVIEWER" ? null : sign_coordinate,
+        sign_properties: user?.role?.toUpperCase() == "REVIEWER" ? null : sign_coordinate,
+        total_sign_pages: user?.role?.toUpperCase() === "REVIEWER" ? null : total_sign_pages,
+        filename,
         recipient_json: user?.recipient_json
       };
     });
@@ -229,8 +228,10 @@ const AddRecipientsButton = () => {
 
     // cek dulu
     const signerWithZeroProperty = currentDataPost.filter(
-      (user) => user?.role === "signer" && user?.sign_coordinate?.length === 0
+      (user) => user?.role === "SIGNER" && user?.sign_coordinate?.length === 0
     );
+
+    const recipientZero = currentDataPost?.length === 0;
 
     if (signerWithZeroProperty?.length > 0 || dataUser?.length === 0) {
 
@@ -239,10 +240,25 @@ const AddRecipientsButton = () => {
       message.error(
         `${name} is SIGNER but none of them have sign properties.`
       );
+    }
+
+    if (recipientZero) {
+      message.error('There is no recipient! Please add one')
     } else {
-      const data = { documentId, data: currentDataPost };
+
+      // hilangkan yang ga berguna
+      const dataPost = currentDataPost.map(d => {
+        const { sign_coordinate, sign_pages, total_sign_pages, ...rest } = d
+
+        return rest
+      })
+
+      const data = { documentId, data: dataPost };
       // console.log(data)
 
+
+
+      addRecipientMutation(data);
       // await recipientsMutation.mutateAsync(data);
       // router.push(`/user/document/${documentId}/view`);
       // send this to backend server
@@ -276,9 +292,9 @@ const AddRecipientsButton = () => {
         extra={
           <Space>
             <Button
-              loading={recipientsMutation.isLoading}
               type="primary"
               onClick={handleSubmit}
+              loading={isLoading}
             >
               Submit
             </Button>

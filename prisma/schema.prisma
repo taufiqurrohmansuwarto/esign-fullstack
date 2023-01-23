@@ -25,11 +25,6 @@ model User {
   last_login         DateTime?
   organization_id    String?
   nik                String?
-  status_code_tte    String?
-  status_tte         String?
-  status_message_tte String?
-  golongan           String?
-  pangkat            String?
   user_info          Json?
 
   createdat     DateTime?      @default(now())

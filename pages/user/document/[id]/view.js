@@ -1,21 +1,75 @@
 import Container from "@/components/Container";
 import DetailDocumentHeader from "@/components/DetailDocumentHeader";
 import PdfView from "@/components/PdfView";
+import RequestFromOthers from '@/components/RequestFromOthers/RequestFromOthers';
 import SelfSignView from "@/components/SelfSign/SelfSignView";
 import UserLayout from "@/components/UserLayout";
+import { isOwner } from '@/lib/client-utils';
 import { detailDocument } from "@/services/users.services";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "antd";
+import { useSession } from 'next-auth/react';
 import { useRouter } from "next/router";
 
-const SignView = ({ data }) => {
+
+// request from others : diperlukan beberapa komponen untuk ini 
+// 1. komponen pemilik request from others ketika belum dilakukan aksi / pemilihan user
+const CheckRequestFromOthers = ({ data, user }) => {
+  const { status, workflow, id } = data;
+  const checkOwner = isOwner(data, user?.id);
+
+  const ownerNotFinished = status === 'DRAFT' && checkOwner;
+  const ownerFinishCheck = status === 'ONGOING' && checkOwner;
+
+
+  if (ownerNotFinished) {
+    return (
+      <RequestFromOthers id={id} />
+    )
+  }
+
+  if (ownerFinishCheck) {
+    return (
+      <div>
+        Finish check
+      </div>
+    )
+  }
+
+
+  return (
+    <>
+      {JSON.stringify({
+        checkOwner
+      })}
+    </>
+  )
+}
+
+// 2. komponen pemilik request from others ketika sudah dilakukan aksi / pemilihan user
+// 3. komponen user yang dipilih untuk melakukan tanda tangan
+// 4. komponen user yang dipilih ketika role nya sudah selesai
+
+
+
+
+const CheckView = ({ data, user }) => {
   const { status, workflow, id } = data;
 
+  // self sign
   const selfSignAction = status === "DRAFT" && workflow === "selfSign";
   const selfSignView = status === "COMPLETED" && workflow === "selfSign";
 
+  // request from others
+  const requestFromOthers = workflow === "requestFromOthers";
+
+
   if (selfSignAction) {
-    return <SelfSignView documentId={id} />;
+    return <SelfSignView documentId={id} />
+  }
+
+  if (requestFromOthers) {
+    return <CheckRequestFromOthers data={data} user={user} />
   }
 
   if (selfSignView) {
@@ -30,9 +84,13 @@ const SignView = ({ data }) => {
   }
 };
 
+
+
 function View() {
   const router = useRouter();
   const documentId = router.query.id;
+
+  const { data: session } = useSession();
 
   const { data, isLoading } = useQuery(
     ["document-detail", documentId],
@@ -46,7 +104,7 @@ function View() {
   return (
     <Container>
       <Skeleton loading={isLoading}>
-        <SignView data={data} />
+        <CheckView data={data} user={session?.user} />
       </Skeleton>
     </Container>
   );

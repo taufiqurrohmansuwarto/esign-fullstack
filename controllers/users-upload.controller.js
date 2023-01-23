@@ -137,8 +137,12 @@ const requestFromOthersController = async (req, res) => {
       workflow,
     });
 
+    // karena ini request from others maka copy initial document ke ongoing document biar ga bingung. ngentods
     const document = await prisma.Document.create({
-      data: currentData,
+      data: {
+        ...currentData,
+        ongoing_document: currentData.initial_document
+      },
     });
 
     const documentFooter = await footer({
