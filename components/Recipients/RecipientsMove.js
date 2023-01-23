@@ -9,7 +9,6 @@ const RecipientsMove = ({
     images,
     bounds,
     frame,
-    updateFrame,
     currentRef,
     id,
 }) => {
@@ -56,10 +55,8 @@ const RecipientsMove = ({
             </div>
 
             <Moveable
-                renderDirections={["se"]}
+                renderDirections={null}
                 ref={moveableRef}
-                snappable
-                bounds={{ left: 0, top: 0, right: bounds.width, bottom: bounds.height }}
                 origin={false}
                 scrollable
                 scrollContainer={currentRef}
@@ -70,36 +67,36 @@ const RecipientsMove = ({
                 }}
                 throttleDrag={0}
                 originDraggable={false}
-                draggable={true}
+                // draggable={true}
                 keepRatio
                 hideDefaultLines={false}
                 target={target}
                 resizable={true}
                 throttleResize={0}
-                onResizeStart={({ setOrigin, dragStart }) => {
-                    setOrigin(["%", "%"]);
-                    dragStart && dragStart?.set(frame?.translate);
-                }}
-                onResize={({ target, width, height, drag }) => {
-                    const beforeTranslate = drag?.beforeTranslate;
+                // onResizeStart={({ setOrigin, dragStart }) => {
+                //     setOrigin(["%", "%"]);
+                //     dragStart && dragStart?.set(frame?.translate);
+                // }}
+                // onResize={({ target, width, height, drag }) => {
+                //     const beforeTranslate = drag?.beforeTranslate;
 
-                    updateFrame({ id, type: "translate", value: beforeTranslate });
-                    updateFrame({ id, type: "width", value: width });
-                    updateFrame({ id, type: "height", value: height });
+                //     updateFrame({ id, type: "translate", value: beforeTranslate });
+                //     updateFrame({ id, type: "width", value: width });
+                //     updateFrame({ id, type: "height", value: height });
 
-                    target.style.width = `${width}px`;
-                    target.style.height = `${height}px`;
-                    target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
-                }}
-                onDragStart={({ clientX, set, clientY, target }) => {
-                    set(frame?.translate);
-                }}
-                onDrag={({ target, beforeTranslate, left, top, delta }) => {
-                    updateFrame({ id, type: "translate", value: beforeTranslate });
-                }}
-                onRotateStart={({ set }) => {
-                    set(frame.rotate);
-                }}
+                //     target.style.width = `${width}px`;
+                //     target.style.height = `${height}px`;
+                //     target.style.transform = `translate(${beforeTranslate[0]}px, ${beforeTranslate[1]}px)`;
+                // }}
+                // onDragStart={({ clientX, set, clientY, target }) => {
+                //     set(frame?.translate);
+                // }}
+                // onDrag={({ target, beforeTranslate, left, top, delta }) => {
+                //     updateFrame({ id, type: "translate", value: beforeTranslate });
+                // }}
+                // onRotateStart={({ set }) => {
+                //     set(frame.rotate);
+                // }}
                 onRender={({ target }) => {
                     const { translate } = frame;
                     target.style.transform = `translate(${translate[0]}px, ${translate[1]}px)`;

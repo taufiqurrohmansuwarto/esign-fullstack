@@ -2,6 +2,7 @@ import DocumentLoading from '@/components/DocumentLoading';
 import { Card, Col, Pagination, Row, Skeleton, Space } from "antd";
 import { useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import RecipientFloatingButton from './RecipientFloatingButton';
 import RecipientsMove from './RecipientsMove';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -11,10 +12,8 @@ const PdfDocument = ({
     changePageDocument,
     loadPageSuccess,
     documents,
-    documentProperty,
     dataSignFilter,
-    updateFrame,
-    removeSign,
+    showSigns
 }) => {
     const onLoadDocumentSucces = ({ numPages }) => {
         changePageDocument({ currentPage: 1, totalPage: numPages });
@@ -28,6 +27,7 @@ const PdfDocument = ({
     }) => {
         const payload = { width, height, originalWidth, originalHeight };
         loadPageSuccess(payload);
+        showSigns()
     };
 
     const ref = useRef(null);
@@ -51,13 +51,7 @@ const PdfDocument = ({
                                 frame={sign.frame}
                                 key={sign.id}
                                 id={sign.id}
-                                bounds={{
-                                    height: documentProperty.height,
-                                    width: documentProperty.width,
-                                }}
                                 images={sign.stamp}
-                                updateFrame={updateFrame}
-                                removeSign={removeSign}
                             />
                         ))}
                         <Document
@@ -84,41 +78,18 @@ const RecipientsViewer = function ({
     loading,
     docUrl,
     signSymbol,
-    documentProperty,
     dataSignFilter,
-    dataSign,
     changePageDocument,
     loadPageSuccess,
     documents,
     changePagination,
-    updateFrame,
     documentData,
-    removeSign,
+    showSigns
 }) {
-    if (loading == "loading") {
-        return (
-            <Row justify="center" align="middle" style={{ padding: 18 }}>
-                <Card style={{ width: 600, height: 800 }}>
-                    <Skeleton avatar={{ size: 100 }} active />
-                    <Skeleton paragraph active />
-                    <Skeleton paragraph active />
-                    <Row justify="center" align="middle">
-                        <Space size="large">
-                            <Skeleton.Image size="large" active />
-                            <Skeleton.Image size="large" active />
-                            <Skeleton.Image size="large" active />
-                        </Space>
-                    </Row>
-                    <Skeleton paragraph active />
-                </Card>
-            </Row>
-        );
-    }
-
+    
     return (
         <>
             <div style={{ padding: 5 }}>
-
                 <Row justify="center">
                     <Space>
                         {documentData && (
@@ -138,6 +109,7 @@ const RecipientsViewer = function ({
             </div>
             <div>
                 <Row justify="center" style={{ zIndex: 1 }}>
+                    <RecipientFloatingButton data={documentData} />
                     <Col span={24}>
                         <div
                             style={{
@@ -151,15 +123,13 @@ const RecipientsViewer = function ({
                         >
                             {loading === "idle" && docUrl && (
                                 <PdfDocument
+                                    showSigns={showSigns}
                                     docUrl={docUrl}
                                     loadPageSuccess={loadPageSuccess}
                                     changePageDocument={changePageDocument}
                                     documents={documents}
                                     dataSignFilter={dataSignFilter}
                                     images={signSymbol}
-                                    documentProperty={documentProperty}
-                                    updateFrame={updateFrame}
-                                    removeSign={removeSign}
                                 />
                             )}
                         </div>

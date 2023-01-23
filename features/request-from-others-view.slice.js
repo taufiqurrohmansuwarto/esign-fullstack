@@ -11,7 +11,8 @@ export const fetchDocuments = createAsyncThunk(
 );
 
 const signers = (data) => {
-    return data?.Recipient?.filter(d => d?.role === 'SIGNER')?.map(x => x?.sign_properties)
+    // cari yang signatory status nya pending soalnya kalau di print nanti keliatan kotaknya
+    return data?.Recipient?.filter(d => d?.role === 'SIGNER' && d?.signatory_status === 'PENDING')?.map(x => x?.sign_properties)
 }
 
 export const requestFromOthersViewSlice = createSlice({
@@ -37,7 +38,6 @@ export const requestFromOthersViewSlice = createSlice({
             state.dataSign = flattenDeep(signers(payload));
             state.documents.currentPage = 1;
             state.documents.totalPage = payload?.document_pages
-            state.dataSignFilter = [];
         });
     },
     reducers: {

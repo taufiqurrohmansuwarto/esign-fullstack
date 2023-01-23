@@ -7,8 +7,16 @@ const userDashboard = async (req, res) => {
     // semua document draft
     const draft = await prisma.Recipient.count({
       where: {
-        recipient_id: id,
-        status: "draft",
+        OR : [
+          {
+            recipient_id: id,
+            status: "DRAFT",
+},
+{
+  recipient_id : id,
+  status : 'ONGOING'
+}
+        ]
       },
     });
 
@@ -21,7 +29,7 @@ const userDashboard = async (req, res) => {
     const documentCompleted = await prisma.Recipient.count({
       where: {
         recipient_id: id,
-        status: "completed",
+        status: "COMPLETED",
       },
     });
 

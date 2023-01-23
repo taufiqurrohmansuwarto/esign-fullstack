@@ -23,6 +23,10 @@ const RecipientsActions = ({ id }) => {
         dispatch(showSign());
     };
 
+    const showSigns = () => {
+        dispatch(showSign())
+    }
+
 
 
 
@@ -37,6 +41,7 @@ const RecipientsActions = ({ id }) => {
             changePageDocument={changePageDocument}
             loadPageSuccess={loadPageSuccess}
             changePagination={changePaginations}
+            showSigns={showSigns}
         />
     </div>
 }

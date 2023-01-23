@@ -187,6 +187,7 @@ const AddRecipientsButton = () => {
         width,
         page,
         id,
+        frame,
         employee_id: userId,
         userId,
       };
@@ -199,12 +200,14 @@ const AddRecipientsButton = () => {
 
       // fucking serialize this data
       const sign_coordinate = properties?.map((prop) => ({
+        id: prop?.id,
         xPos: prop?.xPos,
         yPos: prop?.yPos,
         width: prop?.width,
         height: prop?.height,
         page: prop?.page,
-        stamp: user?.stamp
+        stamp: user?.stamp,
+        frame: prop?.frame
       }));
 
       const total_sign_pages = properties?.length;
@@ -253,7 +256,6 @@ const AddRecipientsButton = () => {
       // hilangkan yang ga berguna
       const dataPost = currentDataPost.map(d => {
         const { sign_coordinate, sign_pages, total_sign_pages, ...rest } = d
-
         return rest
       })
 

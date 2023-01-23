@@ -29,20 +29,14 @@ const CheckRequestFromOthers = ({ data, user }) => {
     )
   }
 
-  if (ownerFinishCheck) {
+  else {
     return (
       <RecipientsActions id={id} />
     )
   }
 
 
-  return (
-    <>
-      {JSON.stringify({
-        checkOwner
-      })}
-    </>
-  )
+  
 }
 
 // 2. komponen pemilik request from others ketika sudah dilakukan aksi / pemilihan user
