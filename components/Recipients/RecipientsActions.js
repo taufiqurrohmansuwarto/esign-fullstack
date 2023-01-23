@@ -3,6 +3,7 @@ import {
 } from '@/features/request-from-others-view.slice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import RecipientsViewer from './RecipientsViewer';
 
 const RecipientsActions = ({ id }) => {
     const data = useSelector(state => state?.requestFromOthersView)
@@ -31,7 +32,12 @@ const RecipientsActions = ({ id }) => {
 
 
     return <div>
-        {JSON.stringify(data)}
+        <RecipientsViewer
+            {...data}
+            changePageDocument={changePageDocument}
+            loadPageSuccess={loadPageSuccess}
+            changePagination={changePaginations}
+        />
     </div>
 }
 

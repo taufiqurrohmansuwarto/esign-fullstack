@@ -76,7 +76,11 @@ const index = async (req, res) => {
       include: {
         document: {
           include: {
-            Recipient: true,
+            Recipient: {
+              orderBy: {
+                sequence: "asc"
+              }
+            }
           },
         },
       },

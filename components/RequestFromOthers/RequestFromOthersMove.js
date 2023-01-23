@@ -14,7 +14,6 @@ const RequestFromOthersMove = ({
   updateFrame,
   removeSign,
   currentRef,
-  line,
   id,
 }) => {
   const [target, setTarget] = useState();

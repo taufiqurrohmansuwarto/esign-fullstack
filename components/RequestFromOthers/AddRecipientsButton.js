@@ -165,8 +165,11 @@ const AddRecipientsButton = () => {
       userId: user?.pegawai_id,
       nama: user?.userInfo?.nama,
       role: user?.role,
-      recipient_json: user?.userInfo
+      recipient_json: user?.userInfo,
+      stamp: user?.image
     }));
+
+
 
 
     const signs = dataSign.map((sign) => {
@@ -201,6 +204,7 @@ const AddRecipientsButton = () => {
         width: prop?.width,
         height: prop?.height,
         page: prop?.page,
+        stamp: user?.stamp
       }));
 
       const total_sign_pages = properties?.length;
@@ -255,9 +259,6 @@ const AddRecipientsButton = () => {
 
       const data = { documentId, data: dataPost };
       // console.log(data)
-
-
-
       addRecipientMutation(data);
       // await recipientsMutation.mutateAsync(data);
       // router.push(`/user/document/${documentId}/view`);

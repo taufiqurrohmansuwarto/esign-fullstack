@@ -1,3 +1,4 @@
+import { flattenDeep } from '@/lib/client-utils';
 import { detailDocument } from "@/services/users.services";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -33,7 +34,7 @@ export const requestFromOthersViewSlice = createSlice({
                 url: payload.document_url
             };
             state.documentData = payload;
-            state.dataSign = signers(payload);
+            state.dataSign = flattenDeep(signers(payload));
             state.documents.currentPage = 1;
             state.documents.totalPage = payload?.document_pages
             state.dataSignFilter = [];
