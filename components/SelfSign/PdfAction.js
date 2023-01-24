@@ -4,6 +4,8 @@ import { Document, Page } from "react-pdf";
 import DocumentLoading from "../DocumentLoading";
 import SignMove from "./SelfSignMove";
 
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 const PdfAction = ({
   line,
   docUrl,

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Document, Page } from "react-pdf";
 import DocumentLoading from "./DocumentLoading";
 
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 function PdfView({ data, url }) {
   const [numPages, setNumPages] = useState(null);
 
