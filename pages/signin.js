@@ -6,12 +6,7 @@ import Link from "next/link";
 
 const SignInPages = ({ providers }) => {
   return (
-    <Row
-      gutter={[40, 40]}
-      style={{ minHeight: "100vh" }}
-      align="middle"
-      justify="center"
-    >
+    <Row style={{ minHeight: "100vh" }} align="middle" justify="center">
       <Col span={8}>
         <Typography.Title>E-Sign BKD</Typography.Title>
         <Space>
@@ -28,25 +23,50 @@ const SignInPages = ({ providers }) => {
           ))}
         </Space>
         <Divider />
-        <Space>
+        <div
+          style={{
+            marginBottom: 10,
+          }}
+        >
+          <Space size="small">
+            <Image
+              src="https://siasn.bkd.jatimprov.go.id:9000/public/pemprov.png"
+              width={15}
+              height={20}
+            />
+            <Image
+              src="https://siasn.bkd.jatimprov.go.id:9000/public/logobkd.jpg"
+              width={30}
+              height={40}
+            />
+            <Image
+              src="https://siasn.bkd.jatimprov.go.id:9000/public/logobsre.png"
+              width={50}
+              height={20}
+            />
+          </Space>
+        </div>
+        <Space direction="vertical" size="small">
           <Typography.Text>
-            <Link href="/check">Check Document ?</Link>
+            <Link href="/check">Check Document?</Link>
           </Typography.Text>
+          <span>&#169; 2023 BKD Provinsi Jawa Timur</span>
+          <Link
+            href="https://github.com/taufiqurrohmansuwarto/esign-fullstack"
+            passHref
+            target="_blank"
+          >
+            This code available on github
+          </Link>
         </Space>
       </Col>
       <Col span={6}>
-        {/* object fit */}
-        <div style={{ width: "100%", height: "100%", position: "relative" }}>
-          <Image
-            alt="Mountains"
-            src="https://siasn.bkd.jatimprov.go.id:9000/public/desktop.png"
-            // layout="fill"
-            // width="auto"
-            width={650}
-            height={500}
-            // objectFit="contain"
-          />
-        </div>
+        <Image
+          alt="Mountains"
+          src="https://siasn.bkd.jatimprov.go.id:9000/public/desktop.png"
+          width={550}
+          height={400}
+        />
       </Col>
     </Row>
   );
