@@ -114,26 +114,26 @@ export const requestFromOthrersSubmitRecipients = (documentId) => {
 // approve sign and reject sign
 export const requestFromOthersApproveSign = ({ documentId, data }) => {
   return fetcher
-    .put(`/documents/${documentId}/request-from-others/sign`, data)
+    .put(`/documents/${documentId}/request-from-others/recipients/sign`, data)
     .then((res) => res?.data);
 };
 
 export const requestFromOthersRejectSign = (documentId) => {
   return fetcher
-    .delete(`/documents/${documentId}/request-from-othres/sign`)
+    .delete(`/documents/${documentId}/request-from-others/recipients/sign`)
     .then((res) => res?.data);
 };
 
 // approve review and reject review
 export const requestFromOthersApproveReview = (documentId) => {
   return fetcher
-    .put(`/documents/${documentId}/request-from-others/review`)
+    .put(`/documents/${documentId}/request-from-others/recipients/review`)
     .then((res) => res?.data);
 };
 
 export const requestFromOthersRejectReview = (documentId) => {
   return fetcher
-    .delete(`/documents/${documentId}/request-from-others/review`)
+    .delete(`/documents/${documentId}/request-from-others/recipients/review`)
     .then((res) => res?.data);
 };
 

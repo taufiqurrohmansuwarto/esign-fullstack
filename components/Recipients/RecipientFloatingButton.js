@@ -5,7 +5,7 @@ import {
 } from "@/services/users.services";
 import { CloseCircleOutlined, VerifiedOutlined } from "@ant-design/icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { FloatButton, Form, Input, Modal, Typography } from "antd";
+import { FloatButton, Form, Input, message, Modal, Typography } from "antd";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -25,14 +25,29 @@ const ModalAcceptSign = ({ open, handleCancel, id }) => {
 
   const [form] = Form.useForm();
 
-  const { mutate, isLoading } = useMutation((data) =>
-    requestFromOthersApproveSign(data)
+  const { mutate, isLoading } = useMutation(
+    (data) => requestFromOthersApproveSign(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["document-detail", id]);
+        message.success("Document has been signed");
+        handleCancel();
+        form.resetFields();
+      },
+      onError: (error) => {
+        message.error(error?.response?.data?.message);
+      },
+      onSettled: () => queryClient.invalidateQueries(["document-detail", id]),
+    }
   );
 
   const handeOk = async () => {
     const result = await form.validateFields();
-    const data = {};
-    console.log(result);
+    const data = {
+      documentId: id,
+      passphrase: result?.passphrase,
+    };
+    mutate(data);
   };
 
   return (

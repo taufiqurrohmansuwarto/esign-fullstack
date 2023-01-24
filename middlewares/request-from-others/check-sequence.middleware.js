@@ -1,6 +1,8 @@
 const checkSequenceMiddleware = (role) => async (req, res, next) => {
   try {
-    const { documentId } = req?.query;
+    const documentId = req?.query?.documentId;
+    const user = req?.user;
+
     const recipients = await prisma.Recipient.findMany({
       where: {
         document_id: documentId,
