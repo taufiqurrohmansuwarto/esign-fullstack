@@ -36,9 +36,11 @@ const Recipients = ({ row }) => {
   return (
     <Avatar.Group>
       {row?.document?.Recipient?.map((recipient) => (
-        <Tooltip title={recipient?.recipient_json?.nama}>
-          <Avatar src={recipient?.recipient_json?.fileDiri?.foto} />
-        </Tooltip>
+        <div key={recipient?.id}>
+          <Tooltip title={recipient?.recipient_json?.nama}>
+            <Avatar src={recipient?.recipient_json?.fileDiri?.foto} />
+          </Tooltip>
+        </div>
       ))}
     </Avatar.Group>
   );

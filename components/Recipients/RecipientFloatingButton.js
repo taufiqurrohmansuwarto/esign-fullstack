@@ -45,7 +45,9 @@ const ModalAcceptSign = ({ open, handleCancel, id }) => {
     const result = await form.validateFields();
     const data = {
       documentId: id,
-      passphrase: result?.passphrase,
+      data: {
+        passphrase: result?.passphrase,
+      },
     };
     mutate(data);
   };
