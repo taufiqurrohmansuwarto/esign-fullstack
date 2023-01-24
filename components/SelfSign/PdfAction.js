@@ -1,6 +1,6 @@
 import { Col, Row } from "antd";
 import { useRef } from "react";
-import { Document, Page } from "react-pdf";
+import { Document, Page, pdfjs } from "react-pdf";
 import DocumentLoading from "../DocumentLoading";
 import SignMove from "./SelfSignMove";
 

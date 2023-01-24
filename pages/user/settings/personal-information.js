@@ -1,5 +1,5 @@
+import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
-import { PageContainer } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, Col, Form, Input, Row, Card } from "antd";
 import { detailUser } from "services/users.services";

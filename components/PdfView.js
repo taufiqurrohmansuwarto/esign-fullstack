@@ -1,7 +1,7 @@
 import { Row, Col } from "antd";
 import React from "react";
 import { useState } from "react";
-import { Document, Page } from "react-pdf";
+import { Document, Page, pdfjs } from "react-pdf";
 import DocumentLoading from "./DocumentLoading";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
