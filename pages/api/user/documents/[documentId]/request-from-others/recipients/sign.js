@@ -4,6 +4,11 @@ import createStampMiddleware from "@/middlewares/request-from-others/signs/creat
 import serializeMiddlware from "@/middlewares/request-from-others/signs/serialize.middleware";
 import signBsreMiddleware from "@/middlewares/request-from-others/signs/sign-bsre.middleware";
 import inserDatabaseMiddleware from "@/middlewares/request-from-others/signs/insert-database.middleware";
+
+// reject sign
+import rejectSignSerializeMiddleware from "@/middlewares/request-from-others/signs/reject-sign-serialize.middleware";
+import createStampRejectSignMiddleware from "@/middlewares/request-from-others/signs/create-stamp-reject-sign.middleware";
+
 import { createRouter } from "next-connect";
 
 const router = createRouter();
@@ -17,10 +22,19 @@ router
     createStampMiddleware,
     signBsreMiddleware,
     inserDatabaseMiddleware,
-    async (req, res) => {
+    async () => {
       res.json({ code: 200, message: "test" });
     }
   )
-  .delete(checkSequenceMiddleware("SIGNER"));
+  .delete(
+    checkSequenceMiddleware("SIGNER"),
+    rejectSignSerializeMiddleware,
+    createStampRejectSignMiddleware,
+    async (req, res) => {
+      console.log(req.rejectedDocument);
+
+      res.json({ code: 200, message: "test" });
+    }
+  );
 
 export default router.handler();

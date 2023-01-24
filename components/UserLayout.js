@@ -4,24 +4,21 @@ import {
   LogoutOutlined,
   PlusOutlined,
   SettingOutlined,
-  UploadOutlined
+  UploadOutlined,
 } from "@ant-design/icons/lib/icons";
 import {
-  AutoComplete,
   Avatar,
   Button,
-  Col,
   Dropdown,
   Layout,
   Menu,
   Modal,
-  Row,
   Space,
   theme,
   Tooltip,
-  Typography
+  Typography,
 } from "antd";
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 const { Header, Content, Sider } = Layout;
@@ -97,7 +94,6 @@ const drawItems = [
   {
     key: "1",
     label: "Keluar",
-    danger: true,
     icon: <LogoutOutlined />,
   },
 ];
@@ -115,7 +111,7 @@ const items = [
   ]),
   getItem("Settings", "/user/settings", <SettingOutlined />, [
     getItem("Activity Log", "/user/settings/activity-log"),
-    getItem("Change Password", "/user/settings/change-password"),
+    // getItem("Change Password", "/user/settings/change-password"),
     getItem("Digital Certificate", "/user/settings/digital-certificate"),
     getItem("Personal Information", "/user/settings/personal-information"),
     getItem("Signature", "/user/settings/signatures"),
@@ -130,6 +126,12 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
   };
 
   const { data: session, status } = useSession();
+
+  const dropdownClick = ({ key }) => {
+    if (key === "1") {
+      signOut();
+    }
+  };
 
   const [collapsed, setCollapsed] = useState(true);
   const [open, setOpen] = useState(false);
@@ -189,26 +191,19 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
       <Layout>
         <Header
           style={{
-            padding: 0,
+            display: "flex",
+            justifyContent: "flex-end",
             background: colorBgContainer,
           }}
         >
-          <Row>
-            <Col offset={16}>
-              <AutoComplete
-                style={{ width: 300 }}
-                placeholder="Search Document"
-              />
-              <Dropdown menu={{ items: drawItems }} placement="bottom" arrow>
-                <Space align="center">
-                  <Typography.Text>
-                    {session?.user?.name}
-                  </Typography.Text>
-                  <Avatar src={session?.user?.image} />
-                </Space>
-              </Dropdown>
-            </Col>
-          </Row>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Dropdown menu={{ items: drawItems, onClick: dropdownClick }}>
+              <Space>
+                <Typography.Text>{session?.user?.name}</Typography.Text>
+                <Avatar src={session?.user?.image} />
+              </Space>
+            </Dropdown>
+          </div>
         </Header>
         <Content>{children}</Content>
       </Layout>

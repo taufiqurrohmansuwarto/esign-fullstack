@@ -1,11 +1,11 @@
 const { PDFDocument, StandardFonts } = require("pdf-lib");
 
-const documentRejected = async (req, res, next) => {
+const createStampRejectSignMiddleware = async (req, res, next) => {
   try {
-    const { user, minio, document } = req;
-    const { title, buffer } = document;
+    const document = req?.document;
+    const { filename, fileBuffer } = document;
 
-    const pdfDoc = await PDFDocument.load(buffer);
+    const pdfDoc = await PDFDocument.load(fileBuffer);
     const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
@@ -15,7 +15,7 @@ const documentRejected = async (req, res, next) => {
     firstPage.drawText(`DOCUMENT REJECTED`, {
       x: 5,
       y: height / 2 + 300,
-      size: 50,
+      size: 40,
       font: helveticaFont,
       color: rgb(1, 0, 0),
       rotate: degrees(-45),
@@ -23,7 +23,7 @@ const documentRejected = async (req, res, next) => {
 
     const currentPdf = await pdfDoc.save();
     const currentPdfBuffer = Buffer.from(new Uint8Array(currentPdf));
-    const lastDocument = `rejected_${title}_nanoid()}.pdf`;
+    const lastDocument = filename;
 
     req.rejectedDocument = {
       rejectedDocumentTitle: lastDocument,
@@ -33,12 +33,11 @@ const documentRejected = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    res.status(500).send({
       code: 500,
-      message: error.message,
-      data: null,
+      message: "Internal Server Error",
     });
   }
 };
 
-module.exports = documentRejected;
+module.exports = createStampRejectSignMiddleware;

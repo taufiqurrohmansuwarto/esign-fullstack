@@ -85,9 +85,30 @@ const ModalRejectSign = ({ open, handleCancel, id }) => {
     requestFromOthersRejectSign(data)
   );
 
+  const handleOk = () => {
+    mutate(id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["document-detail", id]);
+        message.success("Document has been rejected");
+        handleCancel();
+      },
+      onError: (error) => {
+        message.error(error?.response?.data?.message);
+      },
+      onSettled: () => queryClient.invalidateQueries(["document-detail", id]),
+    });
+  };
+
   return (
-    <Modal open={open} onCancel={handleCancel}>
-      {id}
+    <Modal
+      confirmLoading={isLoading}
+      onOk={handleOk}
+      open={open}
+      onCancel={handleCancel}
+    >
+      <Typography.Text>
+        Are you sure want to reject this document?
+      </Typography.Text>
     </Modal>
   );
 };

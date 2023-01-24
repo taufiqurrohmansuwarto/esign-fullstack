@@ -1,7 +1,6 @@
 import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 import { alertHeader, listUrl } from "@/lib/client-utils";
-import { LogoutOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import {
   Alert,
@@ -16,7 +15,6 @@ import {
   Statistic,
   Typography,
 } from "antd";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { detailUser, getDashboard } from "services/users.services";
@@ -128,14 +126,6 @@ function Dashboard() {
             rows: 4,
           }}
         >
-          <Button
-            icon={<LogoutOutlined />}
-            type="primary"
-            style={{ marginBottom: 10 }}
-            onClick={signOut}
-          >
-            Logout
-          </Button>
           <HeaderUser data={data} />
           <Divider />
           <StatusUser data={data} />
