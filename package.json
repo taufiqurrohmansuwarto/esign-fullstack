@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "./setup.sh && next build",
+    "build": "sudo ./setup.sh && next build",
     "start": "next start -p 3999",
     "lint": "next lint"
   },
