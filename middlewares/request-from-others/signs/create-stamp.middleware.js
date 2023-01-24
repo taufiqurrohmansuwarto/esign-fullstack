@@ -53,7 +53,7 @@ const createStamp = async ({
 
   const newPdf = await pdfDocNew.save();
   const newPdfBuffer = Buffer.from(new Uint8Array(newPdf));
-  const currentFilename = `${nanoid()}_ongoing_${filename}`;
+  const currentFilename = filename;
 
   const data = {
     fileBuffer: newPdfBuffer,

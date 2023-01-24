@@ -1,5 +1,6 @@
 const { default: prisma } = require("@/lib/prisma");
 const { uploadFile } = require("@/lib/utils");
+
 const inserDatabaseMiddleware = async (req, res, next) => {
   try {
     const { filename } = req?.documentStamp;
@@ -52,7 +53,7 @@ const inserDatabaseMiddleware = async (req, res, next) => {
         },
         data: {
           status: "COMPLETED",
-          sign_document: `sign_${filename}`,
+          sign_document: `${filename}`,
         },
       });
 
@@ -65,6 +66,18 @@ const inserDatabaseMiddleware = async (req, res, next) => {
         },
       });
     }
+
+    await prisma.History.create({
+      data: {
+        user_id: userId,
+        document_id: documetId,
+        action: "SIGN",
+        type: "DOCUMENT",
+        ip_address: req?.ip,
+        useragent: req?.useragent,
+      },
+    });
+
     next();
   } catch (error) {
     console.log(error);

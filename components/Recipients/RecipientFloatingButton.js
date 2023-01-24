@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FloatButton, Form, Input, message, Modal, Typography } from "antd";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const ModalConfirm = ({ handleCancel, open, role, description }) => {
   return (
@@ -22,6 +23,7 @@ const ModalConfirm = ({ handleCancel, open, role, description }) => {
 
 const ModalAcceptSign = ({ open, handleCancel, id }) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const [form] = Form.useForm();
 
@@ -33,6 +35,7 @@ const ModalAcceptSign = ({ open, handleCancel, id }) => {
         message.success("Document has been signed");
         handleCancel();
         form.resetFields();
+        router.push(`/user/documents/all`);
       },
       onError: (error) => {
         message.error(error?.response?.data?.message);
