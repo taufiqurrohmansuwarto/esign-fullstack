@@ -112,9 +112,9 @@ export const requestFromOthrersSubmitRecipients = (documentId) => {
 };
 
 // approve sign and reject sign
-export const requestFromOthersApproveSign = (documentId) => {
+export const requestFromOthersApproveSign = ({ documentId, data }) => {
   return fetcher
-    .put(`/documents/${documentId}/request-from-others/sign`)
+    .put(`/documents/${documentId}/request-from-others/sign`, data)
     .then((res) => res?.data);
 };
 

@@ -4,11 +4,17 @@ import { alertHeader, listUrl } from "@/lib/client-utils";
 import { LogoutOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Alert, Avatar, Button, Card,
+  Alert,
+  Avatar,
+  Button,
+  Card,
   Col,
   Divider,
   Row,
-  Skeleton, Space, Statistic, Typography
+  Skeleton,
+  Space,
+  Statistic,
+  Typography,
 } from "antd";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
@@ -39,7 +45,8 @@ const HeaderUser = ({ data }) => {
   );
 };
 
-const StatusUser = ({ data: { status_bsre } }) => {
+const StatusUser = ({ data }) => {
+  const status_bsre = data?.status_bsre;
   const { type, text } = alertHeader(status_bsre);
 
   return <Alert type={type} message={text} showIcon />;
