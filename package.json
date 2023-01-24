@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "sh setup.sh && next build",
+    "vercel-build": "yum install libuuid-devel libmount-devel && cp /lib64/{libuuid,libmount,libblkid}.so.1 node_modules/canvas/build/Release/",
     "start": "next start -p 3999",
     "lint": "next lint"
   },
@@ -18,7 +19,7 @@
     "ahooks": "^3.7.4",
     "antd": "^5.1.5",
     "axios": "^1.2.1",
-    "canvas": "2.7.0",
+    "canvas": "2.6.1",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
     "express-validator": "^6.14.2",
