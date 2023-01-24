@@ -1,6 +1,5 @@
 import { Card, Steps } from "antd";
 import { useRouter } from "next/router";
-import React from "react";
 import PageContainer from "../pro/PageContainer";
 
 function RequestFromOthersHeader({

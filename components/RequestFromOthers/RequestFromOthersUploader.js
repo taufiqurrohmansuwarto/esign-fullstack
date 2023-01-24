@@ -4,7 +4,7 @@ import { InboxOutlined } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
 import { Form, Input, message, Modal, Upload } from "antd";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const ShowModalEdit = ({ onCancel, open, filename, file }) => {
   const router = useRouter();
@@ -73,9 +73,9 @@ const ShowModalEdit = ({ onCancel, open, filename, file }) => {
 };
 
 function RequestFromOthersUploader() {
-  const [filename, setFilename] = React.useState("");
+  const [filename, setFilename] = useState("");
 
-  const [file, setFile] = React.useState(null);
+  const [file, setFile] = useState(null);
 
   const [open, setOpen] = useState(false);
 

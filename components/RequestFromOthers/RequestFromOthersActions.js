@@ -1,4 +1,4 @@
-import DocumentLoading from '@/components/DocumentLoading';
+import DocumentLoading from "@/components/DocumentLoading";
 import { Card, Col, Pagination, Row, Skeleton, Space } from "antd";
 import { useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -134,7 +134,6 @@ const RequestFromOthersActions = function ({
                 />
               </>
             )}
-
           </Space>
         </Row>
       </div>

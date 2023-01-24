@@ -3,7 +3,6 @@ import { WarningOutlined } from "@ant-design/icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
-  Card,
   Col,
   Form,
   Input,
@@ -11,7 +10,6 @@ import {
   Modal,
   Pagination,
   Row,
-  Skeleton,
   Space,
 } from "antd";
 import { useRouter } from "next/router";
