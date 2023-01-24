@@ -3,6 +3,7 @@ import { verifyDocumentUser } from "@/services/public.services";
 import { CloseCircleOutlined } from "@ant-design/icons";
 import {
   Button,
+  Card,
   Layout,
   message,
   Result,
@@ -22,7 +23,7 @@ const HasilPengecekan = ({ data }) => {
       <>
         <Result
           status="error"
-          title="Dokumen tidak valid!"
+          title="Document is not valid. There is no signature in this document"
           subTitle={data?.nama_dokumen}
         />
       </>
@@ -32,14 +33,13 @@ const HasilPengecekan = ({ data }) => {
   return (
     <>
       <Result
-        subTitle={`Dokumen dengan nama ${
+        subTitle={`Document with the title ${
           infoSigner(data)?.nama_dokumen
-        } telah ditanda tangani oleh ${
-          infoSigner(data)?.signer_name
-        } sebanyak ${infoSigner(data)?.jumlah_signature} kali`}
+        } signed by ${infoSigner(data)?.signer_name} with ${
+          infoSigner(data)?.jumlah_signature
+        } times signature`}
         status="success"
-        title="Dokumen Valid!"
-        // extra={[<Button type="primary">Lihat Dokumen</Button>]}
+        title="Document Valid. This document is signed by the authorized person"
       >
         <Space>
           <Typography.Paragraph>
@@ -132,19 +132,21 @@ function CheckDocumentVerify() {
         subTitle="Upload your document to check the validity of the signature"
         onBack={() => router.push("/")}
       >
-        <Upload accept=".pdf" {...uploadProps}>
-          <Button>Upload</Button>
-        </Upload>
-        <Button
-          type="primary"
-          onClick={handleUpload}
-          disabled={fileList.length === 0}
-          loading={uploading}
-          style={{ marginTop: 16 }}
-        >
-          {uploading ? "Loading..." : "Start Check"}
-        </Button>
-        {fileInformation && <HasilPengecekan data={fileInformation} />}
+        <Card>
+          <Upload accept=".pdf" {...uploadProps}>
+            <Button>Upload</Button>
+          </Upload>
+          <Button
+            type="primary"
+            onClick={handleUpload}
+            disabled={fileList.length === 0}
+            loading={uploading}
+            style={{ marginTop: 16 }}
+          >
+            {uploading ? "Loading..." : "Start Check"}
+          </Button>
+          {fileInformation && <HasilPengecekan data={fileInformation} />}
+        </Card>
       </PageContainer>
     </Layout>
   );

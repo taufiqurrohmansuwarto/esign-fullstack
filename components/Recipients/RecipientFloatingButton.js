@@ -12,11 +12,8 @@ import { useRouter } from "next/router";
 
 const ModalConfirm = ({ handleCancel, open, role, description }) => {
   return (
-    <Modal open={open} onCancel={handleCancel}>
-      <div>
-        Hello world
-        {JSON.stringify(description)}
-      </div>
+    <Modal title="Document Information" open={open} onCancel={handleCancel}>
+      <div>{JSON.stringify(description)}</div>
     </Modal>
   );
 };
