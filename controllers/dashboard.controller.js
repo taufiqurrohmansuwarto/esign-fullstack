@@ -1,3 +1,5 @@
+const { default: prisma } = require("@/lib/prisma");
+
 const userDashboard = async (req, res) => {
   try {
     const {
@@ -7,16 +9,16 @@ const userDashboard = async (req, res) => {
     // semua document draft
     const draft = await prisma.Recipient.count({
       where: {
-        OR : [
+        OR: [
           {
             recipient_id: id,
             status: "DRAFT",
-},
-{
-  recipient_id : id,
-  status : 'ONGOING'
-}
-        ]
+          },
+          {
+            recipient_id: id,
+            status: "ONGOING",
+          },
+        ],
       },
     });
 
