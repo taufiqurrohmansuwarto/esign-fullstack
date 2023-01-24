@@ -118,7 +118,7 @@ export default async function (req, res) {
         },
       },
       {
-        name: "PTTPK",
+        name: "PTT-PK",
         id: "pttpk",
         type: "oauth",
         wellKnown: pttpkWellKnown,

@@ -16,6 +16,7 @@ import { ConfigProvider } from "antd";
 import { Provider } from "react-redux";
 import store from "../features";
 import Head from "next/head";
+import Loading from "@/components/Loading";
 
 const Auth = ({ children, role }) => {
   const { data: session, status } = useSession({
@@ -24,7 +25,7 @@ const Auth = ({ children, role }) => {
   });
 
   if (status === "loading") {
-    return <div>loading...</div>;
+    return <Loading />;
   } else {
     const { user } = session;
 
