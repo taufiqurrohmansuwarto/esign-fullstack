@@ -1,6 +1,6 @@
 const { default: prisma } = require("@/lib/prisma");
 
-const { downloadFile } = require("@/lib/utils");
+const { downloadFile, downloadWithFilename } = require("@/lib/utils");
 
 // cuman preview menggunakan req query
 const previewDocumentController = async (req, res) => {};
@@ -88,9 +88,10 @@ const detailDocument = async (req, res) => {
       document = currentDocument?.ongoing_document;
     }
 
-    const result = await downloadFile({
+    const result = await downloadWithFilename({
       minio: req?.mc,
       filename: document,
+      newFilename: currentDocument?.filename,
     });
 
     let initialDocUrl = null;
@@ -98,23 +99,26 @@ const detailDocument = async (req, res) => {
     let signDocUrl = null;
 
     if (currentDocument?.initial_document) {
-      initialDocUrl = await downloadFile({
+      initialDocUrl = await downloadWithFilename({
         minio: req?.mc,
         filename: currentDocument?.initial_document,
+        newFilename: currentDocument?.filename,
       });
     }
 
     if (currentDocument?.ongoing_document) {
-      ongoingDocUrl = await downloadFile({
+      ongoingDocUrl = await downloadWithFilename({
         minio: req?.mc,
         filename: currentDocument?.ongoing_document,
+        newFilename: `ongoing_${currentDocument?.filename}`,
       });
     }
 
     if (currentDocument?.sign_document) {
-      signDocUrl = await downloadFile({
+      signDocUrl = await downloadWithFilename({
         minio: req?.mc,
         filename: currentDocument?.sign_document,
+        newFilename: `signed_${currentDocument?.filename}`,
       });
     }
 
