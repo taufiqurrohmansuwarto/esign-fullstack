@@ -19,5 +19,5 @@ Aplikasi Tanda Tangan Elektronik BKD Jatim. Integrasi dengan BSrE dan menggunaka
 
 ![plot](./screenshots/login.jpg)
 ![plot](./screenshots/2.jpg)
-![plot](./screenshots/3.jpg)
+![plot](./screenshots/4.jpg)
 ![drag](./screenshots/drag-drop.gif)
