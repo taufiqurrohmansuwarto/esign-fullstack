@@ -30,7 +30,7 @@ const CheckAndReturnMiddleware = async (req, res, next) => {
 
     // valid terbukti kalau dia statusnya draft dan workflow menggunakan self sign
     const isValid =
-      lower(currentDocument?.status) === "draft" &&
+      lower(currentDocument?.status) === "DRAFT" &&
       currentDocument?.user_id === userId &&
       currentDocument?.workflow === "selfSign";
 
