@@ -1,3 +1,5 @@
+const { default: prisma } = require("@/lib/prisma");
+
 const checkSequenceMiddleware = (role) => async (req, res, next) => {
   try {
     const documentId = req?.query?.documentId;
