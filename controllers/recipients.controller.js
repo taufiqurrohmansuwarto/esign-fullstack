@@ -1,3 +1,5 @@
+const { default: prisma } = require("@/lib/prisma");
+
 const recipientsIndex = async (req, res) => {
   try {
     const { documentId } = req?.query;
