@@ -23,7 +23,7 @@ router
     createStampMiddleware,
     signBsreMiddleware,
     inserDatabaseMiddleware,
-    async () => {
+    async (req, res) => {
       res.json({ code: 200, message: "test" });
     }
   )

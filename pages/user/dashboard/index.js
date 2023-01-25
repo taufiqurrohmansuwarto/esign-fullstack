@@ -33,6 +33,9 @@ const HeaderUser = ({ data }) => {
           </Typography.Title>
         </Row>
         <Row>
+          <Typography.Text>{data?.jabatan}</Typography.Text>
+        </Row>
+        <Row>
           <Typography.Text>{data?.nip}</Typography.Text>
         </Row>
         <Row>
@@ -53,7 +56,7 @@ const StatusUser = ({ data }) => {
 const StatisticUser = () => {
   const router = useRouter();
 
-  const gotoDraftDocument = () => router.push("/user/documents/draft");
+  const gotoDraftDocument = () => router.push("/user/documents/pending");
 
   const { data, isLoading } = useQuery(["user-dashboard"], () =>
     getDashboard()

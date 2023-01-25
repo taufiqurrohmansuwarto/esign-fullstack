@@ -34,18 +34,18 @@ const insertDatabaseRejectedMiddleware = async (req, res, next) => {
       data: {
         signatory_status: "COMPLETED",
         approval_date: new Date(),
-        rejected_date: new Date(),
-        rejected_reason: req?.body?.reason,
-        rejected_id: userId,
       },
     });
 
-    await prisma.Recipient.update({
+    await prisma.Recipient.updateMany({
       where: {
-        id: documentId,
+        document_id: documentId,
       },
       data: {
         status: "REJECTED",
+        rejected_at: new Date(),
+        rejected_reason: req?.body?.reason,
+        rejected_id: userId,
       },
     });
 
@@ -57,6 +57,9 @@ const insertDatabaseRejectedMiddleware = async (req, res, next) => {
       data: {
         status: "REJECTED",
         sign_document: rejectedDocumentTitle,
+        rejected_id: userId,
+        rejected_at: new Date(),
+        rejected_reason: req?.body?.reason,
       },
     });
 
@@ -64,7 +67,7 @@ const insertDatabaseRejectedMiddleware = async (req, res, next) => {
     await prisma.History.create({
       data: {
         user_id: userId,
-        document_id: documetId,
+        document_id: documentId,
         action: "REJECTED",
         type: "DOCUMENT",
         ip_address: req?.ip,

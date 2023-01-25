@@ -56,7 +56,6 @@ const ModalAcceptSign = ({ open, handleCancel, id }) => {
 
   return (
     <Modal
-      footer={false}
       onOk={handeOk}
       title="Accept Sign"
       confirmLoading={isLoading}

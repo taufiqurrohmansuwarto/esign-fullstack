@@ -86,7 +86,16 @@ const DetailDocumentHeader = ({
                   },
                   {
                     key: "2",
-                    label: <a href="google.com">Sign Document</a>,
+                    label: (
+                      <a
+                        href={data?.urls?.signDocUrl}
+                        alt="alt text"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Sign Document
+                      </a>
+                    ),
                     disabled: data?.urls?.signDocUrl !== null ? false : true,
                   },
                   {

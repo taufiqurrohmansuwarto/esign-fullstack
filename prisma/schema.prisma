@@ -27,16 +27,17 @@ model User {
   nik             String?
   user_info       Json?
 
-  createdat     DateTime?      @default(now())
-  updatedat     DateTime?      @updatedAt
-  documents     Document[]
-  histories     History[]
-  Discussions   Discussion[]
-  Otp           Otp[]
-  RecipientUser Recipient[]    @relation("RecipientUser")
-  RejectedUser  Recipient[]    @relation("RejectedUser")
-  Sender        Notification[] @relation("sender")
-  Recipient     Notification[] @relation("recipient")
+  createdat            DateTime?      @default(now())
+  updatedat            DateTime?      @updatedAt
+  documents            Document[]
+  histories            History[]
+  Discussions          Discussion[]
+  Otp                  Otp[]
+  RecipientUser        Recipient[]    @relation("RecipientUser")
+  RejectedUser         Recipient[]    @relation("RejectedUser")
+  Sender               Notification[] @relation("sender")
+  Recipient            Notification[] @relation("recipient")
+  RejectedUserDocument Document[]     @relation("RejectedUserDocument")
 }
 
 model Document {
@@ -49,6 +50,10 @@ model Document {
   initial_document  String?
   document_pages    Int?
   user_id           String?
+  rejected_id       String?
+  rejected_user     User?          @relation(name: "RejectedUserDocument", fields: [rejected_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  rejected_at       DateTime?
+  rejected_reason   String?
   uploader          User?          @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   type              String?
   sign_document     String?

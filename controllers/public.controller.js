@@ -25,11 +25,24 @@ const publicSearch = async (req, res) => {
     const { id } = req?.query;
     const result = await prisma.Document.findFirst({
       where: {
-        id: id,
-        status: "COMPLETED",
+        OR: [
+          {
+            id: id,
+            status: "COMPLETED",
+          },
+          {
+            id: id,
+            status: "REJECTED",
+          },
+        ],
       },
       include: {
         Recipient: true,
+        rejected_user: {
+          select: {
+            username: true,
+          },
+        },
       },
     });
 

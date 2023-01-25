@@ -1,18 +1,9 @@
 import DocumentLoading from "@/components/DocumentLoading";
+import PageContainer from "@/components/pro/PageContainer";
 import { formatDate, toKB, upperCaseFirst } from "@/lib/client-utils";
 import { checkDocumentById } from "@/services/public.services";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Avatar,
-  Card,
-  Descriptions,
-  Empty,
-  Layout,
-  Result,
-  Skeleton,
-  Space,
-  Table,
-} from "antd";
+import { Avatar, Card, Descriptions, Empty, Result, Space, Table } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -94,14 +85,22 @@ const EsignInformation = ({ data }) => {
 };
 
 const Checker = ({ data }) => {
+  let kata;
+
+  if (data?.document?.status === "REJECTED") {
+    kata = "Document Rejected";
+  } else {
+    kata = "Document Approved";
+  }
+
   if (data === null) {
     return <Empty />;
   } else {
     return (
       <>
         <Result
-          status="success"
-          title="Document Found"
+          status={data?.document?.status === "REJECTED" ? "error" : "success"}
+          title={kata}
           subTitle={
             <Link href={data?.url} passHref>
               Download File
@@ -131,18 +130,13 @@ const CheckDocumentById = () => {
   );
 
   if (isLoading) {
-    return (
-      <>
-        Loading...
-        <DocumentLoading />;
-      </>
-    );
+    return <DocumentLoading />;
   }
 
   return (
-    <Layout style={{ padding: 32, minHeight: "100vh" }}>
+    <PageContainer title="Check Document">
       <Checker data={data} />
-    </Layout>
+    </PageContainer>
   );
 };
 

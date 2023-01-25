@@ -108,7 +108,9 @@ const RecipientsViewer = function ({
       </div>
       <div>
         <Row justify="center" style={{ zIndex: 1 }}>
-          <RecipientFloatingButton data={documentData} />
+          {documentData?.status !== "REJECTED" && (
+            <RecipientFloatingButton data={documentData} />
+          )}
           <Col span={24}>
             <div
               style={{

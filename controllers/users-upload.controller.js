@@ -137,7 +137,7 @@ const requestFromOthersController = async (req, res) => {
       workflow,
     });
 
-    const ongoingFilename = `ongoing_${currentData?.filename}`;
+    const ongoingFilename = `ongoing_${currentFilename}`;
 
     // karena ini request from others maka copy initial document ke ongoing document biar ga bingung. ngentods
     const document = await prisma.Document.create({
