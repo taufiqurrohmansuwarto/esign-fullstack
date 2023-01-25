@@ -118,9 +118,9 @@ export const requestFromOthersApproveSign = ({ documentId, data }) => {
     .then((res) => res?.data);
 };
 
-export const requestFromOthersRejectSign = (documentId) => {
+export const requestFromOthersRejectSign = ({ documentId, data }) => {
   return fetcher
-    .delete(`/documents/${documentId}/request-from-others/recipients/sign`)
+    .patch(`/documents/${documentId}/request-from-others/recipients/sign`, data)
     .then((res) => res?.data);
 };
 

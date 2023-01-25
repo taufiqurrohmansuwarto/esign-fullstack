@@ -13,19 +13,19 @@ generator client {
 model User {
   id String @id
 
-  username           String?
-  image              String?
-  custom_id          String?
-  group              String?
-  role               String?
-  employee_number    String?
-  birthdate          DateTime? @db.Date
-  email              String?   @unique
-  is_online          Boolean?  @default(false)
-  last_login         DateTime?
-  organization_id    String?
-  nik                String?
-  user_info          Json?
+  username        String?
+  image           String?
+  custom_id       String?
+  group           String?
+  role            String?
+  employee_number String?
+  birthdate       DateTime? @db.Date
+  email           String?   @unique
+  is_online       Boolean?  @default(false)
+  last_login      DateTime?
+  organization_id String?
+  nik             String?
+  user_info       Json?
 
   createdat     DateTime?      @default(now())
   updatedat     DateTime?      @updatedAt
@@ -87,7 +87,6 @@ model Recipient {
   signatory_status String?
   is_owner         Boolean?  @default(false)
   approval_date    DateTime?
-  rejected_json    Json?
   rejected_id      String?
   rejected_user    User?     @relation(name: "RejectedUser", fields: [rejected_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 

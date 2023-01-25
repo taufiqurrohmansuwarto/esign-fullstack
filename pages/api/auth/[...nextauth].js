@@ -145,7 +145,6 @@ export default async function (req, res) {
               organization_id: profile?.organization_id,
               image: profile?.picture,
               employee_number: profile?.employee_number,
-              useragent,
             };
 
             await upsertUserAttr(

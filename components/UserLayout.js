@@ -47,6 +47,7 @@ const UploadModal = ({ open, onCancel }) => {
       route: "/user/upload/self-sign/upload",
       helpText:
         "Sign document. You can store, download and send it through email, cloud storage, or other means.",
+      disabled: false,
     },
     {
       id: "signAndRequest",
@@ -54,6 +55,7 @@ const UploadModal = ({ open, onCancel }) => {
       route: "/user/upload/sign-and-request/upload",
       helpText:
         "Sign document and request others to sign it. You can store, download and send it through email, cloud storage, or other means.",
+      disabled: true,
     },
     {
       id: "requestFromOthers",
@@ -61,6 +63,7 @@ const UploadModal = ({ open, onCancel }) => {
       route: "/user/upload/request-from-others/upload",
       helpText:
         "Request others to sign document. You can store, download and send it through email, cloud storage, or other means.",
+      disabled: false,
     },
   ];
 
@@ -80,6 +83,7 @@ const UploadModal = ({ open, onCancel }) => {
               onClick={() => {
                 handleClick(item.route);
               }}
+              disabled={item.disabled}
             >
               {item.title}
             </Button>
@@ -93,7 +97,7 @@ const UploadModal = ({ open, onCancel }) => {
 const drawItems = [
   {
     key: "1",
-    label: "Keluar",
+    label: "Logout",
     icon: <LogoutOutlined />,
   },
 ];

@@ -9,11 +9,12 @@ import { FloatButton, Form, Input, message, Modal, Typography } from "antd";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 const ModalConfirm = ({ handleCancel, open, role, description }) => {
   return (
     <Modal title="Document Information" open={open} onCancel={handleCancel}>
-      <div>{JSON.stringify(description)}</div>
+      <div>{description?.text}</div>
     </Modal>
   );
 };
@@ -21,6 +22,7 @@ const ModalConfirm = ({ handleCancel, open, role, description }) => {
 const ModalAcceptSign = ({ open, handleCancel, id }) => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [form] = Form.useForm();
 
@@ -54,6 +56,7 @@ const ModalAcceptSign = ({ open, handleCancel, id }) => {
 
   return (
     <Modal
+      footer={false}
       onOk={handeOk}
       title="Accept Sign"
       confirmLoading={isLoading}
@@ -78,34 +81,61 @@ const ModalAcceptSign = ({ open, handleCancel, id }) => {
 
 const ModalRejectSign = ({ open, handleCancel, id }) => {
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation((data) =>
-    requestFromOthersRejectSign(data)
-  );
+  const dispatch = useDispatch();
 
-  const handleOk = () => {
-    mutate(id, {
+  const [form] = Form.useForm();
+
+  const { mutate, isLoading } = useMutation(
+    (data) => requestFromOthersRejectSign(data),
+    {
       onSuccess: () => {
         queryClient.invalidateQueries(["document-detail", id]);
         message.success("Document has been rejected");
         handleCancel();
+        form.resetFields();
       },
       onError: (error) => {
         message.error(error?.response?.data?.message);
       },
-      onSettled: () => queryClient.invalidateQueries(["document-detail", id]),
-    });
+    }
+  );
+
+  const handleOk = async () => {
+    const result = await form.validateFields();
+    const data = {
+      documentId: id,
+      data: {
+        reason: result?.reason,
+      },
+    };
+    mutate(data);
   };
 
   return (
     <Modal
       confirmLoading={isLoading}
       onOk={handleOk}
+      title="Reject Sign"
       open={open}
       onCancel={handleCancel}
     >
       <Typography.Text>
         Are you sure want to reject this document?
       </Typography.Text>
+      <Form
+        form={form}
+        initialValues={{
+          reason: "Document is not valid",
+        }}
+      >
+        <Form.Item
+          name="reason"
+          rules={[{ required: true, message: "Passphrase cant be empty" }]}
+          help='Reason for "Reject Sign"'
+        >
+          <Input.TextArea />
+        </Form.Item>
+      </Form>
     </Modal>
   );
 };

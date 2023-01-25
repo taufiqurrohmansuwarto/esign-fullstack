@@ -1,4 +1,5 @@
-const { PDFDocument, StandardFonts } = require("pdf-lib");
+const { PDFDocument, StandardFonts, rgb, degrees } = require("pdf-lib");
+const { nanoid } = require("nanoid");
 
 const createStampRejectSignMiddleware = async (req, res, next) => {
   try {
@@ -26,7 +27,7 @@ const createStampRejectSignMiddleware = async (req, res, next) => {
     const lastDocument = filename;
 
     req.rejectedDocument = {
-      rejectedDocumentTitle: lastDocument,
+      rejectedDocumentTitle: `${nanoid(10)}-rejected_${lastDocument}`,
       rejectedDocumentBuffer: currentPdfBuffer,
     };
 

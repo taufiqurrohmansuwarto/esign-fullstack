@@ -8,6 +8,7 @@ import inserDatabaseMiddleware from "@/middlewares/request-from-others/signs/ins
 // reject sign
 import rejectSignSerializeMiddleware from "@/middlewares/request-from-others/signs/reject-sign-serialize.middleware";
 import createStampRejectSignMiddleware from "@/middlewares/request-from-others/signs/create-stamp-reject-sign.middleware";
+import insertDatabaseRejectedMiddleware from "@/middlewares/request-from-others/signs/insert-database-rejected.middleware";
 
 import { createRouter } from "next-connect";
 
@@ -26,13 +27,12 @@ router
       res.json({ code: 200, message: "test" });
     }
   )
-  .delete(
+  .patch(
     checkSequenceMiddleware("SIGNER"),
     rejectSignSerializeMiddleware,
     createStampRejectSignMiddleware,
+    insertDatabaseRejectedMiddleware,
     async (req, res) => {
-      console.log(req.rejectedDocument);
-
       res.json({ code: 200, message: "test" });
     }
   );
