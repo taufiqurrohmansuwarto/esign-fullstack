@@ -1,3 +1,4 @@
+import prisma from "@/lib/prisma";
 import { checkNik, getProfile } from "../services/bsre/bsre.user.service";
 
 const checkNikController = async (req, res) => {
