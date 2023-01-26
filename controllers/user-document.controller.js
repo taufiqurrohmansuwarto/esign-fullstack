@@ -154,7 +154,7 @@ const detailDocument = async (req, res) => {
   }
 };
 
-const removeDocument = async (req, res) => {
+const deleteDocument = async (req, res) => {
   try {
     const documentId = req?.query?.documentId;
 
@@ -193,7 +193,7 @@ const removeDocument = async (req, res) => {
 };
 
 module.exports = {
-  removeDocument,
+  deleteDocument,
   previewDocumentController,
   previewDocumentWithStatusController,
   detailDocument,
