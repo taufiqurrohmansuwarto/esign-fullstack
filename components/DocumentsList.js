@@ -1,8 +1,23 @@
-import { debounceValue, formatDate, upperCase } from "@/lib/client-utils";
+import {
+  debounceValue,
+  documentStatus,
+  formatDate,
+  upperCase,
+} from "@/lib/client-utils";
 import { listDocuments } from "@/services/users.services";
 import { UserOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Col, Button, Popover, Row, Table, Avatar, Input, Tooltip } from "antd";
+import {
+  Col,
+  Button,
+  Popover,
+  Row,
+  Table,
+  Avatar,
+  Input,
+  Tooltip,
+  Tag,
+} from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -92,7 +107,11 @@ function DocumentsList({ type = "all" }) {
     {
       title: "Status",
       key: "status",
-      render: (_, row) => <div>{upperCase(row?.document?.status)}</div>,
+      render: (_, row) => (
+        <Tag color={documentStatus(row)?.color}>
+          {documentStatus(row)?.kata}
+        </Tag>
+      ),
     },
     {
       title: "Action",
