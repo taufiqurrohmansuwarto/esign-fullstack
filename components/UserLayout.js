@@ -75,7 +75,12 @@ const UploadModal = ({ open, onCancel }) => {
       open={open}
       onCancel={onCancel}
     >
-      <Space>
+      <Typography.Text>
+        You can upload a document to sign, sign and request others to sign, or
+        request others to sign a document. Please choose the workflow that you
+        want to use.
+      </Typography.Text>
+      <Space style={{ marginTop: 10 }}>
         {listButton.map((item) => (
           <Tooltip key={item.id} title={item?.helpText} placement="bottom">
             <Button
@@ -105,7 +110,7 @@ const drawItems = [
 const items = [
   getItem("Dashboard", "/user/dashboard", <DashboardOutlined />),
   getItem("Documents", "/user/documents", <FileOutlined />, [
-    getItem("All Documents", "/user/documents/all"),
+    getItem("All Document", "/user/documents/all"),
     getItem("Draft", "/user/documents/draft"),
     getItem("Pending", "/user/documents/pending"),
     getItem("Done", "/user/documents/done"),
@@ -171,18 +176,20 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             </Button>
           </div>
         ) : (
-          <Button
-            style={{
-              // middleware
-              marginLeft: 20,
-              marginTop: 10,
-              marginBottom: 10,
-            }}
-            onClick={showModal}
-            size="large"
-            type="primary"
-            icon={<PlusOutlined />}
-          />
+          <Tooltip title="Upload document" placement="right">
+            <Button
+              style={{
+                // middleware
+                marginLeft: 20,
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+              onClick={showModal}
+              size="large"
+              type="primary"
+              icon={<PlusOutlined />}
+            />
+          </Tooltip>
         )}
         <UploadModal open={open} onCancel={handleCancel} />
         <Menu

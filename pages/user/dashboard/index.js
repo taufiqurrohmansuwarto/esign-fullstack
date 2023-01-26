@@ -50,7 +50,14 @@ const StatusUser = ({ data }) => {
   const status_bsre = data?.status_bsre;
   const { type, text } = alertHeader(status_bsre);
 
-  return <Alert type={type} message={text} showIcon />;
+  return (
+    <>
+      <Typography.Title level={5} underline>
+        Status BSrE
+      </Typography.Title>
+      <Alert type={type} message={text} showIcon />
+    </>
+  );
 };
 
 const StatisticUser = () => {

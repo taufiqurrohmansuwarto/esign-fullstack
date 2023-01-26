@@ -40,7 +40,7 @@ const History = ({ item }) => {
         description={<Owner item={item} />}
       />
       <Space size={100}>
-        <Tag>{colorOfItem(item?.action)}</Tag>
+        <Tag color={colorOfItem(item?.action)}>{item?.action}</Tag>
         <Typography.Text type="secondary">
           {formatDate(item?.created_at)}
         </Typography.Text>

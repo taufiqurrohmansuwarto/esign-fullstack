@@ -10,7 +10,7 @@ const SignInPages = ({ providers }) => {
       <Col span={8}>
         <Typography.Title>E-Sign BKD</Typography.Title>
         <Space>
-          {Object.values(providers).map((provider) => (
+          {Object?.values(providers).map((provider) => (
             <div key={provider.name}>
               <Button
                 icon={<LoginOutlined />}

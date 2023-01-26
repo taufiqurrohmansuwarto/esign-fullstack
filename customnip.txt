@@ -1,10 +1,7 @@
 update biodata set password='098f6bcd4621d373cade4e832627b4f6' where nip_baru in (199111242019032014,199211062019031012,199111072019031005);
 update biodata set nik='0803202100007062' where nip_baru in (199111242019032014,199211062019031012,199111072019031005, 199103052019031008);
 
-TRUNCATE TABLE "Recipient";
-TRUNCATE TABLE "History";
-TRUNCATE TABLE "User";
-TRUNCATE TABLE "Document";
-TRUNCATE TABLE "Discussion";
-TRUNCATE TABLE "Notification";
-TRUNCATE TABLE "Otp";
+delete from "User";
+delete from "Document";
+delete from "Recipient";
+delete from "History"
