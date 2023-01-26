@@ -71,7 +71,7 @@ const inserDatabaseMiddleware = async (req, res, next) => {
       data: {
         user_id: userId,
         document_id: documetId,
-        action: "SIGN",
+        action: "SIGNED",
         type: "DOCUMENT",
         ip_address: req?.ip,
         useragent: req?.useragent,

@@ -61,11 +61,10 @@ const signMiddleware = async (req, res, next) => {
       data: {
         document_id: req?.query?.documentId,
         user_id: req?.user?.id,
-        action: "SIGN",
         ip_address: req?.ip,
         useragent: req?.useragent,
         type: "DOCUMENT",
-        action: "SIGN",
+        action: "SIGNED",
       },
     });
 

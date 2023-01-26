@@ -32,7 +32,7 @@ const approveSign = async (req, res) => {
       data: {
         document_id: documentId,
         recipient_id: user?.id,
-        action: "SIGN",
+        action: "SIGNED",
         created_at: new Date(),
         type: "DOCUMENT",
         ip_address: req?.ip,

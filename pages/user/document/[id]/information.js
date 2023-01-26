@@ -1,7 +1,7 @@
 import Container from "@/components/Container";
 import DetailDocumentHeader from "@/components/DetailDocumentHeader";
 import UserLayout from "@/components/UserLayout";
-import { formatDate } from "@/lib/client-utils";
+import { colorOfItem, formatDate } from "@/lib/client-utils";
 import {
   detailInformationDocument,
   documentHistories,
@@ -40,7 +40,7 @@ const History = ({ item }) => {
         description={<Owner item={item} />}
       />
       <Space size={100}>
-        <Tag>{item?.action}</Tag>
+        <Tag>{colorOfItem(item?.action)}</Tag>
         <Typography.Text type="secondary">
           {formatDate(item?.created_at)}
         </Typography.Text>
