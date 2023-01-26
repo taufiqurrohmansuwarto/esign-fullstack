@@ -2,12 +2,12 @@ import {
   addRecipients,
   addSigntoSigner,
   changeRole,
-  removeRecipients
+  removeRecipients,
 } from "@/features/request-from-others.slice";
 import { isEmpty } from "@/lib/client-utils";
 import {
   findRecipients,
-  requestFromOthersAddRecipients
+  requestFromOthersAddRecipients,
 } from "@/services/users.services";
 import { DeleteOutlined, PlusCircleFilled } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ import {
   Radio,
   Select,
   Space,
-  Spin
+  Spin,
 } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -34,15 +34,13 @@ const ListRecipients = ({
   handleChangeRole,
   handleAddSign,
 }) => {
-
-
   const removeRecipient = (item) => {
     handleRemoveRecipients(item?.id);
-  }
+  };
 
   const changeRoleRecipient = (item) => {
     handleChangeRole(item?.id);
-  }
+  };
 
   return (
     <List
@@ -114,16 +112,18 @@ const AddRecipientsButton = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-
   // untuk menghandle membuat recipients
   const { mutate: addRecipientMutation, isLoading } = useMutation(
     (data) => requestFromOthersAddRecipients(data),
     {
-      onSettled: () => { },
+      onSettled: () => {},
       onError: (error) => message.error(error?.response?.data?.message),
       onSuccess: () => {
-        queryClient.invalidateQueries(['document-detail', data?.documentData?.id])
-        router.push(`/user/document/${data?.documentData?.id}/view`)
+        queryClient.invalidateQueries([
+          "document-detail",
+          data?.documentData?.id,
+        ]);
+        router.push(`/user/document/${data?.documentData?.id}/view`);
       },
     }
   );
@@ -166,11 +166,8 @@ const AddRecipientsButton = () => {
       nama: user?.userInfo?.nama,
       role: user?.role,
       recipient_json: user?.userInfo,
-      stamp: user?.image
+      stamp: user?.image,
     }));
-
-
-
 
     const signs = dataSign.map((sign) => {
       const { frame, page, id, userId } = sign;
@@ -193,8 +190,6 @@ const AddRecipientsButton = () => {
       };
     });
 
-
-
     const currentDataPost = users.map((user, index) => {
       const properties = signs.filter((sign) => sign.userId === user.userId);
 
@@ -207,7 +202,7 @@ const AddRecipientsButton = () => {
         height: prop?.height,
         page: prop?.page,
         stamp: user?.stamp,
-        frame: prop?.frame
+        frame: prop?.frame,
       }));
 
       const total_sign_pages = properties?.length;
@@ -222,16 +217,20 @@ const AddRecipientsButton = () => {
         status: "ONGOING",
         // karena penambahan recipient hanya untuk pns jadi perlu ditambahkan master didepannya
         recipient_id: `master|${user?.userId}`,
-        sign_pages: user?.role?.toUpperCase() === "REVIEWER" ? null : sign_pages,
-        sign_coordinate: user?.role?.toUpperCase() == "REVIEWER" ? null : sign_coordinate,
-        sign_properties: user?.role?.toUpperCase() == "REVIEWER" ? null : sign_coordinate,
-        total_sign_pages: user?.role?.toUpperCase() === "REVIEWER" ? null : total_sign_pages,
+        sign_pages:
+          user?.role?.toUpperCase() === "REVIEWER" ? undefined : sign_pages,
+        sign_coordinate:
+          user?.role?.toUpperCase() == "REVIEWER" ? undefined : sign_coordinate,
+        sign_properties:
+          user?.role?.toUpperCase() == "REVIEWER" ? undefined : sign_coordinate,
+        total_sign_pages:
+          user?.role?.toUpperCase() === "REVIEWER"
+            ? undefined
+            : total_sign_pages,
         filename,
-        recipient_json: user?.recipient_json
+        recipient_json: user?.recipient_json,
       };
     });
-
-
 
     // cek dulu
     const signerWithZeroProperty = currentDataPost.filter(
@@ -241,23 +240,21 @@ const AddRecipientsButton = () => {
     const recipientZero = currentDataPost?.length === 0;
 
     if (signerWithZeroProperty?.length > 0 || dataUser?.length === 0) {
+      const name = signerWithZeroProperty
+        ?.map((x) => x?.recipient_json?.nama)
+        .join(", ");
 
-      const name = signerWithZeroProperty?.map(x => x?.recipient_json?.nama).join(', ')
-
-      message.error(
-        `${name} is SIGNER but none of them have sign properties.`
-      );
+      message.error(`${name} is SIGNER but none of them have sign properties.`);
     }
 
     if (recipientZero) {
-      message.error('There is no recipient! Please add one')
+      message.error("There is no recipient! Please add one");
     } else {
-
       // hilangkan yang ga berguna
-      const dataPost = currentDataPost.map(d => {
-        const { sign_coordinate, sign_pages, total_sign_pages, ...rest } = d
-        return rest
-      })
+      const dataPost = currentDataPost.map((d) => {
+        const { sign_coordinate, sign_pages, total_sign_pages, ...rest } = d;
+        return rest;
+      });
 
       const data = { documentId, data: dataPost };
       // console.log(data)
@@ -272,9 +269,9 @@ const AddRecipientsButton = () => {
     if (!e) {
       return;
     } else {
-      setSearching(e)
+      setSearching(e);
     }
-  }
+  };
 
   return (
     <div>
@@ -282,7 +279,7 @@ const AddRecipientsButton = () => {
         icon={<PlusCircleFilled />}
         tooltip="Add Recipients"
         onClick={() => setShowDrawer(true)}
-        shape='square'
+        shape="square"
         type="primary"
       >
         Recipients
@@ -294,17 +291,12 @@ const AddRecipientsButton = () => {
         onClose={() => setShowDrawer(false)}
         extra={
           <Space>
-            <Button
-              type="primary"
-              onClick={handleSubmit}
-              loading={isLoading}
-            >
+            <Button type="primary" onClick={handleSubmit} loading={isLoading}>
               Submit
             </Button>
           </Space>
         }
       >
-
         <Select
           style={{ width: "80%" }}
           placeholder="Please type employee number"

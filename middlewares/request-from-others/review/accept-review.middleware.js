@@ -29,7 +29,7 @@ const acceptReviewMiddleware = async (req, res, next) => {
     // if currentuserstatus sequence is the last sequence then update status document to COMPLETED
     if (currentUserStatus?.sequence === recipients.length - 1) {
       // update recipient status to COMPLETED
-      await prisma.Recipient.udpateMany({
+      await prisma.Recipient.updateMany({
         where: {
           document_id: documentId,
         },
@@ -49,14 +49,14 @@ const acceptReviewMiddleware = async (req, res, next) => {
         },
       });
     } else {
-      await prisma.Recipient.udpateMany({
+      await prisma.Recipient.updateMany({
         where: {
           document_id: documentId,
           recipient_id: user?.id,
         },
         data: {
           signatory_status: "COMPLETED",
-          reason: req?.body?.reason,
+          reason: "I APPROVE THIS DOCUMENT",
           approval_date: new Date(),
           is_done: true,
         },

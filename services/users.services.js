@@ -131,9 +131,9 @@ export const requestFromOthersApproveReview = (documentId) => {
     .then((res) => res?.data);
 };
 
-export const requestFromOthersRejectReview = (documentId) => {
+export const requestFromOthersRejectReview = (id) => {
   return fetcher
-    .delete(`/documents/${documentId}/request-from-others/recipients/review`)
+    .patch(`/documents/${id}/request-from-others/recipients/review`)
     .then((res) => res?.data);
 };
 

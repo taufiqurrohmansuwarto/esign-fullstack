@@ -38,6 +38,7 @@ const insertDatabaseRejectedMiddleware = async (req, res, next) => {
       },
       data: {
         signatory_status: "REJECTED",
+        status: "REJECTED",
         approval_date: new Date(),
       },
     });
@@ -48,8 +49,9 @@ const insertDatabaseRejectedMiddleware = async (req, res, next) => {
       },
       data: {
         status: "REJECTED",
+        signatory_status: "REJECTED",
         rejected_at: new Date(),
-        rejected_reason: req?.body?.reason,
+        rejected_reason: "I dont want to review this document",
         rejected_id: userId,
       },
     });
@@ -61,10 +63,11 @@ const insertDatabaseRejectedMiddleware = async (req, res, next) => {
       },
       data: {
         status: "REJECTED",
+        ongoing_document: rejectedDocumentTitle,
         sign_document: rejectedDocumentTitle,
         rejected_id: userId,
         rejected_at: new Date(),
-        rejected_reason: req?.body?.reason,
+        rejected_reason: "I dont want to review this document",
       },
     });
 

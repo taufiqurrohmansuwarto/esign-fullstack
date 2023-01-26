@@ -1,6 +1,8 @@
 import { recipientPosition, roleType } from "@/lib/client-utils";
 import {
+  requestFromOthersApproveReview,
   requestFromOthersApproveSign,
+  requestFromOthersRejectReview,
   requestFromOthersRejectSign,
 } from "@/services/users.services";
 import { CloseCircleOutlined, VerifiedOutlined } from "@ant-design/icons";
@@ -167,22 +169,102 @@ const Signer = ({ id }) => {
   );
 };
 
-const ModalAcceptReviewer = () => {
-  return <div>hello</div>;
-};
-const ModalRejectReviewer = () => {
-  return <div>hello</div>;
+const ModalAcceptReviewer = ({ open, handleCancel, id }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading } = useMutation(
+    (data) => requestFromOthersApproveReview(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["document-detail", id]);
+        message.success("Document has been accepted");
+        handleCancel();
+      },
+      onError: (error) => {
+        message.error(error?.response?.data?.message);
+      },
+    }
+  );
+
+  const handleOk = () => {
+    mutate(id);
+  };
+
+  return (
+    <Modal
+      confirmLoading={isLoading}
+      onOk={handleOk}
+      title="Are you sure you want accept your review?"
+      open={open}
+      onCancel={handleCancel}
+    ></Modal>
+  );
 };
 
-const Reviewer = () => {
+const ModalRejectReviewer = ({ open, handleCancel, id }) => {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading } = useMutation(
+    (data) => requestFromOthersRejectReview(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["document-detail", id]);
+        message.success("Document has been rejected");
+        handleCancel();
+      },
+      onError: (error) => {
+        message.error(error?.response?.data?.message);
+      },
+    }
+  );
+
+  const handleOk = () => {
+    mutate(id);
+  };
+
+  return (
+    <Modal
+      onOk={handleOk}
+      confirmLoading={isLoading}
+      title="Are you sure you want reject you review?"
+      open={open}
+      onCancel={handleCancel}
+    ></Modal>
+  );
+};
+
+const Reviewer = ({ id }) => {
+  const [openAcc, setOpenAcc] = useState(false);
+  const [openRej, setOpenRej] = useState(false);
+
+  const handleOpenAcc = () => setOpenAcc(true);
+  const handleOpenRej = () => setOpenRej(true);
+
+  const handleCancelAcc = () => setOpenAcc(false);
+  const handleCancelRej = () => setOpenRej(false);
+
   return (
     <>
+      <ModalAcceptReviewer
+        open={openAcc}
+        handleCancel={handleCancelAcc}
+        id={id}
+      />
+      <ModalRejectReviewer
+        open={openRej}
+        handleCancel={handleCancelRej}
+        id={id}
+      />
       <FloatButton
-        tooltip={<div>Accept Sign</div>}
+        onClick={handleOpenAcc}
+        tooltip={<div>Accept Review</div>}
         icon={<VerifiedOutlined />}
       />
       <FloatButton
-        tooltip={<div>Reject Sign</div>}
+        onClick={handleOpenRej}
+        tooltip={<div>Reject Review</div>}
         icon={<CloseCircleOutlined />}
       />
     </>
@@ -216,7 +298,7 @@ const RecipientFloatingButton = ({ data }) => {
           <FloatButton tooltip={<div>Verify</div>} onClick={handleOpen} />
         )}
         {signer && <Signer id={data?.id} />}
-        {reviewer && <Reviewer />}
+        {reviewer && <Reviewer id={data?.id} />}
       </FloatButton.Group>
     </>
   );
