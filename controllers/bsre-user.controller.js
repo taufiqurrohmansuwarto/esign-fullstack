@@ -14,10 +14,32 @@ const checkNikController = async (req, res) => {
 
 const getProfileController = async (req, res) => {
   try {
-    const { nik } = req?.query;
+    const userId = req?.user?.id;
+    const currentUser = await prisma.User.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    let currentResult;
+    const currentUserInformation = currentUser?.user_info;
+    const nik = currentUserInformation?.nik;
     const result = await getProfile(nik);
-    res.json(result?.data);
-  } catch (error) {}
+    const data = result?.data;
+
+    if (data?.status_code === 1110 || data?.status === "NOT REGISTERED") {
+      currentResult = null;
+    }
+
+    if (data?.success) {
+      currentResult = data;
+    }
+
+    res.json(currentResult);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 module.exports = {

@@ -157,6 +157,7 @@ const detailDocument = async (req, res) => {
 const deleteDocument = async (req, res) => {
   try {
     const documentId = req?.query?.documentId;
+    const userId = req?.user?.id;
 
     const currentDocument = await prisma.Document.findUnique({
       where: {
@@ -164,11 +165,17 @@ const deleteDocument = async (req, res) => {
       },
     });
 
+    if (currentDocument?.uploader_id !== userId) {
+      res.status(403).json({ message: "Forbidden" });
+    }
+
     if (!currentDocument) {
       res.status(404).json({ message: "Document not found" });
     }
     if (currentDocument?.status !== "DRAFT") {
-      res.status(400).json({ message: "Document can't be deleted" });
+      res.status(400).json({
+        message: "Document can't be deleted. Because documen status not DRAFT",
+      });
     }
 
     await removeDocument({
@@ -192,7 +199,84 @@ const deleteDocument = async (req, res) => {
   }
 };
 
+const archiveDocument = async (req, res) => {
+  try {
+    const documentId = req?.query?.documentId;
+    const userId = req?.user?.id;
+
+    const currentDocument = await prisma.Document.findUnique({
+      where: {
+        id: documentId,
+      },
+    });
+
+    const recipients = await prisma.Recipient.findMany({
+      where: {
+        document_id: documentId,
+      },
+    });
+
+    const checkIfCurrentUserInRecipient = recipients?.find(
+      (recipient) => recipient?.recipient_id === userId
+    );
+
+    if (!checkIfCurrentUserInRecipient) {
+      res.status(403).json({ message: "Forbidden" });
+    }
+
+    if (!currentDocument) {
+      res.status(404).json({ message: "Document not found" });
+    }
+
+    await prisma.Recipient.updateMany({
+      where: {
+        document_id: documentId,
+        recipient_id: userId,
+      },
+      data: {
+        is_archived: true,
+      },
+    });
+
+    res.json({
+      message: "Document archived",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ code: 500, message: "Internal server error" });
+  }
+};
+
+const searching = async (req, res) => {
+  try {
+    const { search } = req?.query;
+    const { id } = req?.user;
+
+    const result = await prisma.Recipient.findMany({
+      where: {
+        recipient_id: id,
+        filename: {
+          contains: search,
+          mode: "insensitive",
+        },
+      },
+      select: {
+        filename: true,
+        id: true,
+      },
+      take: 15,
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ code: 500, message: "Internal server error" });
+  }
+};
+
 module.exports = {
+  searching,
+  archiveDocument,
   deleteDocument,
   previewDocumentController,
   previewDocumentWithStatusController,

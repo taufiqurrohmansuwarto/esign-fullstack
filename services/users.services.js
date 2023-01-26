@@ -190,3 +190,8 @@ export const getRecipinents = async (documentId) => {
     .get(`/documents/${documentId}/recipients`)
     .then((res) => res?.data);
 };
+
+// bsreProfile
+export const getBsreProfile = async () => {
+  return fetcher.get(`/bsre-profile`).then((res) => res?.data);
+};

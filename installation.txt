@@ -1,0 +1,3 @@
+dikarenakan centos 7 ga sip
+
+sudo npm install canvas@latest --build-from-source

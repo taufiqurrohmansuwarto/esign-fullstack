@@ -7,9 +7,11 @@ import {
   UploadOutlined,
 } from "@ant-design/icons/lib/icons";
 import {
+  AutoComplete,
   Avatar,
   Button,
   Dropdown,
+  Input,
   Layout,
   Menu,
   Modal,
@@ -21,6 +23,7 @@ import {
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import AutocompleteSearching from "./AutocompleteSearching";
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -208,8 +211,13 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
           }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
+            <AutocompleteSearching />
             <Dropdown menu={{ items: drawItems, onClick: dropdownClick }}>
-              <Space>
+              <Space
+                style={{
+                  marginLeft: 16,
+                }}
+              >
                 <Typography.Text>{session?.user?.name}</Typography.Text>
                 <Avatar src={session?.user?.image} />
               </Space>
