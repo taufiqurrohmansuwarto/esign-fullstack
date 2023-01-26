@@ -68,7 +68,6 @@ model Document {
   histories         History[]
   created_at        DateTime?      @default(now())
   updated_at        DateTime?      @updatedAt
-  is_done           Boolean?       @default(false)
   Discussions       Discussion[]
   Notification      Notification[]
   Recipient         Recipient[]
@@ -77,6 +76,7 @@ model Document {
 model Recipient {
   id          String    @id @default(cuid())
   document_id String?
+  is_done     Boolean?  @default(false)
   document    Document? @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   filename    String?
 

@@ -85,7 +85,7 @@ const selfSignUploadController = async (req, res) => {
       created_at: new Date(),
       filename: data?.filename,
       sequence: 0,
-      role: "signer",
+      role: "SIGNER",
       signatory_status: "PENDING",
       is_owner: true,
       status: "DRAFT",
