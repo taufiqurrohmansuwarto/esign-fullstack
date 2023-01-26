@@ -16,10 +16,15 @@ const insertDatabaseRejectedMiddleware = async (req, res, next) => {
       fileBuffer: rejectedDocumentBuffer,
     });
 
-    const currentUserInRecipient = await prisma.Recipient.findFirst({
+    const currentUserInRecipient = await prisma.Recipient.updateMany({
       where: {
         document_id: documentId,
         recipient_id: userId,
+      },
+      data: {
+        signatory_status: "REJECTED",
+        approval_date: new Date(),
+        is_done: true,
       },
     });
 
@@ -32,7 +37,7 @@ const insertDatabaseRejectedMiddleware = async (req, res, next) => {
         },
       },
       data: {
-        signatory_status: "COMPLETED",
+        signatory_status: "REJECTED",
         approval_date: new Date(),
       },
     });
