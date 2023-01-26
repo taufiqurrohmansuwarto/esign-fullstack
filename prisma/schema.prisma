@@ -68,6 +68,7 @@ model Document {
   histories         History[]
   created_at        DateTime?      @default(now())
   updated_at        DateTime?      @updatedAt
+  is_done           Boolean?       @default(false)
   Discussions       Discussion[]
   Notification      Notification[]
   Recipient         Recipient[]
