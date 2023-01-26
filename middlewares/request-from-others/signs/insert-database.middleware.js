@@ -42,6 +42,7 @@ const inserDatabaseMiddleware = async (req, res, next) => {
       data: {
         signatory_status: "COMPLETED",
         approval_date: new Date(),
+        is_done: true,
       },
     });
 

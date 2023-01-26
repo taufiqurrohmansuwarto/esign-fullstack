@@ -79,6 +79,7 @@ const post = async (req, res) => {
       data: {
         signatory_status: "COMPLETED",
         status: "ONGOING",
+        is_done: true,
         approval_date: new Date(),
       },
     });

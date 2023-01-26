@@ -12,6 +12,6 @@ import auth from "@/middlewares/auth.middleware";
 router
   .use(auth())
   .put(checkSequenceMiddleware("REVIEWER"), approveReview)
-  .delete(checkSequenceMiddleware("REVIEWER"), rejectReview);
+  .patch(checkSequenceMiddleware("REVIEWER"), rejectReview);
 
 export default router.handler();
