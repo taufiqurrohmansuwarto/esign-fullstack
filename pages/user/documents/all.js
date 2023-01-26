@@ -6,9 +6,7 @@ import UserLayout from "@/components/UserLayout";
 const AllDocuments = () => {
   return (
     <PageContainer title="All Document">
-      <Container>
-        <DocumentsList type="all" />
-      </Container>
+      <DocumentsList type="all" />
     </PageContainer>
   );
 };

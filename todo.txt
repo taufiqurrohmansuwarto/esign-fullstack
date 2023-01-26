@@ -1,4 +1,1 @@
-1. buat untuk reviewer (reject,accept);
-2. check filter 
-3. buat kata2 untuk status
-4. tombol aksi jangan lupa
+1. create archieved

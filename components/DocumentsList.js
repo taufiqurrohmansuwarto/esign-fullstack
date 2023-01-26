@@ -90,7 +90,7 @@ function DocumentsList({ type = "all" }) {
 
   const columns = [
     {
-      title: "Title",
+      title: "Document",
       key: "title",
       render: (_, row) => <Title row={row} />,
     },

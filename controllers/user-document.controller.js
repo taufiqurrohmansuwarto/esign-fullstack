@@ -1,6 +1,6 @@
 const { default: prisma } = require("@/lib/prisma");
 
-const { downloadFile, downloadWithFilename } = require("@/lib/utils");
+const { removeDocument, downloadWithFilename } = require("@/lib/utils");
 
 // cuman preview menggunakan req query
 const previewDocumentController = async (req, res) => {};
@@ -154,7 +154,46 @@ const detailDocument = async (req, res) => {
   }
 };
 
+const removeDocument = async (req, res) => {
+  try {
+    const documentId = req?.query?.documentId;
+
+    const currentDocument = await prisma.Document.findUnique({
+      where: {
+        id: documentId,
+      },
+    });
+
+    if (!currentDocument) {
+      res.status(404).json({ message: "Document not found" });
+    }
+    if (currentDocument?.status !== "DRAFT") {
+      res.status(400).json({ message: "Document can't be deleted" });
+    }
+
+    await removeDocument({
+      minio: req?.mc,
+      filename: currentDocument?.initial_document,
+    });
+
+    const result = await prisma.Document.delete({
+      where: {
+        id: documentId,
+      },
+    });
+
+    res.json({
+      message: "Document deleted",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ code: 500, message: "Internal server error" });
+  }
+};
+
 module.exports = {
+  removeDocument,
   previewDocumentController,
   previewDocumentWithStatusController,
   detailDocument,
