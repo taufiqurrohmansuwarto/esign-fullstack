@@ -1,23 +1,36 @@
-import { useDebounce } from "ahooks";
-import { AutoComplete, Input } from "antd";
+import { searchingAutocomplete } from "@/services/users.services";
+import { AutoComplete, Input, Spin } from "antd";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 function AutocompleteSearching() {
-  const [input, setInput] = useState("");
-  const debounceInput = useDebounce(input, 500);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState(null);
 
-  const handleSearch = (value) => {
-    setInput(value);
+  const router = useRouter();
+
+  const handleSearch = async (value) => {
+    setLoading(true);
+    setValue(value);
+    const result = await searchingAutocomplete(value);
+    setData(result);
+    setLoading(false);
   };
 
-  const handleSelect = (value) => {
-    console.log(value);
+  const handleSelect = (_, option) => {
+    console.log(option?.value);
+    setValue(option?.label);
+    router.push(`/user/document/${option?.value}/view`);
   };
 
   return (
     <AutoComplete
-      onSearch={handleSearch}
+      value={value}
+      onChange={handleSearch}
       onSelect={handleSelect}
+      options={data}
+      notFoundContent={loading ? <Spin /> : null}
       style={{
         width: 500,
       }}

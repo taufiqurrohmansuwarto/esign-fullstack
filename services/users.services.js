@@ -195,3 +195,9 @@ export const getRecipinents = async (documentId) => {
 export const getBsreProfile = async () => {
   return fetcher.get(`/bsre-profile`).then((res) => res?.data);
 };
+
+export const searchingAutocomplete = async (search) => {
+  return fetcher
+    .get(`/documents/searching?search=${search}`)
+    .then((res) => res?.data);
+};

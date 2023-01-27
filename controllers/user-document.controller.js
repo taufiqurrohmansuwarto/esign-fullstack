@@ -252,22 +252,32 @@ const searching = async (req, res) => {
     const { search } = req?.query;
     const { id } = req?.user;
 
-    const result = await prisma.Recipient.findMany({
-      where: {
-        recipient_id: id,
-        filename: {
-          contains: search,
-          mode: "insensitive",
+    if (!search) {
+      return;
+    } else {
+      const result = await prisma.Recipient.findMany({
+        where: {
+          recipient_id: id,
+          filename: {
+            contains: search,
+            mode: "insensitive",
+          },
         },
-      },
-      select: {
-        filename: true,
-        id: true,
-      },
-      take: 15,
-    });
+        select: {
+          filename: true,
+          id: true,
+          document_id: true,
+        },
+        take: 15,
+      });
 
-    res.json(result);
+      const serialize = result?.map((item) => ({
+        value: item?.document_id,
+        label: item?.filename,
+      }));
+
+      res.json(serialize);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ code: 500, message: "Internal server error" });

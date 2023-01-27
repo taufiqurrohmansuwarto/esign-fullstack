@@ -4,6 +4,6 @@ import auth from "@/middlewares/auth.middleware";
 
 const router = createRouter();
 
-router.use(auth()).get();
+router.use(auth()).get(searching);
 
-export default router.handler(searching);
+export default router.handler();
