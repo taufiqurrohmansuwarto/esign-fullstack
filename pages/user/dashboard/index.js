@@ -53,7 +53,7 @@ const StatusUser = ({ data }) => {
   return (
     <>
       <Typography.Title level={5} underline>
-        Status BSrE
+        BSrE Status
       </Typography.Title>
       <Alert type={type} message={text} showIcon />
     </>

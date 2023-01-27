@@ -67,7 +67,7 @@ const index = async (req, res) => {
         ...currentQuery,
         where: {
           ...currentQuery.where,
-          signatory_status: "REJECTED",
+          status: "REJECTED",
         },
       };
     }
@@ -78,9 +78,9 @@ const index = async (req, res) => {
           include: {
             Recipient: {
               orderBy: {
-                sequence: "asc"
-              }
-            }
+                sequence: "asc",
+              },
+            },
           },
         },
       },
@@ -144,22 +144,22 @@ const archived = async (req, res) => {
     await prisma.Recipient?.updateMany({
       where: {
         document_id: documentId,
-        id: recipientId
+        id: recipientId,
       },
       data: {
-        is_archived: true
-      }
-    })
+        is_archived: true,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       message: "Internal Server Error",
     });
   }
-}
+};
 
 module.exports = {
   index,
   remove,
-  archived
+  archived,
 };

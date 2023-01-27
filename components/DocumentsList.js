@@ -1,23 +1,8 @@
-import {
-  debounceValue,
-  documentStatus,
-  formatDate,
-  upperCase,
-} from "@/lib/client-utils";
+import { documentStatus, formatDate } from "@/lib/client-utils";
 import { listDocuments } from "@/services/users.services";
-import { UserOutlined } from "@ant-design/icons";
+import { DashOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Col,
-  Button,
-  Popover,
-  Row,
-  Table,
-  Avatar,
-  Input,
-  Tooltip,
-  Tag,
-} from "antd";
+import { Avatar, Button, Col, Input, Row, Table, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -115,8 +100,10 @@ function DocumentsList({ type = "all" }) {
     },
     {
       title: "Action",
-      dataIndex: "ation",
       key: "action",
+      render: (_, row) => (
+        <Button onClick={() => console.log(row)} icon={<DashOutlined />} />
+      ),
     },
   ];
 

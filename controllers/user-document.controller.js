@@ -122,22 +122,21 @@ const detailDocument = async (req, res) => {
       });
     }
 
-    //  now create history
-    await prisma.History.create({
-      data: {
-        document_id: documentId,
-        user_id: id,
-        action: "OPENED",
-        ip_address: req?.ip,
-        useragent: req?.useragent,
-        type: "DOCUMENT",
-        created_at: new Date(),
-      },
-    });
-
     if (recipient?.length === 0 || !currentDocument) {
       res.status(404).json({ message: "Document not found" });
     } else {
+      //  now create history
+      await prisma.History.create({
+        data: {
+          document_id: documentId,
+          user_id: id,
+          action: "OPENED",
+          ip_address: req?.ip,
+          useragent: req?.useragent,
+          type: "DOCUMENT",
+          created_at: new Date(),
+        },
+      });
       res.status(200).json({
         ...currentDocument,
         document_url: result,

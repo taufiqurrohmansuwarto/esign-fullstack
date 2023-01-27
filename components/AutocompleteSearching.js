@@ -35,7 +35,7 @@ function AutocompleteSearching() {
         width: 500,
       }}
     >
-      <Input.Search placeholder="Search Document" />
+      <Input.Search placeholder="Search Document by title" />
     </AutoComplete>
   );
 }
