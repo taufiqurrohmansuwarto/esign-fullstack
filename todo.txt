@@ -1,1 +1,4 @@
-1. create archieved
+1. create archived
+2. create delete action
+3. create history document
+4. perbaiki recipients

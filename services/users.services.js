@@ -201,3 +201,14 @@ export const searchingAutocomplete = async (search) => {
     .get(`/documents/searching?search=${search}`)
     .then((res) => res?.data);
 };
+
+// delete document
+export const removeDocument = async (documentId) => {
+  return fetcher.delete(`/documents/${documentId}`).then((res) => res?.data);
+};
+
+export const archieved = async (documentId) => {
+  return fetcher
+    .patch(`/documents/${documentId}/archieved`)
+    .then((res) => res?.data);
+};
