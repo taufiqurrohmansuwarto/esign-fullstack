@@ -2,7 +2,7 @@ import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 import { stampInfo } from "@/services/users.services";
 import { useQuery } from "@tanstack/react-query";
-import { Card, Image, Skeleton } from "antd";
+import { Card, Image } from "antd";
 
 const Signatures = () => {
   const { data, isLoading } = useQuery(["stamps"], () => stampInfo(), {

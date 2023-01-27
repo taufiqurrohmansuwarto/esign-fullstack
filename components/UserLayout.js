@@ -115,7 +115,7 @@ const items = [
     getItem("Draft", "/user/documents/draft"),
     getItem("Pending", "/user/documents/pending"),
     getItem("Done", "/user/documents/done"),
-    getItem("Expired", "/user/documents/expired"),
+    // getItem("Expired", "/user/documents/expired"),
     getItem("Archived", "/user/documents/archived"),
     getItem("Rejected", "/user/documents/rejected"),
   ]),
@@ -125,7 +125,7 @@ const items = [
     getItem("Digital Certificate", "/user/settings/digital-certificate"),
     getItem("Personal Information", "/user/settings/personal-information"),
     getItem("Signature", "/user/settings/signatures"),
-    getItem("F.A.Q", "/user/settings/faq"),
+    getItem("Frequently Asked Question", "/user/settings/faq"),
   ]),
 ];
 
