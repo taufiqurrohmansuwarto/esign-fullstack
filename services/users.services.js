@@ -209,6 +209,10 @@ export const removeDocument = async (documentId) => {
 
 export const archieved = async (documentId) => {
   return fetcher
-    .patch(`/documents/${documentId}/archieved`)
+    .patch(`/documents/${documentId}/archived`)
     .then((res) => res?.data);
+};
+
+export const getUrls = async (documentId) => {
+  return fetcher.get(`/documents/${documentId}/urls`).then((res) => res?.data);
 };

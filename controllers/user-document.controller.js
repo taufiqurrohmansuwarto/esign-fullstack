@@ -280,7 +280,59 @@ const searching = async (req, res) => {
   }
 };
 
+const getUrls = async (req, res) => {
+  try {
+    const documentId = req?.query?.documentId;
+    const userId = req?.user?.id;
+
+    const currentDocument = await prisma.Document.findUnique({
+      where: {
+        id: documentId,
+      },
+    });
+
+    const recipients = await prisma.Recipient.findMany({
+      where: {
+        document_id: documentId,
+      },
+    });
+
+    const checkIfCurrentUserInRecipient = recipients?.find(
+      (recipient) => recipient?.recipient_id === userId
+    );
+
+    if (!checkIfCurrentUserInRecipient) {
+      res.status(403).json({ message: "Forbidden" });
+    } else if (!currentDocument) {
+      res.status(404).json({ message: "Document not found" });
+    } else {
+      const initialDocUrl = await downloadWithFilename({
+        minio: req?.mc,
+        filename: currentDocument?.initial_document,
+        newFilename: `initial-${currentDocument?.filename}`,
+      });
+
+      const signDocUrl = await downloadWithFilename({
+        minio: req?.mc,
+        filename: currentDocument?.sign_document,
+        newFilename: `signed-${currentDocument?.filename}`,
+      });
+
+      const json = {
+        initial_document: initialDocUrl,
+        signed_document: signDocUrl,
+      };
+
+      res.json(json);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ code: 500, message: "Internal server error" });
+  }
+};
+
 module.exports = {
+  getUrls,
   searching,
   archiveDocument,
   deleteDocument,

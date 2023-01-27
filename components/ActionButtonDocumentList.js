@@ -1,4 +1,4 @@
-import { removeDocument, archieved } from "@/services/users.services";
+import { removeDocument, archieved, getUrls } from "@/services/users.services";
 import {
   DashOutlined,
   DeleteOutlined,
@@ -92,29 +92,39 @@ function ActionButtonDocumentList({ data }) {
   }
 
   const handleClick = async (e) => {
-    switch (e.key) {
-      case "initial":
-        console.log("initial");
-        break;
-      case "delete":
-        remove(data?.document_id);
-        break;
-      case "history":
-        // window.location.href = `/esign/api/user/documents/${data?.document_id}/history-document`;
-        // new tab
-        window.open(
-          `/esign/api/user/documents/${data?.document_id}/history-document`,
-          "_blank"
-        );
-        break;
-      case "archived":
-        archive(data?.document_id);
-        break;
-      case "sign":
-        console.log("sign");
-        break;
-      default:
-        break;
+    try {
+      switch (e.key) {
+        case "initial":
+          const initialDocument = await getUrls(data?.document_id);
+          const { initial_document } = initialDocument;
+          console.log(initial_document);
+          window.open(initial_document, "_blank", "noopener noreferrer");
+          break;
+        case "delete":
+          remove(data?.document_id);
+          break;
+        case "history":
+          // window.location.href = `/esign/api/user/documents/${data?.document_id}/history-document`;
+          // new tab
+          window.open(
+            `/esign/api/user/documents/${data?.document_id}/history-document`,
+            "_blank"
+          );
+          break;
+        case "archived":
+          archive(data?.document_id);
+          break;
+        case "sign":
+          const result = await getUrls(data?.document_id);
+          const { signed_document } = result;
+          //   with rel = "noopener noreferrer" to prevent security risk
+          window.open(signed_document, "_blank", "noopener noreferrer");
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -124,7 +134,6 @@ function ActionButtonDocumentList({ data }) {
       menu={{
         items: newItems,
         onClick: handleClick,
-        selectable: true,
       }}
     >
       <Button icon={<DashOutlined />} />
