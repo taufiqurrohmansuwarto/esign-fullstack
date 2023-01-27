@@ -164,34 +164,31 @@ const deleteDocument = async (req, res) => {
       },
     });
 
-    if (currentDocument?.uploader_id !== userId) {
+    if (currentDocument?.user_id !== userId) {
       res.status(403).json({ message: "Forbidden" });
-    }
-
-    if (!currentDocument) {
+    } else if (!currentDocument) {
       res.status(404).json({ message: "Document not found" });
-    }
-    if (currentDocument?.status !== "DRAFT") {
+    } else if (currentDocument?.status !== "DRAFT") {
       res.status(400).json({
         message: "Document can't be deleted. Because documen status not DRAFT",
       });
+    } else {
+      await removeDocument({
+        minio: req?.mc,
+        filename: currentDocument?.initial_document,
+      });
+
+      const result = await prisma.Document.delete({
+        where: {
+          id: documentId,
+        },
+      });
+
+      res.json({
+        message: "Document deleted",
+        data: result,
+      });
     }
-
-    await removeDocument({
-      minio: req?.mc,
-      filename: currentDocument?.initial_document,
-    });
-
-    const result = await prisma.Document.delete({
-      where: {
-        id: documentId,
-      },
-    });
-
-    res.json({
-      message: "Document deleted",
-      data: result,
-    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ code: 500, message: "Internal server error" });

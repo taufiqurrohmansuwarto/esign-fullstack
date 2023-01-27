@@ -7,19 +7,23 @@ import {
   FileSyncOutlined,
   FileZipOutlined,
 } from "@ant-design/icons";
-import { useQueryClient } from "@tanstack/react-query";
-import { Button, Dropdown } from "antd";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { Button, Dropdown, message } from "antd";
 
 function ActionButtonDocumentList({ data }) {
   let newItems = [];
 
-  const querClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const { mutate: remove, isLoading: loadingRemove } = useMutation(
     (data) => removeDocument(data),
     {
       onSuccess: () => {
+        message.success("Document has been deleted");
         queryClient.invalidateQueries(["documents"]);
+      },
+      onError: (e) => {
+        message.error(e?.response?.data?.message);
       },
     }
   );
@@ -28,7 +32,11 @@ function ActionButtonDocumentList({ data }) {
     (data) => archieved(data),
     {
       onSuccess: () => {
+        message.success("Document has been archived");
         queryClient.invalidateQueries(["documents"]);
+      },
+      onError: (e) => {
+        message.error(e?.response?.data?.message);
       },
     }
   );
@@ -83,11 +91,40 @@ function ActionButtonDocumentList({ data }) {
     );
   }
 
+  const handleClick = async (e) => {
+    switch (e.key) {
+      case "initial":
+        console.log("initial");
+        break;
+      case "delete":
+        remove(data?.document_id);
+        break;
+      case "history":
+        // window.location.href = `/esign/api/user/documents/${data?.document_id}/history-document`;
+        // new tab
+        window.open(
+          `/esign/api/user/documents/${data?.document_id}/history-document`,
+          "_blank"
+        );
+        break;
+      case "archived":
+        archive(data?.document_id);
+        break;
+      case "sign":
+        console.log("sign");
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <Dropdown
       trigger={["click"]}
       menu={{
         items: newItems,
+        onClick: handleClick,
+        selectable: true,
       }}
     >
       <Button icon={<DashOutlined />} />
