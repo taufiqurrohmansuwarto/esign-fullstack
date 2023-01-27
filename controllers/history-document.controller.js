@@ -166,7 +166,9 @@ const historiesDocument = async (req, res) => {
 
     const pdfDoc = pdfMake.createPdf(docDefinition);
 
-    if (!checkIfCurrentUserInRecipient) {
+    if (!currentDocument) {
+      res.status(404).json({ message: "Document Not Found" });
+    } else if (!checkIfCurrentUserInRecipient) {
       res.status(403).json({ message: "Forbidden" });
     } else {
       pdfDoc.getBase64((data) => {
