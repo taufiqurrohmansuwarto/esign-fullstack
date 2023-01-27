@@ -1,17 +1,15 @@
 import {
   DashboardOutlined,
+  EditOutlined,
   FileOutlined,
   LogoutOutlined,
-  PlusOutlined,
   SettingOutlined,
   UploadOutlined,
 } from "@ant-design/icons/lib/icons";
 import {
-  AutoComplete,
   Avatar,
   Button,
   Dropdown,
-  Input,
   Layout,
   Menu,
   Modal,
@@ -20,7 +18,7 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import { useSession, signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import AutocompleteSearching from "./AutocompleteSearching";
@@ -190,7 +188,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
               onClick={showModal}
               size="large"
               type="primary"
-              icon={<PlusOutlined />}
+              icon={<EditOutlined />}
             />
           </Tooltip>
         )}

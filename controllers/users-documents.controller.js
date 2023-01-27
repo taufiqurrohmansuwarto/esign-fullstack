@@ -15,6 +15,7 @@ const index = async (req, res) => {
     let currentQuery = {
       where: {
         recipient_id: userId,
+        is_archived: false,
       },
       orderBy: {
         created_at: "desc",

@@ -82,7 +82,7 @@ const StatisticUser = () => {
             style={{ marginTop: 15 }}
             type="primary"
           >
-            View
+            See All Waiting Documents
           </Button>
         </Col>
         <Col span={8}>

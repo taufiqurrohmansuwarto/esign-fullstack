@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Avatar, Button, Col, Input, Row, Table, Tag, Tooltip } from "antd";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import ActionButtonDocumentList from "./ActionButtonDocumentList";
 
 // create render title component and when it clicks it will going to id
 
@@ -101,9 +102,7 @@ function DocumentsList({ type = "all" }) {
     {
       title: "Action",
       key: "action",
-      render: (_, row) => (
-        <Button onClick={() => console.log(row)} icon={<DashOutlined />} />
-      ),
+      render: (_, row) => <ActionButtonDocumentList data={row} />,
     },
   ];
 

@@ -27,7 +27,7 @@ const tableRecipient = (data) => {
       recipient?.role?.toUpperCase(),
       recipient?.sequence,
       recipient?.signatory_status,
-      formatDate(recipient?.created_at),
+      formatDate(recipient?.approval_date),
     ];
   });
 
@@ -91,7 +91,7 @@ const historiesDocument = async (req, res) => {
             recipient_json: true,
             role: true,
             signatory_status: true,
-            created_at: true,
+            approval_date: true,
             sequence: true,
           },
         },
