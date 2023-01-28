@@ -43,7 +43,7 @@ const PdfDocument = ({
         padding: "0px 10px",
       }}
     >
-      <Row justify="center">
+      <Row justify="center" style={{ padding : 16}}>
         <Col>
           <div ref={ref} style={{ position: "relative" }}>
             {dataSignFilter.map((sign) => (

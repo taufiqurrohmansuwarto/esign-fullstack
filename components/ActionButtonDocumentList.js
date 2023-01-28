@@ -49,7 +49,7 @@ function ActionButtonDocumentList({ data }) {
       icon: <DeleteOutlined />,
     },
     { key: "history", label: "History Document", icon: <FileSyncOutlined /> },
-    { key: "archived", label: "Archived Document", icon: <FileZipOutlined /> },
+    { key: "archived", label: "Archive Document", icon: <FileZipOutlined /> },
     { key: "sign", label: "Sign Document", icon: <FileDoneOutlined /> },
   ];
 

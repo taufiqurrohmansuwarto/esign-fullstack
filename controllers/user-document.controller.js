@@ -234,6 +234,18 @@ const archiveDocument = async (req, res) => {
       },
     });
 
+    await prisma.History.create({
+      data : {
+        document_id: documentId,
+        user_id: userId,
+        action: "ARCHIVED",
+        ip_address: req?.ip,
+        useragent: req?.useragent,
+        type: "DOCUMENT",
+        created_at: new Date(),
+      }
+    })
+
     res.json({
       message: "Document archived",
     });

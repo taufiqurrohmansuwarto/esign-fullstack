@@ -1,5 +1,5 @@
 import { selfSignApproveSign } from "@/services/users.services";
-import { WarningOutlined } from "@ant-design/icons";
+import { WarningOutlined, ExpandOutlined } from "@ant-design/icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
@@ -152,7 +152,7 @@ const SelfSignActions = function ({
         onCancel={handleCancel}
       />
       {loading === "idle" && (
-        <div style={{ padding: 5 }}>
+        <div style={{ padding: 10 }}>
           <Row justify="center">
             <Col push={2}>
               <Pagination
@@ -166,7 +166,7 @@ const SelfSignActions = function ({
             </Col>
             <Col push={6}>
               <Space>
-                <Button type="primary" onClick={addSign}>
+                <Button type="primary" onClick={addSign} icon={<ExpandOutlined/>}>
                   Place Signature
                 </Button>
                 <Button disabled={signs.length === 0} onClick={handleOpen}>

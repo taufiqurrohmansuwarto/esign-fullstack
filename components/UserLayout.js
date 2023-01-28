@@ -1,10 +1,11 @@
 import {
   DashboardOutlined,
-  EditOutlined,
   FileOutlined,
   LogoutOutlined,
   SettingOutlined,
   UploadOutlined,
+  FormOutlined,
+  BellOutlined
 } from "@ant-design/icons/lib/icons";
 import {
   Avatar,
@@ -17,6 +18,7 @@ import {
   theme,
   Tooltip,
   Typography,
+  Badge,
 } from "antd";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -60,10 +62,10 @@ const UploadModal = ({ open, onCancel }) => {
     },
     {
       id: "requestFromOthers",
-      title: "Request from others",
+      title: "Request From Others",
       route: "/user/upload/request-from-others/upload",
       helpText:
-        "Request others to sign document. You can store, download and send it through email, cloud storage, or other means.",
+        "Request others to sign/review your document. You can store, download and send it through email, cloud storage, or other means.",
       disabled: false,
     },
   ];
@@ -77,8 +79,7 @@ const UploadModal = ({ open, onCancel }) => {
       onCancel={onCancel}
     >
       <Typography.Text>
-        You can upload a document to sign, sign and request others to sign, or
-        request others to sign a document. Please choose the workflow that you
+        Please choose the workflow that you
         want to use.
       </Typography.Text>
       <Space style={{ marginTop: 10 }}>
@@ -177,7 +178,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             </Button>
           </div>
         ) : (
-          <Tooltip title="Upload document" placement="right">
+          <Tooltip title="Start Upload" placement="right">
             <Button
               style={{
                 // middleware
@@ -188,7 +189,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
               onClick={showModal}
               size="large"
               type="primary"
-              icon={<EditOutlined />}
+              icon={<FormOutlined />}
             />
           </Tooltip>
         )}
@@ -210,10 +211,17 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             <AutocompleteSearching />
-            <Dropdown menu={{ items: drawItems, onClick: dropdownClick }}>
+            <div style={{ marginLeft : 16}}>
+<Badge count={10} size='small'>
+              <BellOutlined/>
+            </Badge>
+              </div>
+
+            <Dropdown trigger={['click']} menu={{ items: drawItems, onClick: dropdownClick }}>
               <Space
                 style={{
-                  marginLeft: 16,
+                  marginLeft: 32,
+                  cursor : 'pointer'
                 }}
               >
                 <Typography.Text>{session?.user?.name}</Typography.Text>

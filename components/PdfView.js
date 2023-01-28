@@ -32,7 +32,7 @@ function PdfView({ data, url }) {
               padding: "0px 10px",
             }}
           >
-            <Row justify="center">
+            <Row justify="center" style={{ padding : 16}}>
               <Document
                 onLoadSuccess={onDocumentLoadSuccess}
                 loading={<DocumentLoading />}

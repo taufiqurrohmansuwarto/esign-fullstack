@@ -5,3 +5,5 @@ import auth from "@/middlewares/auth.middleware";
 const router = createRouter();
 
 router.use(auth()).patch(archiveDocument);
+
+export default router.handler()

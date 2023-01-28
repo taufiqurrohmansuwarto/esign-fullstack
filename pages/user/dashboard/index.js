@@ -3,6 +3,10 @@ import UserLayout from "@/components/UserLayout";
 import { alertHeader, listUrl } from "@/lib/client-utils";
 import { useQuery } from "@tanstack/react-query";
 import {
+  SyncOutlined
+  
+} from "@ant-design/icons/lib/icons";
+import {
   Alert,
   Avatar,
   Button,
@@ -81,6 +85,7 @@ const StatisticUser = () => {
             onClick={gotoDraftDocument}
             style={{ marginTop: 15 }}
             type="primary"
+            icon={<SyncOutlined/>}
           >
             See All Waiting Documents
           </Button>
