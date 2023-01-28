@@ -28,7 +28,7 @@ const index = async (req, res) => {
           ...currentQuery.where,
           filename :{
             contains: search,
-            case : 'insensitive'
+            mode : 'insensitive'
           }
         }
       }
