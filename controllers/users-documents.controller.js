@@ -15,7 +15,6 @@ const index = async (req, res) => {
     let currentQuery = {
       where: {
         recipient_id: userId,
-        is_archived: false,
       },
       orderBy: {
         created_at: "desc",
@@ -29,6 +28,7 @@ const index = async (req, res) => {
           ...currentQuery.where,
           role: "owner",
           status: "DRAFT",
+          is_archived: false
         },
       };
     }
@@ -39,6 +39,7 @@ const index = async (req, res) => {
         where: {
           ...currentQuery.where,
           signatory_status: "PENDING",
+          is_archived: false
         },
       };
     }
@@ -49,6 +50,7 @@ const index = async (req, res) => {
         where: {
           ...currentQuery.where,
           signatory_status: "COMPLETED",
+          is_archived: false
         },
       };
     }
@@ -69,6 +71,7 @@ const index = async (req, res) => {
         where: {
           ...currentQuery.where,
           status: "REJECTED",
+          is_archived: false
         },
       };
     }
