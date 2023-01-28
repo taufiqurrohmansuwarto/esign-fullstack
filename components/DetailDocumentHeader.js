@@ -1,8 +1,8 @@
-import { capitalize } from "@/lib/client-utils";
+import { snakeCasetoTitleCase, colorStatus } from "@/lib/client-utils";
 import { detailDocument } from "@/services/users.services";
 import { DownloadOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Dropdown, Space, Tag } from "antd";
+import { Button, Divider, Dropdown, Space, Tag, Typography } from "antd";
 import { useRouter } from "next/router";
 import PageContainer from "./pro/PageContainer";
 
@@ -10,10 +10,13 @@ const Content = ({ data }) => {
   return (
     <>
       <Space>
-        {data?.filename}
-        <Tag>{capitalize(data?.workflow)}</Tag>
-        <Tag>{capitalize(data?.status)}</Tag>
+        <Typography.Text>
+{data?.filename}
+          </Typography.Text>
+        
+        <Tag>{snakeCasetoTitleCase(data?.workflow)}</Tag>
       </Space>
+      <Divider/>
     </>
   );
 };
@@ -64,10 +67,16 @@ const DetailDocumentHeader = ({
           key: "discussions",
         },
       ]}
+      tabBarExtraContent={
+        <Tag color={colorStatus(data?.status)}>
+           {data?.status}
+        </Tag>
+      }
       extra={[
         <div key="1">
           {data && (
             <Dropdown
+            trigger={['click']}
               menu={{
                 items: [
                   {
@@ -100,12 +109,20 @@ const DetailDocumentHeader = ({
                   },
                   {
                     key: "3",
-                    label: "History Document",
+                    label: (
+                      <a href={`/esign/api/user/documents/${data?.id}/history-document`}
+                        alt='tes'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                      >
+                         History Document
+                        </a>
+                    )
                   },
                 ],
               }}
             >
-              <Button icon={<DownloadOutlined />} type="primary">
+              <Button icon={<DownloadOutlined />}>
                 Download
               </Button>
             </Dropdown>
