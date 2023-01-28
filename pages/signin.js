@@ -59,7 +59,7 @@ const SignInPages = ({ providers }) => {
             This code available on github
           </Link>
           <Typography.Text>
-            Version 1.0.alpha.2 - 28-01-2023
+            Version 1.0.alpha.3 - 29-01-2023
           </Typography.Text>
         </Space>
       </Col>

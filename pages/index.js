@@ -1,3 +1,4 @@
+import LoadingScreen from "@/components/LoadingScreen";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -19,7 +20,7 @@ function index() {
     }
   }, [data, status]);
 
-  if (status === "loading") return <div>Loading...</div>;
+  if (status === "loading") return <LoadingScreen/>;
 
   return null;
 }
