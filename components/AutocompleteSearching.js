@@ -22,6 +22,7 @@ function AutocompleteSearching() {
     console.log(option?.value);
     setValue(option?.label);
     router.push(`/user/document/${option?.value}/view`);
+    setValue(null);
   };
 
   return (

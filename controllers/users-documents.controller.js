@@ -20,6 +20,18 @@ const index = async (req, res) => {
         created_at: "desc",
       },
     };
+    
+    if(search) {
+      currentQuery = {
+        ...currentQuery,
+        where: {
+          ...currentQuery.where,
+          filename :{
+            contains: search
+          }
+        }
+      }
+    }
 
     if (type === "draft") {
       currentQuery = {
