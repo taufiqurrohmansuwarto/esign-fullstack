@@ -14,7 +14,7 @@ const Content = ({ data }) => {
 {data?.filename}
           </Typography.Text>
         
-        <Tag>{snakeCasetoTitleCase(data?.workflow)}</Tag>
+        <Tag>{data?.workflow}</Tag>
       </Space>
       <Divider/>
     </>
