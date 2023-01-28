@@ -1,7 +1,7 @@
-import { Spin, Row, Col } from 'antd';
-import {Image } from 'next/image';
+import { Spin, Row, Col, Space } from 'antd';
+import Image  from 'next/image';
 
-function LoadingScreen() {
+const LoadingScreen = () => {
     return (
         <div style={{
             position: 'fixed',
@@ -17,14 +17,17 @@ function LoadingScreen() {
         }}>
             <Row>
                 <Col span={24}>
-                    <Image
-                        src="https://siasn.bkd.jatimprov.go.id:9000/public/logobkd.jpg"
-                        width={410}
-                        height={400}
-                    />
-                    <Spin size="large" tip="Loading..." style={{
-                        marginTop: 10
-                    }} />
+                    <Space direction='vertical' align='center'>
+                        <Image
+                            src="https://siasn.bkd.jatimprov.go.id:9000/public/logobkd.jpg"
+                            width={110}
+                            height={100}
+                        />
+                        <Spin size="large"  style={{
+                            marginTop: 10
+                        }} />
+                        </Space>
+                    
                 </Col>
             </Row>
         </div>

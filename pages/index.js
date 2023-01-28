@@ -20,7 +20,7 @@ function index() {
     }
   }, [data, status]);
 
-  if (status === "loading") return <LoadingScreen/>;
+  if (status === "loading") return <LoadingScreen />;
 
   return null;
 }
