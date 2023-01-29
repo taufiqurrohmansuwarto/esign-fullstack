@@ -8,9 +8,10 @@ import {
   FileZipOutlined,
 } from "@ant-design/icons";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { Button, Dropdown, message } from "antd";
+import { Button, Dropdown, message, Modal } from "antd";
 
 function ActionButtonDocumentList({ data }) {
+  
   let newItems = [];
 
   const queryClient = useQueryClient();
@@ -91,6 +92,11 @@ function ActionButtonDocumentList({ data }) {
     );
   }
 
+  
+
+  
+
+
   const handleClick = async (e) => {
     try {
       switch (e.key) {
@@ -101,23 +107,25 @@ function ActionButtonDocumentList({ data }) {
           window.open(initial_document, "_blank", "noopener noreferrer");
           break;
         case "delete":
-          remove(data?.document_id);
+          Modal.confirm({title : 'Confirmation', okButtonProps: {
+            loading: loadingRemove,
+          }, content : 'Are you sure want to delete this document?', onOk :() => remove(data?.document_id)})
           break;
         case "history":
-          // window.location.href = `/esign/api/user/documents/${data?.document_id}/history-document`;
-          // new tab
           window.open(
             `/esign/api/user/documents/${data?.document_id}/history-document`,
             "_blank"
           );
           break;
         case "archived":
-          archive(data?.document_id);
+          // archive(data?.document_id);
+          Modal.confirm({title : 'Confirmation', okButtonProps: {
+            loading: loadingArchive,
+          }, content : 'Are you sure want to archive this document?', onOk :() => archive(data?.document_id)})
           break;
         case "sign":
           const result = await getUrls(data?.document_id);
           const { signed_document } = result;
-          //   with rel = "noopener noreferrer" to prevent security risk
           window.open(signed_document, "_blank", "noopener noreferrer");
           break;
         default:

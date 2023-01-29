@@ -89,6 +89,8 @@ const index = async (req, res) => {
       };
     }
 
+    
+
     const withInclude = {
       include: {
         document: {
