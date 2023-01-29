@@ -1,6 +1,8 @@
 update biodata set password='098f6bcd4621d373cade4e832627b4f6' where nip_baru in (199111242019032014,199211062019031012,199111072019031005,197210311998031004);
 update biodata set nik='0803202100007062' where nip_baru in (199111242019032014,199211062019031012,199111072019031005, 199103052019031008,197210311998031004);
 
+update biodata set nik='0803202100007062' where skpd_id like '123%' and aktif='Y';
+
 delete from "User";
 delete from "Document";
 delete from "Recipient";
