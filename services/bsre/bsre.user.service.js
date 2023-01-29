@@ -25,3 +25,8 @@ module.exports.getCertificate = (id) => {
 module.exports.keystore = (data) => {
   return bsreFetcher.post(`${BASE_PATH}/keystore`, data);
 };
+
+// permohonan lupa passphrase
+module.exports.forgotPassphrase (nik) => {
+  return bsreFetcher.post(`${BASE_PATH}/passphrase/forget/${nik}`);
+}

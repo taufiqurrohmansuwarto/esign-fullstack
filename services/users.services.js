@@ -216,3 +216,7 @@ export const archieved = async (documentId) => {
 export const getUrls = async (documentId) => {
   return fetcher.get(`/documents/${documentId}/urls`).then((res) => res?.data);
 };
+
+export const forgotPassphrase = async () => {
+  return fetcher.post(`/settings/forgot-passphrase`).then((res) => res?.data);
+}
