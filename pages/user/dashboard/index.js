@@ -81,14 +81,17 @@ const StatisticUser = () => {
             title="Waiting Document"
             value={data?.document_type?.document_draft}
           />
-          <Button
-            onClick={gotoDraftDocument}
-            style={{ marginTop: 15 }}
-            type="primary"
-            icon={<SyncOutlined/>}
-          >
-            See All Waiting Documents
-          </Button>
+          {data?.document_type?.document_draft > 0 && (
+            <Button
+              onClick={gotoDraftDocument}
+              style={{ marginTop: 15 }}
+              type="primary"
+              icon={<SyncOutlined />}
+            >
+              See All Waiting Documents
+            </Button>
+          )
+            }
         </Col>
         <Col span={8}>
           <Statistic
