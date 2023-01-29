@@ -11,6 +11,7 @@ function AutocompleteSearching() {
   const router = useRouter();
 
   const handleSearch = async (value) => {
+    if(!value) return;
     setLoading(true);
     setValue(value);
     const result = await searchingAutocomplete(value);
@@ -19,7 +20,6 @@ function AutocompleteSearching() {
   };
 
   const handleSelect = (_, option) => {
-    console.log(option?.value);
     setValue(option?.label);
     router.push(`/user/document/${option?.value}/view`);
     setValue(null);
