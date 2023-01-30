@@ -1,8 +1,8 @@
-import { snakeCasetoTitleCase, colorStatus } from "@/lib/client-utils";
+import { colorStatus } from "@/lib/client-utils";
 import { detailDocument } from "@/services/users.services";
 import { DownloadOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Divider, Dropdown, Space, Tag, Typography } from "antd";
+import { Button, Divider, Alert, Dropdown, Space, Tag, Typography } from "antd";
 import { useRouter } from "next/router";
 import PageContainer from "./pro/PageContainer";
 
@@ -10,13 +10,16 @@ const Content = ({ data }) => {
   return (
     <>
       <Space>
-        <Typography.Text>
-{data?.filename}
-          </Typography.Text>
-        
+        <Typography.Text>{data?.filename}</Typography.Text>
         <Tag>{data?.workflow}</Tag>
       </Space>
-      <Divider/>
+      <Divider />
+      <Alert
+        message="Rejected"
+        description="This document is rejected by Iput Taufiqurrohman Suwarto, S.Kom. Under a reason"
+        type="error"
+        showIcon
+      />
     </>
   );
 };
@@ -68,15 +71,13 @@ const DetailDocumentHeader = ({
         },
       ]}
       tabBarExtraContent={
-        <Tag color={colorStatus(data?.status)}>
-           {data?.status}
-        </Tag>
+        <Tag color={colorStatus(data?.status)}>{data?.status}</Tag>
       }
       extra={[
         <div key="1">
           {data && (
             <Dropdown
-            trigger={['click']}
+              trigger={["click"]}
               menu={{
                 items: [
                   {
@@ -110,21 +111,20 @@ const DetailDocumentHeader = ({
                   {
                     key: "3",
                     label: (
-                      <a href={`/esign/api/user/documents/${data?.id}/history-document`}
-                        alt='tes'
-                        target='_blank'
-                        rel='noopener noreferrer'
+                      <a
+                        href={`/esign/api/user/documents/${data?.id}/history-document`}
+                        alt="tes"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                         History Document
-                        </a>
-                    )
+                        History Document
+                      </a>
+                    ),
                   },
                 ],
               }}
             >
-              <Button icon={<DownloadOutlined />}>
-                Download
-              </Button>
+              <Button icon={<DownloadOutlined />}>Download</Button>
             </Dropdown>
           )}
         </div>,

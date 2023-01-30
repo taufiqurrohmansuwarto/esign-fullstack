@@ -212,7 +212,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
             <AutocompleteSearching />
             <div style={{ marginLeft: 16 }}>
               <Badge count={10} size="small">
-                <BellOutlined />
+                <BellOutlined size={30} />
               </Badge>
             </div>
             <Dropdown
