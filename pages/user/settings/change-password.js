@@ -1,34 +1,66 @@
 import PageContainer from "@/components/pro/PageContainer";
 import UserLayout from "@/components/UserLayout";
 import { getBsreProfile } from "@/services/users.services";
+import { KeyOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Card, Modal } from "antd";
+import { Button, Card, Input, message, Modal, Typography, Space } from "antd";
+import { useState } from "react";
 import { forgotPassphrase } from "services/users.services";
 
-const ChangePassword = () => {
-  const { data, isLoading } = useQuery(["data-bsre"], () => getBsreProfile(), {
-    refetchOnWindowFocus: false,
-  });
-
+const ModalConfirmation = ({ open, onCancel }) => {
   const { mutate: reset, isLoading: loadingReset } = useMutation(
     (data) => forgotPassphrase(data),
     {
       onSuccess: () => {
-        Modal.success({
-          title: "Success",
-          content: "Please check your email",
-        });
+        message.success("Password reset successfully, please check your email");
+        onCancel();
+      },
+      onError: (error) => {
+        message.error(error?.response?.data?.message);
       },
     }
   );
 
-  const handleReset = () => {};
+  return (
+    <Modal
+      onOk={reset}
+      confirmLoading={loadingReset}
+      title="Reset Password"
+      open={open}
+      onCancel={onCancel}
+    >
+      <Typography.Text>
+        Are you sure you want to reset your password? You will receive an email
+      </Typography.Text>
+    </Modal>
+  );
+};
+
+const ChangePassword = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => setShowModal(true);
+  const handleCancel = () => setShowModal(false);
+
+  const { data, isLoading } = useQuery(["data-bsre"], () => getBsreProfile(), {
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <PageContainer title="Change Password">
+      <ModalConfirmation open={showModal} onCancel={handleCancel} />
+
       <Card loading={isLoading}>
-        {JSON.stringify(data?.data?.email)}
-        <Button onClick={handleReset}>Reset Password</Button>
+        {data ? (
+          <Space direction="vertical">
+            <Input style={{ width: 300 }} value={data?.data?.email} />
+            <Button icon={<KeyOutlined />} onClick={openModal} type="primary">
+              Reset Password
+            </Button>
+          </Space>
+        ) : (
+          <Typography.Text>Not found</Typography.Text>
+        )}
       </Card>
     </PageContainer>
   );
