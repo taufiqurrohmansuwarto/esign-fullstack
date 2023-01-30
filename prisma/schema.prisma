@@ -27,17 +27,19 @@ model User {
   nik             String?
   user_info       Json?
 
-  createdat            DateTime?      @default(now())
-  updatedat            DateTime?      @updatedAt
+  createdat            DateTime?                   @default(now())
+  updatedat            DateTime?                   @updatedAt
   documents            Document[]
   histories            History[]
   Discussions          Discussion[]
   Otp                  Otp[]
-  RecipientUser        Recipient[]    @relation("RecipientUser")
-  RejectedUser         Recipient[]    @relation("RejectedUser")
-  Sender               Notification[] @relation("sender")
-  Recipient            Notification[] @relation("recipient")
-  RejectedUserDocument Document[]     @relation("RejectedUserDocument")
+  RecipientUser        Recipient[]                 @relation("RecipientUser")
+  RejectedUser         Recipient[]                 @relation("RejectedUser")
+  Sender               Notification[]              @relation("sender")
+  Recipient            Notification[]              @relation("recipient")
+  RejectedUserDocument Document[]                  @relation("RejectedUserDocument")
+  from_requester       DocumentCollectiveRequest[] @relation("fromRequester")
+  to_requester         DocumentCollectiveRequest[] @relation("toRequester")
 }
 
 model Document {
@@ -145,7 +147,6 @@ model Notification {
   to_id       String?
   document_id String?
   message     String?
-  type        String?
   is_read     Boolean?  @default(false)
   created_at  DateTime? @default(now())
   updated_at  DateTime? @updatedAt
@@ -162,4 +163,35 @@ model Otp {
   created_at DateTime? @default(now())
   updated_at DateTime? @updatedAt
   user       User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model DocumentCollectiveRequest {
+  id                     String                   @id @default(cuid())
+  from_requester_id      String?
+  from_requester         User?                    @relation(name: "fromRequester", fields: [from_requester_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  to_requester_id        String?
+  to_requester           User?                    @relation(name: "toRequester", fields: [to_requester_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  to_requester_json      Json?
+  title                  String?
+  description            String?
+  status                 String?
+  type                   String?
+  created_at             DateTime?                @default(now())
+  updated_at             DateTime?                @updatedAt
+  DocumentCollectiveFile DocumentCollectiveFile[]
+}
+
+model DocumentCollectiveFile {
+  id                             String                     @id @default(cuid())
+  document_collective_request_id String?
+  document_collective_request    DocumentCollectiveRequest? @relation(fields: [document_collective_request_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  original_filename              String?
+  filename                       String?
+  file_type                      String?
+  file_size                      Int?
+  is_signed                      Boolean?                   @default(false)
+  bsre_document_id               String?
+  file_url                       String?
+  created_at                     DateTime?                  @default(now())
+  updated_at                     DateTime?                  @updatedAt
 }
