@@ -99,7 +99,7 @@ const ActivityLog = () => {
   ];
 
   return (
-    <PageContainer title="Activity Log">
+    <PageContainer title="Activities">
       <Card>
         <Table
           size="middle"

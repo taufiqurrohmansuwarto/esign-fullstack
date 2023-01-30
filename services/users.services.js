@@ -219,4 +219,15 @@ export const getUrls = async (documentId) => {
 
 export const forgotPassphrase = async () => {
   return fetcher.post(`/settings/forgot-passphrase`).then((res) => res?.data);
-}
+};
+
+// notification services
+export const getNotification = async (lastId = null) => {
+  return fetcher
+    .get(`/notifications?lastId=${lastId}`)
+    .then((res) => res?.data);
+};
+
+export const markAsReadNotification = async () => {
+  return fetcher.put(`/notifications`).then((res) => res?.data);
+};

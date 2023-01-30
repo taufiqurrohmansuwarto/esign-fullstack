@@ -123,7 +123,7 @@ const items = [
     getItem("Rejected", "/user/documents/rejected"),
   ]),
   getItem("Settings", "/user/settings", <SettingOutlined />, [
-    getItem("Activity Log", "/user/settings/activity-log"),
+    getItem("Activities", "/user/settings/activity-log"),
     getItem("Change Password", "/user/settings/change-password"),
     getItem("Digital Certificate", "/user/settings/digital-certificate"),
     getItem("Personal Information", "/user/settings/personal-information"),
