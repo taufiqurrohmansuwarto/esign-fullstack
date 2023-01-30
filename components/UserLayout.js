@@ -5,7 +5,7 @@ import {
   SettingOutlined,
   UploadOutlined,
   FormOutlined,
-  BellOutlined
+  BellOutlined,
 } from "@ant-design/icons/lib/icons";
 import {
   Avatar,
@@ -79,8 +79,7 @@ const UploadModal = ({ open, onCancel }) => {
       onCancel={onCancel}
     >
       <Typography.Text>
-        Please choose the workflow that you
-        want to use.
+        Please choose the workflow that you want to use.
       </Typography.Text>
       <Space style={{ marginTop: 10 }}>
         {listButton.map((item) => (
@@ -122,7 +121,7 @@ const items = [
   ]),
   getItem("Settings", "/user/settings", <SettingOutlined />, [
     getItem("Activity Log", "/user/settings/activity-log"),
-    // getItem("Change Password", "/user/settings/change-password"),
+    getItem("Change Password", "/user/settings/change-password"),
     getItem("Digital Certificate", "/user/settings/digital-certificate"),
     getItem("Personal Information", "/user/settings/personal-information"),
     getItem("Signature", "/user/settings/signatures"),
@@ -211,17 +210,19 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             <AutocompleteSearching />
-            <div style={{ marginLeft : 16}}>
-<Badge count={10} size='small'>
-              <BellOutlined/>
-            </Badge>
-              </div>
-
-            <Dropdown trigger={['click']} menu={{ items: drawItems, onClick: dropdownClick }}>
+            <div style={{ marginLeft: 16 }}>
+              <Badge count={10} size="small">
+                <BellOutlined />
+              </Badge>
+            </div>
+            <Dropdown
+              trigger={["click"]}
+              menu={{ items: drawItems, onClick: dropdownClick }}
+            >
               <Space
                 style={{
                   marginLeft: 32,
-                  cursor : 'pointer'
+                  cursor: "pointer",
                 }}
               >
                 <Typography.Text>{session?.user?.name}</Typography.Text>

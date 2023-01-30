@@ -3,12 +3,11 @@ import UserLayout from "@/components/UserLayout";
 import { useQuery } from "@tanstack/react-query";
 import {
   Avatar,
+  Card,
   Col,
   Form,
   Input,
   Row,
-  Card,
-  Divider,
   Skeleton,
   Typography,
 } from "antd";

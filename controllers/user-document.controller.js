@@ -1,7 +1,7 @@
 const { default: prisma } = require("@/lib/prisma");
 
 const { removeDocument, downloadWithFilename } = require("@/lib/utils");
-import { forgotPassphrase } from '@/services/bsre/bsre.user.service'
+import { forgotPassphrase } from "@/services/bsre/bsre.user.service";
 
 // cuman preview menggunakan req query
 const previewDocumentController = async (req, res) => {};
@@ -236,7 +236,7 @@ const archiveDocument = async (req, res) => {
     });
 
     await prisma.History.create({
-      data : {
+      data: {
         document_id: documentId,
         user_id: userId,
         action: "ARCHIVED",
@@ -244,8 +244,8 @@ const archiveDocument = async (req, res) => {
         useragent: req?.useragent,
         type: "DOCUMENT",
         created_at: new Date(),
-      }
-    })
+      },
+    });
 
     res.json({
       message: "Document archived",
@@ -344,43 +344,39 @@ const getUrls = async (req, res) => {
   }
 };
 
-
 // change password via nik
-const changePasswordController = async (req,res) => {
+const changePasswordController = async (req, res) => {
   try {
     const user = req?.user;
     const userId = user?.id;
 
     const currentUser = await prisma.User.findUnique({
       where: {
-        id: userId
-      }
-    })
+        id: userId,
+      },
+    });
 
-    if(!currentUser){
-      res.status(404).json({message: "User not found"})
+    if (!currentUser) {
+      res.status(404).json({ message: "User not found" });
     } else {
-      const nik = currentUser?.user_info?.nik
+      const nik = currentUser?.user_info?.nik;
 
       const result = await forgotPassphrase(nik);
       const { data } = result;
 
-      if(data?.status_code === 400){
-        res.status(400).json({message: data?.error})
+      if (data?.status_code === 400) {
+        res.status(400).json({ message: data?.error });
       }
 
-      if(data?.success){
-        res.json({message: "Success"})
+      if (data?.success) {
+        res.json({ message: "Success" });
       }
-      
     }
-    
-
   } catch (error) {
-    console.log(error)
-    res.status(500).json({message: "Internal Server Error"})
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};
 
 module.exports = {
   changePasswordController,

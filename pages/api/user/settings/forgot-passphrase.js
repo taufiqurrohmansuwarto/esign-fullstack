@@ -1,7 +1,7 @@
-import auth from '@/controllers/auth.controller';
-import { createRouter } from 'next-connect';
-import {changePasswordController} from '@/controllers/user-document.controller'
-const router = createRouter;
+import { createRouter } from "next-connect";
+import { changePasswordController } from "@/controllers/user-document.controller";
+import auth from "@/middlewares/auth.middleware";
+const router = createRouter();
 
 router.use(auth()).post(changePasswordController);
 

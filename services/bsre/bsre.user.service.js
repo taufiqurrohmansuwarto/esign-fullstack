@@ -27,6 +27,6 @@ module.exports.keystore = (data) => {
 };
 
 // permohonan lupa passphrase
-module.exports.forgotPassphrase (nik) => {
+module.exports.forgotPassphrase = (nik) => {
   return bsreFetcher.post(`${BASE_PATH}/passphrase/forget/${nik}`);
-}
+};

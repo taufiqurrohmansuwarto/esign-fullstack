@@ -1,4 +1,6 @@
-1. create archived
-2. create delete action
-3. create history document
-4. perbaiki recipients
+
+1. buat fitur notification
+   - notification untuk discussions ketika ada chat masuk di document
+   - notification ketika request from others document selesai
+
+2. buat fitur penandatanganan dokumen kolektif
