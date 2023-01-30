@@ -1,14 +1,17 @@
 import {
+  BellOutlined,
+  CopyOutlined,
   DashboardOutlined,
   FileOutlined,
+  FormOutlined,
+  HddOutlined,
   LogoutOutlined,
   SettingOutlined,
   UploadOutlined,
-  FormOutlined,
-  BellOutlined,
 } from "@ant-design/icons/lib/icons";
 import {
   Avatar,
+  Badge,
   Button,
   Dropdown,
   Layout,
@@ -18,12 +21,12 @@ import {
   theme,
   Tooltip,
   Typography,
-  Badge,
 } from "antd";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import AutocompleteSearching from "./AutocompleteSearching";
+import Notifications from "./Notifications";
 const { Header, Content, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -129,6 +132,16 @@ const items = [
   ]),
 ];
 
+const documentsCollectives = getItem(
+  "Document Collectives",
+  "/user/document-collectives",
+  <HddOutlined />,
+  [
+    getItem("Requests", "/user/document-collectives/requests"),
+    getItem("Sign", "/user/document-collectives/sign"),
+  ]
+);
+
 const UserLayout = ({ children, active = "/user/dashboard" }) => {
   const router = useRouter();
   const handleRouter = (item) => {
@@ -136,6 +149,19 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
   };
 
   const { data: session, status } = useSession();
+  const masterUser =
+    session?.user?.role === "USER" && session?.user?.group === "MASTER";
+
+  if (masterUser) {
+    // push before settings
+    items.splice(2, 0, documentsCollectives);
+
+    // pastikan tidak ada yang sama dalam array itesm
+  }
+
+  const uniqueItems = [
+    ...new Map(items.map((item) => [item.key, item])).values(),
+  ];
 
   const dropdownClick = ({ key }) => {
     if (key === "1") {
@@ -196,7 +222,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
         <Menu
           theme="dark"
           defaultSelectedKeys={[active]}
-          items={items}
+          items={uniqueItems}
           onClick={handleRouter}
         />
       </Sider>
@@ -210,11 +236,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             <AutocompleteSearching />
-            <div style={{ marginLeft: 16 }}>
-              <Badge count={10} size="small">
-                <BellOutlined size={30} />
-              </Badge>
-            </div>
+            <Notifications />
             <Dropdown
               trigger={["click"]}
               menu={{ items: drawItems, onClick: dropdownClick }}
