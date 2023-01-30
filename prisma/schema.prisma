@@ -176,6 +176,9 @@ model DocumentCollectiveRequest {
   description            String?
   status                 String?
   type                   String?
+  confirmed_at           DateTime?
+  confirm_reason         String?
+  total                  Int?
   created_at             DateTime?                @default(now())
   updated_at             DateTime?                @updatedAt
   DocumentCollectiveFile DocumentCollectiveFile[]
@@ -192,6 +195,8 @@ model DocumentCollectiveFile {
   is_signed                      Boolean?                   @default(false)
   bsre_document_id               String?
   file_url                       String?
-  created_at                     DateTime?                  @default(now())
-  updated_at                     DateTime?                  @updatedAt
+
+  signed_at  DateTime?
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
 }

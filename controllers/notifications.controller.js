@@ -35,7 +35,7 @@ const listNotificationsController = async (req, res) => {
     };
 
     const result = await prisma.Notification.findMany(
-      lastId ? { ...query, cursor: { id: lastId } } : query
+      lastId ? { ...query, cursor: { id: lastId, take: 4, skip: 1 } } : query
     );
 
     if (result.length > 0) {
