@@ -52,12 +52,19 @@ const ChangePassword = () => {
 
       <Card loading={isLoading}>
         {data ? (
-          <Space direction="vertical">
-            <Input style={{ width: 300 }} value={data?.data?.email} />
-            <Button icon={<KeyOutlined />} onClick={openModal} type="primary">
-              Reset Password
-            </Button>
-          </Space>
+          <>
+            <div>
+              <Typography.Paragraph>
+                You can reset your password by clicking the button below
+              </Typography.Paragraph>
+            </div>
+            <Space direction="vertical">
+              <Input style={{ width: 300 }} value={data?.data?.email} />
+              <Button icon={<KeyOutlined />} onClick={openModal} type="primary">
+                Reset Password
+              </Button>
+            </Space>
+          </>
         ) : (
           <Typography.Text>Not found</Typography.Text>
         )}
