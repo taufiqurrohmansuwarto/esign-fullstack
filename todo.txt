@@ -1,6 +1,11 @@
+todo 
 
-1. buat fitur notification
-   - notification untuk discussions ketika ada chat masuk di document
-   - notification ketika request from others document selesai
+1. buat notification
+2. buat alert di document detail
+3. ganti tracking status di document detail dan di check document
 
-2. buat fitur penandatanganan dokumen kolektif
+
+fitur baru document collectives
+1. buat crud di document collectives-request
+2. lakukan accept dan reject di document collectives-request
+3. buat upload
