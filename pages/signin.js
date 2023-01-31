@@ -30,16 +30,19 @@ const SignInPages = ({ providers }) => {
         >
           <Space size="small">
             <Image
+              alt="pemprov"
               src="https://siasn.bkd.jatimprov.go.id:9000/public/pemprov.png"
               width={15}
               height={20}
             />
             <Image
+              alt="logobkd"
               src="https://siasn.bkd.jatimprov.go.id:9000/public/logobkd.jpg"
               width={30}
               height={40}
             />
             <Image
+              alt="logobsre"
               src="https://siasn.bkd.jatimprov.go.id:9000/public/logobsre.png"
               width={50}
               height={20}

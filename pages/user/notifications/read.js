@@ -1,10 +1,25 @@
+import TabNotification from "@/components/TabNotification";
 import UserLayout from "@/components/UserLayout";
+import { useQuery } from "@tanstack/react-query";
+import { Card } from "antd";
+import { useState } from "react";
+import { getNotification } from "@/services/users.services";
 
 const ListNotifications = () => {
+  const [id, setId] = useState(0);
+
+  const { data, isLoading } = useQuery(
+    ["notification-read", id, "read"],
+    () => getNotification(id, "read"),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
   return (
-    <div>
-      <h1>Notifications</h1>
-    </div>
+    <TabNotification tabActiveKey="read">
+      <Card loading={isLoading}>{JSON.stringify(data)}</Card>
+    </TabNotification>
   );
 };
 

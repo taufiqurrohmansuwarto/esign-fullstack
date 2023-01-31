@@ -1,9 +1,9 @@
 const { createRouter } = require("next-connect");
-import auth from "@/controllers/auth.controller";
 import {
   listNotificationsController,
   markAsAllReadController,
 } from "@/controllers/notifications.controller";
+import auth from "@/middlewares/auth.middleware";
 
 const router = createRouter();
 

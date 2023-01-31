@@ -5,6 +5,7 @@ const listNotificationsController = async (req, res) => {
   try {
     const userId = req?.user?.id;
     const lastId = req?.query?.lastId;
+    const type = req?.query?.type || "unread";
 
     let query = {
       where: {
@@ -18,8 +19,6 @@ const listNotificationsController = async (req, res) => {
         from_id: true,
         to_id: true,
         message: true,
-        is_read: true,
-        type: true,
         created_at: true,
         sender: {
           select: {
@@ -34,8 +33,28 @@ const listNotificationsController = async (req, res) => {
       },
     };
 
+    if (type === "unread") {
+      query = {
+        ...query,
+        where: {
+          ...query.where,
+          is_read: false,
+        },
+      };
+    }
+
+    if (type === "read") {
+      query = {
+        ...query,
+        where: {
+          ...query.where,
+          is_read: true,
+        },
+      };
+    }
+
     const result = await prisma.Notification.findMany(
-      lastId ? { ...query, cursor: { id: lastId, take: 4, skip: 1 } } : query
+      lastId ? { ...query, skip: 1, take: 10, cursor: { id: lastId } } : query
     );
 
     if (result.length > 0) {
@@ -43,7 +62,10 @@ const listNotificationsController = async (req, res) => {
         serializeNotification(notification)
       );
 
-      res.json(notifications);
+      res.json({
+        lastId: result[result.length - 1].id,
+        data: notifications,
+      });
     } else {
       res.json(result);
     }

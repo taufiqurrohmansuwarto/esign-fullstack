@@ -222,9 +222,9 @@ export const forgotPassphrase = async () => {
 };
 
 // notification services
-export const getNotification = async (lastId = null) => {
+export const getNotification = async (lastId = null, type = "unread") => {
   return fetcher
-    .get(`/notifications?lastId=${lastId}`)
+    .get(`/notifications?lastId=${lastId}&type=${type}`)
     .then((res) => res?.data);
 };
 
