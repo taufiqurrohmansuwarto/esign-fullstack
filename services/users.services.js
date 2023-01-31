@@ -231,3 +231,18 @@ export const getNotification = async (lastId = null, type = "unread") => {
 export const markAsReadNotification = async () => {
   return fetcher.put(`/notifications`).then((res) => res?.data);
 };
+
+// document collectives
+export const getDocumentCollectivesRequest = async (query) => {
+  const queryString = Object.keys(query)
+    .map((key) => key + "=" + query[key])
+    .join("&");
+
+  return fetcher
+    .get(`/document-collectives?${queryString}`)
+    .then((res) => res?.data);
+};
+
+export const createDocumentCollectiveRequest = async (data) => {
+  return fetcher.post(`/document-collectives`, data).then((res) => res?.data);
+};

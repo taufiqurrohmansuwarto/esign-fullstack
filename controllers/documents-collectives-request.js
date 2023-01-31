@@ -31,17 +31,23 @@ const index = async (req, res) => {
     if (lastId) {
       query = {
         ...query,
+        take: 20,
+        skip: 1,
         cursor: {
           id: lastId,
-          take: 20,
-          skip: 1,
         },
       };
     }
 
-    const result = await prisma.DocumentCollectiveRequest.findMany({});
+    const result = await prisma.DocumentCollectiveRequest.findMany(query);
 
-    res.json(result);
+    const lastResult = result?.[result?.length - 1];
+    const lastIdResult = lastResult?.id;
+
+    res.json({
+      data: result,
+      lastId: lastIdResult,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
