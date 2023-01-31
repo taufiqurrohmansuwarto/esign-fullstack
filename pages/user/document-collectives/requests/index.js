@@ -1,3 +1,4 @@
+import DocumentCollectiveList from "@/components/DocumentCollective/DocumentCollectiveList";
 import UserLayout from "@/components/UserLayout";
 import { collectivesTypes } from "@/lib/client-utils";
 import { createDocumentCollectiveRequest } from "@/services/users.services";
@@ -89,6 +90,7 @@ const DocumentCollectives = () => {
   return (
     <PageContainer title="Document Collectives">
       <Button onClick={handleOpen}>Add Request</Button>
+      <DocumentCollectiveList />
       <RequestModal open={open} onCancel={handleClose} />
     </PageContainer>
   );

@@ -64,13 +64,14 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    const id = req?.query?.id;
+    const id = req?.query?.documentCollectiveId;
     const userId = req?.user?.id;
 
     await prisma.DocumentCollectiveRequest.deleteMany({
       where: {
         id,
         from_requester_id: userId,
+        status: "PENDING",
       },
     });
     res.json({ message: "success" });
@@ -88,6 +89,7 @@ const create = async (req, res) => {
     await prisma.DocumentCollectiveRequest.create({
       data: {
         ...body,
+        status: "PENDING",
         from_requester_id: userId,
       },
     });

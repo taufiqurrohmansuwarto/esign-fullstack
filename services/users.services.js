@@ -246,3 +246,13 @@ export const getDocumentCollectivesRequest = async (query) => {
 export const createDocumentCollectiveRequest = async (data) => {
   return fetcher.post(`/document-collectives`, data).then((res) => res?.data);
 };
+
+export const removeDocumentCollectiveRequest = async (id) => {
+  return fetcher.delete(`/document-collectives/${id}`).then((res) => res?.data);
+};
+
+export const updateDocumentCollectiveRequest = async ({ id, data }) => {
+  return fetcher
+    .patch(`/document-collectives/${id}`, data)
+    .then((res) => res?.data);
+};
