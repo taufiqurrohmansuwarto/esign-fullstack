@@ -20,18 +20,18 @@ const index = async (req, res) => {
         created_at: "desc",
       },
     };
-    
-    if(search) {
+
+    if (search) {
       currentQuery = {
         ...currentQuery,
         where: {
           ...currentQuery.where,
-          filename :{
+          filename: {
             contains: search,
-            mode : 'insensitive'
-          }
-        }
-      }
+            mode: "insensitive",
+          },
+        },
+      };
     }
 
     if (type === "draft") {
@@ -39,9 +39,9 @@ const index = async (req, res) => {
         ...currentQuery,
         where: {
           ...currentQuery.where,
-          role: "owner",
+          // role: "owner",
           status: "DRAFT",
-          is_archived: false
+          is_archived: false,
         },
       };
     }
@@ -52,7 +52,7 @@ const index = async (req, res) => {
         where: {
           ...currentQuery.where,
           signatory_status: "PENDING",
-          is_archived: false
+          is_archived: false,
         },
       };
     }
@@ -63,7 +63,7 @@ const index = async (req, res) => {
         where: {
           ...currentQuery.where,
           signatory_status: "COMPLETED",
-          is_archived: false
+          is_archived: false,
         },
       };
     }
@@ -84,12 +84,10 @@ const index = async (req, res) => {
         where: {
           ...currentQuery.where,
           status: "REJECTED",
-          is_archived: false
+          is_archived: false,
         },
       };
     }
-
-    
 
     const withInclude = {
       include: {
