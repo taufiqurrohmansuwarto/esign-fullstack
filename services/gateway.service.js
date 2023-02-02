@@ -12,6 +12,12 @@ const biodataPegawaiPTTPK = async (fetcher) => {
   return employeeData;
 };
 
+const biodataPegawaiAtasan = async (fetcher, skpd_id) => {
+  const result = await fetcher.get(`/master/employees/departments/${skpd_id}`);
+  const employeeData = result?.data;
+  return employeeData;
+};
+
 const getBiodataWithHeaders = async (accessToken, nip) => {
   const fetcher = axios.create({
     baseURL: process.env.API_GATEWAY,
@@ -53,4 +59,5 @@ module.exports = {
   getBiodataWithHeaders,
   getBiodataPTTPKWIthHeaders,
   getBiodataWithHeadersPTTPK,
+  biodataPegawaiAtasan,
 };
