@@ -256,3 +256,8 @@ export const updateDocumentCollectiveRequest = async ({ id, data }) => {
     .patch(`/document-collectives/${id}`, data)
     .then((res) => res?.data);
 };
+
+// atasan
+export const dataAtasan = async () => {
+  return fetcher.get(`/atasan`).then((res) => res?.data);
+};

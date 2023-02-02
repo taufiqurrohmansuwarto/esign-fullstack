@@ -1,17 +1,48 @@
-import { getDocumentCollectivesRequest } from "@/services/users.services";
-import { useQuery } from "@tanstack/react-query";
-import { Skeleton, Table } from "antd";
+import {
+  getDocumentCollectivesRequest,
+  removeDocumentCollectiveRequest,
+  updateDocumentCollectiveRequest,
+} from "@/services/users.services";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Divider, message, Skeleton, Space, Table } from "antd";
 import { useState } from "react";
 
 function DocumentCollectiveList() {
   const [query, setQuery] = useState({});
+
+  const queryClient = useQueryClient();
+
+  const { mutate: remove, isLoading: iseLoadingRemove } = useMutation(
+    (data) => removeDocumentCollectiveRequest(data),
+    {
+      onSuccess: () => {
+        message.success("Document Collective has been removed");
+        queryClient.invalidateQueries("document-collectives");
+      },
+      onError: (error) => {
+        message.error(error?.response?.data?.message);
+      },
+    }
+  );
+
+  const { mutate: update, isLoading: isLoadingUpdate } = useMutation(
+    (data) => updateDocumentCollectiveRequest(data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("document-collectives");
+        message.success("Document Collective has been updated");
+      },
+      onError: (error) => {
+        message.error(error?.response?.data?.message);
+      },
+    }
+  );
 
   const { data, isLoading } = useQuery(
     ["document-collectives", query],
     () => getDocumentCollectivesRequest(query),
     {
       enabled: !!query,
-      refetchOnWindowFocus: false,
     }
   );
 
@@ -27,7 +58,22 @@ function DocumentCollectiveList() {
       key: "description",
     },
     {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
       title: "Action",
+      dataIndex: "action",
+      render: () => {
+        return (
+          <Space>
+            <a>Delete</a>
+            <Divider type="vertical" />
+            <a>Update</a>
+          </Space>
+        );
+      },
     },
   ];
 
