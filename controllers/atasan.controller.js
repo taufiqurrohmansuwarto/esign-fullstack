@@ -11,8 +11,11 @@ const stamp = async (data) => {
   const base64Image = resultBuffer.toString("base64");
 
   return {
-    ...data,
-    image: base64Image,
+    value: `MASTER|${data?.pegawai_id}`,
+    label: {
+      ...data,
+      image: base64Image,
+    },
   };
 };
 

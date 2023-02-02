@@ -4,7 +4,16 @@ import {
   updateDocumentCollectiveRequest,
 } from "@/services/users.services";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Divider, message, Skeleton, Space, Table } from "antd";
+import {
+  Avatar,
+  Divider,
+  message,
+  Popconfirm,
+  Skeleton,
+  Space,
+  Table,
+  Tooltip,
+} from "antd";
 import { useState } from "react";
 
 function DocumentCollectiveList() {
@@ -46,6 +55,10 @@ function DocumentCollectiveList() {
     }
   );
 
+  const handleRemove = (row) => {
+    remove(row?.id);
+  };
+
   const column = [
     {
       title: "Title",
@@ -58,6 +71,27 @@ function DocumentCollectiveList() {
       key: "description",
     },
     {
+      title: "Total",
+      dataIndex: "total",
+      key: "total",
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+    },
+    {
+      title: "Penerima",
+      dataIndex: "penerima",
+      render: (_, row) => {
+        return (
+          <Tooltip title={row?.to_requester_json?.nama}>
+            <Avatar src={row?.to_requester_json?.fileDiri?.foto} />
+          </Tooltip>
+        );
+      },
+    },
+    {
       title: "Status",
       dataIndex: "status",
       key: "status",
@@ -65,12 +99,17 @@ function DocumentCollectiveList() {
     {
       title: "Action",
       dataIndex: "action",
-      render: () => {
+      render: (_, row) => {
         return (
           <Space>
-            <a>Delete</a>
-            <Divider type="vertical" />
             <a>Update</a>
+            <Divider type="vertical" />
+            <Popconfirm
+              title="Are you sure want to remove this data?"
+              onConfirm={() => handleRemove(row)}
+            >
+              <a>Delete</a>
+            </Popconfirm>
           </Space>
         );
       },

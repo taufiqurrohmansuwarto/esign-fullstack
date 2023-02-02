@@ -258,6 +258,6 @@ export const updateDocumentCollectiveRequest = async ({ id, data }) => {
 };
 
 // atasan
-export const dataAtasan = async () => {
+export const fetchDataAtasan = async () => {
   return fetcher.get(`/atasan`).then((res) => res?.data);
 };

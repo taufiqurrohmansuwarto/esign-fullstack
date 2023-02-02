@@ -74,6 +74,7 @@ const remove = async (req, res) => {
         status: "PENDING",
       },
     });
+
     res.json({ message: "success" });
   } catch (error) {
     console.log(error);
