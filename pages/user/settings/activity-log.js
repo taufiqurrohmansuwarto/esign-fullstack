@@ -62,6 +62,7 @@ const ActivityLog = () => {
     {
       enabled: !!query,
       refetchOnWindowFocus: false,
+      keepPreviousData : true
     }
   );
 
