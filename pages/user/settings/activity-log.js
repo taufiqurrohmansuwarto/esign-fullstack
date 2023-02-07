@@ -56,7 +56,7 @@ const ActivityLog = () => {
     type: "all",
   });
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isFetching } = useQuery(
     ["histories", query],
     () => getHistories(query),
     {
@@ -104,7 +104,7 @@ const ActivityLog = () => {
       <Card>
         <Table
           size="middle"
-          loading={isLoading}
+          loading={isLoading || isFetching}
           rowKey={(row) => row?.id}
           columns={columns}
           dataSource={data?.result}
