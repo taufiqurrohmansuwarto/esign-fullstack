@@ -1,3 +1,4 @@
+import DocumentCollectiveSignList from "@/components/DocumentCollective/DocumentCollectiveSignList";
 import UserLayout from "@/components/UserLayout";
 import { Card } from "antd";
 
@@ -6,7 +7,9 @@ const { default: PageContainer } = require("@/components/pro/PageContainer");
 const DocumentCollectivesSign = () => {
   return (
     <PageContainer title="Document Collectives">
-      <Card>Ini adalah document colletives</Card>
+      <Card>
+        <DocumentCollectiveSignList />
+      </Card>
     </PageContainer>
   );
 };

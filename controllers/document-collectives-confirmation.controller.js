@@ -3,7 +3,7 @@ const { default: prisma } = require("@/lib/prisma");
 const listConfirmation = async (req, res) => {
   try {
     const userId = req?.user?.id;
-    const result = await prisma.findMany({
+    const result = await prisma.DocumentCollectiveRequest.findMany({
       where: {
         to_requester_id: userId,
       },
@@ -18,6 +18,8 @@ const listConfirmation = async (req, res) => {
 const acceptConfirmation = async (req, res) => {
   try {
     const userId = req?.user?.id;
+    const reason = req?.body?.reason || "I accept this request";
+
     const documentCollectiveId = req?.query?.documentCollectiveId;
     await prisma.DocumentCollectiveRequest.updateMany({
       where: {
@@ -26,7 +28,7 @@ const acceptConfirmation = async (req, res) => {
       },
       data: {
         status: "ACCEPTED",
-        reason: "I accept this request",
+        reason,
       },
     });
     res.json({ message: "success" });
@@ -38,6 +40,8 @@ const acceptConfirmation = async (req, res) => {
 const rejectConfirmation = async (req, res) => {
   try {
     const userId = req?.user?.id;
+    const reason = req?.body?.reason || "I reject this request";
+
     const documentCollectiveId = req?.query?.documentCollectiveId;
     await prisma.DocumentCollectiveRequest.updateMany({
       where: {
@@ -46,7 +50,7 @@ const rejectConfirmation = async (req, res) => {
       },
       data: {
         status: "REJECTED",
-        reason: "I reject this request",
+        reason,
       },
     });
     res.json({ message: "success" });

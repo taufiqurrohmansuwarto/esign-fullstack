@@ -1,17 +1,14 @@
 import {
-  BellOutlined,
-  CopyOutlined,
+  BookOutlined,
   DashboardOutlined,
-  FileOutlined,
+  FilePdfOutlined,
   FormOutlined,
-  HddOutlined,
   LogoutOutlined,
   SettingOutlined,
   UploadOutlined,
 } from "@ant-design/icons/lib/icons";
 import {
   Avatar,
-  Badge,
   Button,
   Dropdown,
   Layout,
@@ -113,7 +110,7 @@ const drawItems = [
 
 const items = [
   getItem("Dashboard", "/user/dashboard", <DashboardOutlined />),
-  getItem("Documents", "/user/documents", <FileOutlined />, [
+  getItem("Documents", "/user/documents", <FilePdfOutlined />, [
     getItem("All Document", "/user/documents/all"),
     getItem("Draft", "/user/documents/draft"),
     getItem("Pending", "/user/documents/pending"),
@@ -135,10 +132,10 @@ const items = [
 const documentsCollectives = getItem(
   "Document Collectives",
   "/user/document-collectives",
-  <HddOutlined />,
+  <BookOutlined />,
   [
-    getItem("Requests", "/user/document-collectives/requests"),
-    getItem("Sign", "/user/document-collectives/sign"),
+    getItem("Doc. Collectives Requests", "/user/document-collectives/requests"),
+    getItem("Doc. Collectives Sign", "/user/document-collectives/sign"),
   ]
 );
 
@@ -148,7 +145,7 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
     router.push(item.key);
   };
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const masterUser =
     session?.user?.role === "USER" && session?.user?.group === "MASTER";
 
@@ -193,7 +190,6 @@ const UserLayout = ({ children, active = "/user/dashboard" }) => {
         {!collapsed ? (
           <div style={{ padding: "18px" }}>
             <Button
-              danger
               type="primary"
               onClick={showModal}
               icon={<UploadOutlined />}

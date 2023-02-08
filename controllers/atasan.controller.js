@@ -11,7 +11,7 @@ const stamp = async (data) => {
   const base64Image = resultBuffer.toString("base64");
 
   return {
-    value: `MASTER|${data?.pegawai_id}`,
+    value: `master|${data?.pegawai_id}`,
     label: {
       ...data,
       image: base64Image,
@@ -50,7 +50,7 @@ const getAtasanController = async (req, res) => {
       if (item.status === "fulfilled") {
         return prisma.User.upsert({
           where: {
-            id: `MASTER|${item.value?.pegawai_id}`,
+            id: `master|${item.value?.pegawai_id}`,
           },
           update: {
             user_info: item?.value,
@@ -62,7 +62,7 @@ const getAtasanController = async (req, res) => {
             role: "USER",
           },
           create: {
-            id: `MASTER|${item.value?.pegawai_id}`,
+            id: `master|${item.value?.pegawai_id}`,
             user_info: item?.value,
             username: item?.value?.nama,
             employee_number: item?.value?.nip,
