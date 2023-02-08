@@ -4,6 +4,7 @@ import auth from "@/middlewares/auth.middleware";
 
 const router = createRouter();
 
+// this should be gone after we have a better way to handle this
 router.use(auth()).get(listConfirmation);
 
 export default router.handler();

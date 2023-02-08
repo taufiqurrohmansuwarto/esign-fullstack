@@ -1,25 +1,59 @@
-import { documentsCollectiveSign } from "@/services/document-collective.service";
+import {
+  acceptDocumentCollective,
+  documentsCollectiveSign,
+  rejectDocumentCollective,
+} from "@/services/document-collective.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, Divider, Form, Input, Modal, Table, Typography } from "antd";
+import {
+  Button,
+  Divider,
+  Form,
+  Input,
+  message,
+  Modal,
+  Table,
+  Typography,
+} from "antd";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const ConfirmModal = ({ row, open, onCancel }) => {
   const queryClient = useQueryClient();
-  const { mutate: confirm, isLoading: isLoadingConfirm } = useMutation();
+  const router = useRouter();
+  const { mutate: confirm, isLoading: isLoadingConfirm } = useMutation(
+    (data) => acceptDocumentCollective(data),
+    {
+      onSuccess: () => {
+        message.success("Request accepted");
+        queryClient.initialValues("document-collective");
+        onCancel();
+        router.push("/user/document-collective/signs");
+      },
+      onError: (err) => {
+        message.error(err?.response?.data?.message);
+      },
+    }
+  );
 
   const [form] = Form.useForm();
 
   const handleFinish = async () => {
     const value = await form.validateFields();
+    console.log(value);
   };
 
   return (
-    <Modal title="Accept Request" open={open} onCancel={onCancel}>
+    <Modal
+      onOk={handleFinish}
+      confirmLoading={isLoadingConfirm}
+      title="Accept Request"
+      open={open}
+      onCancel={onCancel}
+    >
       <Typography.Paragraph>
         Are you sure you want to accept this request?
       </Typography.Paragraph>
       <Form
-        onFinish={handleFinish}
         form={form}
         initialValues={{
           reason: "I ACCEPT THIS REQUEST",
@@ -35,22 +69,39 @@ const ConfirmModal = ({ row, open, onCancel }) => {
 
 const RejectModal = ({ row, open, onCancel }) => {
   const queryClient = useQueryClient();
-  const { mutate: reject, isLoading: isLoadingReject } = useMutation();
+  const { mutate: reject, isLoading: isLoadingReject } = useMutation(
+    (data) => rejectDocumentCollective(data),
+    {
+      onError: (err) => {
+        message.error(err?.response?.data?.message);
+      },
+      onSuccess: () => {
+        message.success("Request rejected");
+        queryClient.invalidateQueries("document-collective");
+        onCancel();
+      },
+    }
+  );
 
   const [form] = Form.useForm();
 
   const handleFinish = async () => {
     const value = await form.validateFields();
+    console.log(value);
   };
 
   return (
-    <Modal title="Reject Request" open={open} onCancel={onCancel}>
+    <Modal
+      onOk={handleFinish}
+      title="Reject Request"
+      open={open}
+      onCancel={onCancel}
+    >
       <Form
         initialValues={{
           reason: "I REJECT THIS REQUEST",
         }}
         form={form}
-        onFinish={handleFinish}
       >
         <Form.Item name="reason" label="Reason">
           <Input.TextArea />
@@ -98,8 +149,9 @@ const Action = ({ row }) => {
 };
 
 function DocumentCollectiveSignList() {
+  // this should be query
   const { data, isLoading, isFetching } = useQuery(
-    ["documents-collectives-sign"],
+    ["document-collective"],
     () => documentsCollectiveSign(),
     {
       enabled: true,
