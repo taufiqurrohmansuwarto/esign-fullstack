@@ -1,11 +1,21 @@
-todo 
+Desain sistem 
 
-1. buat notification
-2. buat alert di document detail
-3. ganti tracking status di document detail dan di check document
+Stakeholder 
+1. Requester
+2. Signer
 
+Alur
+1. Requester mengirimkan permintaan ke Signer dengan isian sebagain berikut
+  - Informasi signer (nama, nip)
+  - Judul Dokumen
+  - Deskripsi Dokumen
+  - Jenis Dokumen (sertifikat, sk, dll)
+  - Tanggal Dokumen
+  - Jumlah Dokumen
+2. Signer menerima permintaan dari Requester
+3. Signer memberikan tanda tangan secara kolektif pada dokumen yang diminta sesuai dengan folder
 
-fitur baru document collectives
-1. buat crud di document collectives-request
-2. lakukan accept dan reject di document collectives-request
-3. buat upload
+Case
+1. Requester hanya dapat melakukan edit (edit/hapus) ketika status dokumen masih diajukan
+2. + Signer nanti akan dapat menolak semua dokumen yang telah ditandatangani / sudah diajukan
+
