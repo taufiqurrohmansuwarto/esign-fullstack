@@ -12,12 +12,12 @@ export const documentsCollectiveSign = async () => {
 
 export const acceptDocumentCollective = async ({ id, data }) => {
   return fetcher
-    .put(`/document-collectives/${id}/confirmation`)
+    .put(`/document-collectives/${id}/confirmation`, data)
     .then((res) => res?.data);
 };
 
-export const rejectDocumentCollective = async (id) => {
+export const rejectDocumentCollective = async ({ id, data }) => {
   return fetcher
-    .delete(`/document-collectives/${id}/confirmation`)
+    .delete(`/document-collectives/${id}/confirmation`, { id, data })
     .then((res) => res?.data);
 };

@@ -39,7 +39,13 @@ const ConfirmModal = ({ row, open, onCancel }) => {
 
   const handleFinish = async () => {
     const value = await form.validateFields();
-    console.log(value);
+    const data = {
+      id: row?.id,
+      data: {
+        reason: value?.reason,
+      },
+    };
+    console.log(data);
   };
 
   return (
@@ -87,7 +93,13 @@ const RejectModal = ({ row, open, onCancel }) => {
 
   const handleFinish = async () => {
     const value = await form.validateFields();
-    console.log(value);
+    const data = {
+      id: row?.id,
+      data: {
+        reason: value?.reason,
+      },
+    };
+    console.log(data);
   };
 
   return (
