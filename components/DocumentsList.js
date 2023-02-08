@@ -65,11 +65,12 @@ function DocumentsList({ type = "all" }) {
     }
   };
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isFetching } = useQuery(
     ["documents", type, query],
     () => listDocuments(query),
     {
       enabled: !!query,
+      keepPreviousData: true,
     }
   );
 
@@ -125,7 +126,7 @@ function DocumentsList({ type = "all" }) {
             `${range[0]}-${range[1]} of ${total} items`,
         }}
         rowKey={(row) => row?.id}
-        loading={isLoading}
+        loading={isLoading || isFetching}
         dataSource={data?.results}
         columns={columns}
       />
