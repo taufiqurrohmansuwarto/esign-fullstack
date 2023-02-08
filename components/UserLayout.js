@@ -135,7 +135,12 @@ const documentsCollectives = getItem(
   <BookOutlined />,
   [
     getItem("Doc. Collectives Requests", "/user/document-collectives/requests"),
-    getItem("Doc. Collectives Sign", "/user/document-collectives/sign"),
+    getItem(
+      "Doc. Collectives Confirmation",
+      "/user/document-collectives/confirmations"
+    ),
+    getItem("Doc. Collectives Sign", "/user/document-collectives/signs"),
+    getItem("Doc. Collectives Reject", "/user/document-collectives/reject"),
   ]
 );
 

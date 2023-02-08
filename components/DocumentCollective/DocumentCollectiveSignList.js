@@ -1,6 +1,6 @@
 import { documentsCollectiveSign } from "@/services/document-collective.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, Divider, Form, Input, Modal, Table } from "antd";
+import { Button, Divider, Form, Input, Modal, Table, Typography } from "antd";
 import { useState } from "react";
 
 const ConfirmModal = ({ row, open, onCancel }) => {
@@ -9,13 +9,22 @@ const ConfirmModal = ({ row, open, onCancel }) => {
 
   const [form] = Form.useForm();
 
-  const handleConfirm = async () => {
+  const handleFinish = async () => {
     const value = await form.validateFields();
   };
 
   return (
-    <Modal open={open} onCancel={onCancel}>
-      <Form form={form}>
+    <Modal title="Accept Request" open={open} onCancel={onCancel}>
+      <Typography.Paragraph>
+        Are you sure you want to accept this request?
+      </Typography.Paragraph>
+      <Form
+        onFinish={handleFinish}
+        form={form}
+        initialValues={{
+          reason: "I ACCEPT THIS REQUEST",
+        }}
+      >
         <Form.Item name="reason" label="Reason">
           <Input.TextArea />
         </Form.Item>
@@ -26,17 +35,23 @@ const ConfirmModal = ({ row, open, onCancel }) => {
 
 const RejectModal = ({ row, open, onCancel }) => {
   const queryClient = useQueryClient();
-  const { muate: reject, isLoading: isLoadingReject } = useMutation();
+  const { mutate: reject, isLoading: isLoadingReject } = useMutation();
 
   const [form] = Form.useForm();
 
-  const handleReject = async () => {
+  const handleFinish = async () => {
     const value = await form.validateFields();
   };
 
   return (
-    <Modal open={open} onCancel={onCancel}>
-      <Form form={form}>
+    <Modal title="Reject Request" open={open} onCancel={onCancel}>
+      <Form
+        initialValues={{
+          reason: "I REJECT THIS REQUEST",
+        }}
+        form={form}
+        onFinish={handleFinish}
+      >
         <Form.Item name="reason" label="Reason">
           <Input.TextArea />
         </Form.Item>
@@ -63,13 +78,15 @@ const ConfirmButton = ({ row }) => {
       </Button>
       <RejectModal open={openRej} onCancel={handleCloseRej} />
       <Divider type="vertical" />
-      <Button onClick={handleOpenRej}>Reject</Button>
+      <Button danger onClick={handleOpenRej}>
+        Reject
+      </Button>
     </>
   );
 };
 
 const Action = ({ row }) => {
-  if (row?.status === "pending") {
+  if (row?.status === "PENDING") {
     return (
       <>
         <ConfirmButton row={row} />
@@ -96,6 +113,11 @@ function DocumentCollectiveSignList() {
       title: "Action",
       key: "action",
       render: (_, row) => <Action row={row} />,
+    },
+    {
+      title: "Status",
+      key: "status",
+      dataIndex: "status",
     },
   ];
 

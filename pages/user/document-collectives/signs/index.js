@@ -4,7 +4,7 @@ import { Card } from "antd";
 
 const { default: PageContainer } = require("@/components/pro/PageContainer");
 
-const DocumentCollectivesSign = () => {
+const DocumentCollectivesSigns = () => {
   return (
     <PageContainer title="Document Collectives">
       <Card>
@@ -14,12 +14,12 @@ const DocumentCollectivesSign = () => {
   );
 };
 
-DocumentCollectivesSign.getLayout = (page) => {
+DocumentCollectivesSigns.getLayout = (page) => {
   return <UserLayout active="/user/document-collectives">{page}</UserLayout>;
 };
 
-DocumentCollectivesSign.Auth = {
+DocumentCollectivesSigns.Auth = {
   role: "USER",
 };
 
-export default DocumentCollectivesSign;
+export default DocumentCollectivesSigns;
