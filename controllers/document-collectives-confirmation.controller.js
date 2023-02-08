@@ -20,7 +20,7 @@ const acceptConfirmation = async (req, res) => {
     const userId = req?.user?.id;
     const reason = req?.body?.reason || "I accept this request";
 
-    const documentCollectiveId = req?.query?.documentCollectiveId;
+    const documentCollectiveId = req?.query?.requestId;
     await prisma.DocumentCollectiveRequest.updateMany({
       where: {
         id: documentCollectiveId,
@@ -42,7 +42,7 @@ const rejectConfirmation = async (req, res) => {
     const userId = req?.user?.id;
     const reason = req?.body?.reason || "I reject this request";
 
-    const documentCollectiveId = req?.query?.documentCollectiveId;
+    const documentCollectiveId = req?.query?.requestId;
     await prisma.DocumentCollectiveRequest.updateMany({
       where: {
         id: documentCollectiveId,

@@ -194,7 +194,6 @@ model DocumentCollectiveFile {
   file_size                      Int?
   is_signed                      Boolean?                   @default(false)
   bsre_document_id               String?
-  file_url                       String?
 
   signed_at  DateTime?
   created_at DateTime? @default(now())
