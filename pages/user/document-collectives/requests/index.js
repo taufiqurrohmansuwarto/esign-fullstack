@@ -36,7 +36,7 @@ const RequestModal = ({ open, onCancel }) => {
     (data) => createDocumentCollectiveRequest(data),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries("document-collectives-requests");
+        queryClient.invalidateQueries(["document-collectives"]);
         message.success("Request has been created");
         onCancel();
       },
@@ -65,7 +65,7 @@ const RequestModal = ({ open, onCancel }) => {
       confirmLoading={isLoadingCreate}
       onOk={handleOk}
       centered
-      width={600}
+      width={800}
       title="Form Document Collective"
       open={open}
       onCancel={onCancel}
@@ -73,7 +73,7 @@ const RequestModal = ({ open, onCancel }) => {
       <Skeleton loading={isLoadingAtasan}>
         <Form form={form} layout="vertical">
           {dataAtasan && (
-            <Form.Item name="to_requester_id" label="Penerima">
+            <Form.Item name="to_requester_id" label="Signer">
               <Select showSearch optionFilterProp="name">
                 {dataAtasan?.map((atasan) => {
                   return (

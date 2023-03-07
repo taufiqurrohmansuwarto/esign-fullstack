@@ -19,3 +19,6 @@ Case
 1. Requester hanya dapat melakukan edit (edit/hapus) ketika status dokumen masih diajukan
 2. + Signer nanti akan dapat menolak semua dokumen yang telah ditandatangani / sudah diajukan
 
+
+1. 
+

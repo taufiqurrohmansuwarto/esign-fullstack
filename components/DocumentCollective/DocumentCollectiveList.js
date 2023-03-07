@@ -52,6 +52,7 @@ function DocumentCollectiveList() {
     () => getDocumentCollectivesRequest(query),
     {
       enabled: !!query,
+      keepPreviousData: true,
     }
   );
 
